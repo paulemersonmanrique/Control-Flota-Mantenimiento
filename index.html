@@ -49,6 +49,8 @@
         .btn-success:hover { background: #0b662f; }
         .btn-danger { background: #d32f2f; border: 1px solid #d32f2f; color: white; }
         .btn-danger:hover { background: #b71c1c; }
+        .btn-placas { background: #e8f0fe; border: 1px solid #0066cc; color: #0066cc; }
+        .btn-placas:hover { background: #d2e3fc; }
 
         .vehicle-list { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 24px 0; padding-bottom: 20px; border-bottom: 2px solid #eaf0f8; min-height: 60px; align-items: center; }
         .vehicle-tab { padding: 10px 20px; border-radius: 40px; background: #f4f7fc; border: 2px solid transparent; cursor: pointer; font-weight: 600; font-size: 14px; color: #3d5777; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
@@ -135,6 +137,7 @@
             </div>
             <button class="btn btn-outline" onclick="exportarDatos()"><i class="fas fa-file-export"></i> Exportar</button>
             <button class="btn btn-outline" onclick="importarDatos()"><i class="fas fa-file-import"></i> Importar</button>
+            <button class="btn btn-placas" onclick="cargarPlacasPredeterminadas()"><i class="fas fa-upload"></i> Cargar placas</button>
             <span id="syncStatus" class="sync-status"><i class="fas fa-sync-alt fa-spin"></i> Conectando...</span>
         </div>
     </div>
@@ -328,7 +331,7 @@
             </div>
             <div class="form-group">
                 <label><i class="fas fa-calendar-alt"></i> Año</label>
-                <input type="number" class="form-control" id="fAnio" placeholder="2022">
+                <input type="number" class="form-control" id="fAnio" placeholder="2022" min="1900" max="2099">
             </div>
             <div class="form-group">
                 <label><i class="fas fa-tachometer-alt"></i> Km actual *</label>
@@ -483,7 +486,7 @@ function setModelo(valor) {
 }
 
 // ============================================================
-// 📥 CARGAR DATOS DESDE REALTIME DATABASE (CON CORRECCIÓN)
+// 📥 CARGAR DATOS DESDE REALTIME DATABASE
 // ============================================================
 function cargarDesdeFirebase() {
     actualizarStatus('Cargando datos...', '');
@@ -497,14 +500,11 @@ function cargarDesdeFirebase() {
                 const vehiculo = data[key];
                 vehiculo.key = key;
                 
-                // 🔥 AGREGAR CAMPO AVERIAS SI NO EXISTE
                 if (!vehiculo.hasOwnProperty('averias')) {
                     vehiculo.averias = '';
-                    // Actualizar en Firebase (solo si no existe)
                     vehiclesRef.child(key).update({ averias: '' });
                 }
                 
-                // 🔥 AGREGAR CAMPO intCombustible SI NO EXISTE
                 if (!vehiculo.hasOwnProperty('intCombustible')) {
                     vehiculo.intCombustible = 40000;
                     vehiclesRef.child(key).update({ intCombustible: 40000 });
@@ -522,6 +522,77 @@ function cargarDesdeFirebase() {
         console.error('Error:', error);
         actualizarStatus('❌ Error de conexión', 'error');
     });
+}
+
+// ============================================================
+// 📋 CARGAR PLACAS PREDETERMINADAS A FIREBASE
+// ============================================================
+async function cargarPlacasPredeterminadas() {
+    const placas = [
+        "APD-835", "APJ-912", "APM-936", "AYB-701", "AZR-944", "AZT-781",
+        "BSR-921", "BTO-748", "BWB-603", "BXJ-718", "BYP-595",
+        "CCQ-836", "CEE-354", "CHG-289", "CNH-087",
+        "D7Y-940",
+        "F1U-957",
+        "LTM 1050",
+        "RT780",
+        "V0T-627", "V0U-041", "V0X-833", "V4W-779", "V6H-718", "V7O-730", "V7S-792", "V7U-846", "V8H-917", "V8T-824", "V9J-722",
+        "VAB-845", "VAQ-005", "VAP-476", "VAP-587", "VAP-774", "VAP-796", "VAP-826", "VAP-920", "VAR-508", "VAZ-878",
+        "VBJ-005", "VBJ-462", "VBJ-494", "VBJ-626", "VBK-206", "VBO-519", "VBQ-955", "VBQ-963", "VBQ-968", "VBX-797",
+        "VCB-394", "VCB-395", "VCD-462", "VCD-470", "VCD-945", "VCE-712", "VCE-750", "VCE-758", "VCF-939", "VCH-357", "VCH-613",
+        "VCI-025", "VCJ-257", "VCJ-284", "VCJ-608", "VCM-847", "VCP-736", "VCQ-501", "VCQ-527", "VCQ-561", "VCQ-577",
+        "VCR-165", "VCS-675", "VCS-684", "VCV-415", "VCZ-454",
+        "VDG-470", "VDK-332", "VDN-919", "VDR-359", "VDW-950",
+        "VER-895", "VES-828", "VEW-879", "VFJ-967", "VFM-959", "VFF-797", "VFF-958", "VFF-969", "VFU-966",
+        "Z-45/25", "Z-60/34", "GS-5390", "ZA14J", "Z-80/60", "Z-62/40", "S-100"
+    ];
+
+    if (!confirm(`¿Cargar ${placas.length} vehículos a la base de datos?`)) {
+        return;
+    }
+
+    let contador = 0;
+    let errores = 0;
+
+    for (const placa of placas) {
+        try {
+            const snapshot = await vehiclesRef.orderByChild('placa').equalTo(placa).once('value');
+            
+            if (snapshot.exists()) {
+                console.log(`⏭️ Placa ${placa} ya existe, omitiendo...`);
+                continue;
+            }
+
+            const nuevoVehiculo = {
+                placa: placa,
+                marca: 'Por asignar',
+                modelo: 'Por asignar',
+                anio: '----',
+                kmActual: 0,
+                intAceite: 10000,
+                intCombustible: 40000,
+                soat: '',
+                itv: '',
+                fechaMant: '',
+                kmMant: 0,
+                averias: '',
+                servicios: []
+            };
+
+            await vehiclesRef.push().set(nuevoVehiculo);
+            contador++;
+            console.log(`✅ ${contador}. ${placa} agregada`);
+        } catch (error) {
+            errores++;
+            console.error(`❌ Error al agregar ${placa}:`, error);
+        }
+    }
+
+    mostrarFeedback(`✅ ${contador} vehículos agregados. ${errores} errores.`, '#d4edda', '#28a745');
+    
+    setTimeout(() => {
+        cargarDesdeFirebase();
+    }, 1000);
 }
 
 // ============================================================
