@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de Flota · Buscador</title>
+    <title>Control de Unidades MTTO · Buscador</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -14,27 +14,6 @@
         .app-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 20px; }
         .app-header h1 { font-weight: 700; font-size: 26px; color: #0b1e33; display: flex; align-items: center; gap: 12px; }
         .app-header h1 i { color: #0066cc; background: #e5f0ff; padding: 10px; border-radius: 16px; font-size: 22px; }
-
-        .search-bar {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            background: #f4f7fc;
-            padding: 8px 16px 8px 20px;
-            border-radius: 40px;
-            border: 1px solid #d9e2ef;
-            transition: 0.3s;
-            flex: 1;
-            max-width: 400px;
-            min-width: 200px;
-        }
-        .search-bar:focus-within { border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); background: white; }
-        .search-bar i { color: #657e9e; font-size: 16px; }
-        .search-bar input { border: none; background: transparent; padding: 10px 0; font-size: 14px; width: 100%; outline: none; color: #0b1e33; }
-        .search-bar input::placeholder { color: #a0b4cc; }
-        .search-bar .clear-btn { background: none; border: none; color: #a0b4cc; cursor: pointer; padding: 4px 8px; font-size: 14px; display: none; }
-        .search-bar .clear-btn.visible { display: block; }
-        .search-bar .clear-btn:hover { color: #d32f2f; }
 
         .header-right { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
@@ -49,15 +28,180 @@
         .btn-success:hover { background: #0b662f; }
         .btn-danger { background: #d32f2f; border: 1px solid #d32f2f; color: white; }
         .btn-danger:hover { background: #b71c1c; }
-        .btn-placas { background: #e8f0fe; border: 1px solid #0066cc; color: #0066cc; }
-        .btn-placas:hover { background: #d2e3fc; }
+        .btn-warning { background: #e66a00; border: 1px solid #e66a00; color: white; }
+        .btn-warning:hover { background: #cc5500; }
+        .btn-toggle-placas { background: transparent; border: 1px solid #d9e2ef; color: #3d5777; padding: 8px 16px; border-radius: 40px; font-size: 13px; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+        .btn-toggle-placas:hover { background: #f0f5ff; border-color: #0066cc; }
+        .btn-sm { padding: 4px 12px; font-size: 11px; border-radius: 40px; border: none; cursor: pointer; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+        .btn-sm-success { background: #0f7b3a; color: white; }
+        .btn-sm-success:hover { background: #0b662f; }
+        .btn-sm-danger { background: #d32f2f; color: white; }
+        .btn-sm-danger:hover { background: #b71c1c; }
+        .btn-sm-warning { background: #e66a00; color: white; }
+        .btn-sm-warning:hover { background: #cc5500; }
+        .btn-sm-outline { background: transparent; border: 1px solid #d9e2ef; color: #3d5777; }
+        .btn-sm-outline:hover { background: #f0f5ff; }
 
-        .vehicle-list { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 24px 0; padding-bottom: 20px; border-bottom: 2px solid #eaf0f8; min-height: 60px; align-items: center; }
-        .vehicle-tab { padding: 10px 20px; border-radius: 40px; background: #f4f7fc; border: 2px solid transparent; cursor: pointer; font-weight: 600; font-size: 14px; color: #3d5777; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
-        .vehicle-tab:hover { background: #e5edf8; }
-        .vehicle-tab.active { background: #0066cc; color: white; border-color: #0066cc; }
-        .vehicle-tab .badge-count { background: rgba(255,255,255,0.3); padding: 0 10px; border-radius: 40px; font-size: 12px; }
-        .btn-add-vehicle { background: transparent; border: 2px dashed #b8cbe0; padding: 10px 20px; border-radius: 40px; font-weight: 600; color: #3d5777; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-edit-azul {
+            background: #0066cc;
+            border: 1px solid #0066cc;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-edit-azul:hover { background: #004f99; transform: scale(1.02); }
+
+        .vehicle-list-wrapper {
+            margin: 16px 0 24px 0;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eaf0f8;
+        }
+        
+        .vehicle-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .vehicle-list-header .info {
+            font-size: 14px;
+            color: #657e9e;
+        }
+        .vehicle-list-header .info strong { color: #0b1e33; }
+        
+        .search-placas {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f4f7fc;
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 1px solid #d9e2ef;
+            transition: 0.3s;
+            font-size: 13px;
+        }
+        .search-placas:focus-within {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
+            background: white;
+        }
+        .search-placas i { color: #657e9e; font-size: 13px; }
+        .search-placas input {
+            border: none;
+            background: transparent;
+            padding: 2px 0;
+            font-size: 13px;
+            width: 130px;
+            outline: none;
+            color: #0b1e33;
+        }
+        .search-placas input::placeholder { color: #a0b4cc; }
+        .search-placas .clear-btn {
+            background: none;
+            border: none;
+            color: #a0b4cc;
+            cursor: pointer;
+            padding: 0 4px;
+            font-size: 13px;
+            display: none;
+        }
+        .search-placas .clear-btn.visible { display: block; }
+        .search-placas .clear-btn:hover { color: #d32f2f; }
+        
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .vehicle-list-container {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+        .vehicle-list-container.abierto {
+            max-height: 2000px;
+            opacity: 1;
+        }
+        
+        .vehicle-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            padding-top: 10px;
+        }
+        
+        .vehicle-tab {
+            padding: 8px 16px;
+            border-radius: 40px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+        }
+        .vehicle-tab:hover { transform: scale(1.02); }
+        .vehicle-tab.active { border-color: #0066cc; box-shadow: 0 0 0 2px rgba(0,102,204,0.3); }
+        
+        .vehicle-tab .badge-count { padding: 0 8px; border-radius: 40px; font-size: 11px; background: rgba(0,0,0,0.1); }
+        
+        .vehicle-tab .alerta-averia {
+            font-size: 12px;
+            color: #856404;
+            background: #fff3cd;
+            padding: 0 6px;
+            border-radius: 40px;
+            border: 1px solid #ffc107;
+            animation: pulse 1.5s infinite;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        .vehicle-tab.estado-verde { background: #d4edda; color: #0b5e2e; border-color: #28a745; }
+        .vehicle-tab.estado-verde .badge-count { background: rgba(40,167,69,0.2); }
+        
+        .vehicle-tab.estado-amarillo { background: #fff3cd; color: #856404; border-color: #ffc107; }
+        .vehicle-tab.estado-amarillo .badge-count { background: rgba(255,193,7,0.2); }
+        
+        .vehicle-tab.estado-naranja { background: #ffe0b3; color: #994d00; border-color: #e66a00; }
+        .vehicle-tab.estado-naranja .badge-count { background: rgba(230,106,0,0.2); }
+        
+        .vehicle-tab.estado-rojo { background: #f5c6c6; color: #a00020; border-color: #d32f2f; }
+        .vehicle-tab.estado-rojo .badge-count { background: rgba(211,47,47,0.2); }
+        
+        .vehicle-tab.prioridad-alta {
+            border-width: 3px;
+            font-weight: 700;
+            order: -1;
+        }
+        .vehicle-tab.prioridad-alta.estado-naranja { border-color: #e66a00; }
+        .vehicle-tab.prioridad-alta.estado-rojo { border-color: #d32f2f; }
+        .vehicle-tab.prioridad-alta.estado-verde { border-color: #28a745; }
+
+        .btn-add-vehicle { background: transparent; border: 2px dashed #b8cbe0; padding: 8px 16px; border-radius: 40px; font-weight: 600; font-size: 13px; color: #3d5777; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
         .btn-add-vehicle:hover { background: #f0f5ff; border-color: #0066cc; }
         .no-results { color: #657e9e; font-size: 14px; padding: 8px 16px; background: #f8faff; border-radius: 40px; }
 
@@ -81,71 +225,323 @@
         .modelo-input-wrapper .btn-small { padding: 6px 12px; font-size: 12px; border-radius: 12px; border: 1px solid #d3dfee; background: white; cursor: pointer; white-space: nowrap; }
         .modelo-input-wrapper .btn-small:hover { background: #f0f5ff; border-color: #0066cc; }
 
-        .alert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
-        .alert-card { background: #f8fbff; border-radius: 18px; padding: 16px 20px; border: 1px solid #e2ebf6; display: flex; align-items: center; gap: 14px; border-left: 6px solid #0f7b3a; }
-        .alert-card i { font-size: 24px; width: 38px; text-align: center; }
+        .alert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .alert-card {
+            background: #f8fbff;
+            border-radius: 14px;
+            padding: 12px 16px;
+            border: 1px solid #e2ebf6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 4px solid #0f7b3a;
+        }
+        .alert-card i { font-size: 18px; width: 30px; text-align: center; }
         .alert-card .info { flex: 1; }
-        .alert-card .label { font-size: 12px; font-weight: 600; color: #1a324b; text-transform: uppercase; }
-        .alert-card .value { font-weight: 700; font-size: 15px; color: #0b1e33; }
-        .alert-card .value small { font-weight: 400; font-size: 12px; color: #546e88; margin-left: 4px; }
-        .alert-card .badge-status { font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 40px; white-space: nowrap; }
+        .alert-card .label { font-size: 11px; font-weight: 600; color: #1a324b; text-transform: uppercase; }
+        .alert-card .value { font-weight: 700; font-size: 13px; color: #0b1e33; }
+        .alert-card .value small { font-weight: 400; font-size: 11px; color: #546e88; }
+        .alert-card .badge-status { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 40px; white-space: nowrap; }
+
         .alert-green { border-left-color: #0f7b3a; background: #f3fbf6; }
         .alert-green i { color: #0f7b3a; }
         .alert-green .badge-status { background: #d4edda; color: #0b5e2e; }
+
         .alert-yellow { border-left-color: #e6a700; background: #fffbe6; }
         .alert-yellow i { color: #b8860b; }
         .alert-yellow .badge-status { background: #fff3cd; color: #856404; }
+
         .alert-orange { border-left-color: #e66a00; background: #fff3e6; }
         .alert-orange i { color: #cc5500; }
         .alert-orange .badge-status { background: #ffe0b3; color: #994d00; }
+
         .alert-red { border-left-color: #d32f2f; background: #fff0f0; }
         .alert-red i { color: #b71c1c; }
         .alert-red .badge-status { background: #f5c6c6; color: #a00020; }
 
-        .vehicle-detail { background: white; border-radius: 18px; padding: 20px 24px; border: 1px solid #eaf0f8; margin-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; }
-        .vehicle-detail .info { display: flex; flex-wrap: wrap; gap: 12px 28px; }
-        .vehicle-detail .info span { font-size: 14px; color: #2b405a; }
-        .vehicle-detail .info strong { color: #0b1e33; }
-        .vehicle-detail .averias-box { margin-top: 12px; padding: 12px 16px; background: #fff8e1; border-left: 4px solid #f1b24a; border-radius: 8px; width: 100%; }
-        .vehicle-detail .averias-box .label { font-weight: 600; font-size: 13px; color: #8e6b00; }
-        .vehicle-detail .averias-box p { font-size: 14px; color: #4a3a00; margin-top: 4px; white-space: pre-wrap; }
+        .vehicle-detail {
+            background: white;
+            border-radius: 18px;
+            padding: 16px 20px;
+            border: 1px solid #eaf0f8;
+            margin-bottom: 16px;
+        }
+        
+        .vehicle-detail .info-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .vehicle-detail .info-row .vehiculo-nombre {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            align-items: center;
+            font-size: 14px;
+            color: #2b405a;
+        }
+        .vehicle-detail .info-row .vehiculo-nombre strong { color: #0b1e33; font-size: 16px; }
+        .vehicle-detail .info-row .vehiculo-nombre .badge-km { background: #e5edf8; padding: 2px 12px; border-radius: 40px; font-size: 12px; }
+        
+        .km-editable {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #fff;
+            border: 2px solid #0066cc;
+            border-radius: 40px;
+            padding: 0 4px 0 12px;
+            transition: 0.2s;
+        }
+        .km-editable:hover { border-color: #004f99; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); }
+        .km-editable input {
+            border: none;
+            background: transparent;
+            width: 80px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #0b1e33;
+            padding: 4px 0;
+            outline: none;
+            text-align: right;
+        }
+        .km-editable input:focus { outline: none; }
+        .km-editable .km-label {
+            font-size: 11px;
+            color: #657e9e;
+            font-weight: 400;
+        }
+        .km-editable .icono-km {
+            color: #0066cc;
+            font-size: 12px;
+        }
+        .km-editable .guardar-km {
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 2px 10px;
+            font-size: 11px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+            display: none;
+        }
+        .km-editable .guardar-km.visible { display: block; }
+        .km-editable .guardar-km:hover { background: #004f99; }
+        
+        .vehicle-detail .alerta-averia-tarjeta {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: #856404;
+            font-weight: 600;
+            font-size: 12px;
+            background: #fff3cd;
+            padding: 2px 10px;
+            border-radius: 40px;
+            border: 1px solid #ffc107;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .vehicle-detail .info-row .acciones {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .vehicle-detail .info-row .acciones .btn-small { padding: 6px 14px; font-size: 12px; border-radius: 40px; border: 1px solid #d9e2ef; background: white; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .vehicle-detail .info-row .acciones .btn-small:hover { background: #f0f5ff; border-color: #0066cc; }
+        .vehicle-detail .info-row .acciones .btn-small.btn-delete { color: #d32f2f; border-color: #d32f2f; }
+        .vehicle-detail .info-row .acciones .btn-small.btn-delete:hover { background: #fff0f0; }
+        
+        .vehicle-detail .detalles-container {
+            margin-top: 16px;
+        }
+
+        .averias-section {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: #fafafa;
+            border-radius: 12px;
+            border: 1px solid #eaf0f8;
+        }
+        .averias-section .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .averias-section .header h4 {
+            font-size: 14px;
+            color: #1a324b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .averias-section .header h4 i { color: #e66a00; }
+        
+        .averia-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #e66a00;
+            margin-bottom: 6px;
+        }
+        .averia-item.reparado {
+            border-left-color: #0f7b3a;
+            opacity: 0.7;
+        }
+        .averia-item .texto {
+            flex: 1;
+            font-size: 13px;
+            color: #2b405a;
+        }
+        .averia-item .texto .fecha {
+            font-size: 11px;
+            color: #657e9e;
+            margin-left: 8px;
+        }
+        .averia-item .texto .estado {
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        .averia-item .texto .estado.pendiente { color: #e66a00; }
+        .averia-item .texto .estado.reparado { color: #0f7b3a; }
+        .averia-item .acciones-averia {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .averia-input-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .averia-input-group input {
+            flex: 1;
+            min-width: 150px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid #d3dfee;
+            font-size: 13px;
+        }
+        .averia-input-group input:focus { outline: none; border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); }
+
+        .no-averias { color: #657e9e; font-size: 13px; padding: 8px 0; }
+
+        .vehicle-detail .averias-box {
+            padding: 10px 14px;
+            background: #fff8e1;
+            border-left: 4px solid #f1b24a;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+        .vehicle-detail .averias-box .label { font-weight: 600; font-size: 12px; color: #8e6b00; display: flex; align-items: center; gap: 6px; }
+        .vehicle-detail .averias-box .label i { color: #e66a00; }
+        .vehicle-detail .averias-box p { font-size: 13px; color: #4a3a00; margin-top: 2px; white-space: pre-wrap; }
 
         #feedbackMessage { margin-top: 16px; padding: 12px 18px; border-radius: 18px; display: none; align-items: center; gap: 14px; font-size: 14px; }
         .empty-state { text-align: center; padding: 40px 20px; color: #657e9e; }
         .empty-state i { font-size: 48px; color: #b8cbe0; margin-bottom: 12px; }
 
+        .vehicle-detail.estado-verde { border-left: 4px solid #28a745; }
+        .vehicle-detail.estado-amarillo { border-left: 4px solid #ffc107; }
+        .vehicle-detail.estado-naranja { border-left: 4px solid #e66a00; }
+        .vehicle-detail.estado-rojo { border-left: 4px solid #d32f2f; }
+
+        .footer-signature {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eaf0f8;
+            text-align: center;
+            font-size: 14px;
+            color: #657e9e;
+            letter-spacing: 0.5px;
+        }
+        .footer-signature .nombre {
+            font-weight: 700;
+            color: #0066cc;
+            font-size: 16px;
+        }
+        .footer-signature .icono {
+            color: #0066cc;
+            margin: 0 6px;
+        }
+        .footer-signature .version {
+            font-size: 12px;
+            color: #a0b4cc;
+            margin-top: 4px;
+        }
+
         @media (max-width: 600px) {
             .app-container { padding: 16px; }
             .form-grid { grid-template-columns: 1fr; }
-            .search-bar { max-width: 100%; }
+            .header-right { flex-direction: column; align-items: stretch; }
             .app-header { flex-direction: column; align-items: stretch; gap: 12px; }
-            .header-right { flex-wrap: wrap; }
-            .modelo-input-wrapper { flex-wrap: wrap; }
+            .vehicle-list-header { flex-direction: column; align-items: stretch; }
+            .header-actions { flex-direction: column; align-items: stretch; }
+            .search-placas input { width: 100%; }
+            .vehicle-detail .info-row { flex-direction: column; align-items: stretch; }
+            .vehicle-detail .info-row .acciones { justify-content: flex-start; }
+            .averia-input-group { flex-direction: column; }
+            .averia-input-group input { width: 100%; }
+            .km-editable input { width: 60px; }
         }
     </style>
 </head>
 <body>
 
 <div class="app-container">
+    <!-- HEADER -->
     <div class="app-header">
-        <h1><i class="fas fa-truck"></i> Control de Flota</h1>
+        <h1><i class="fas fa-truck"></i> Control de Unidades MTTO IMCO</h1>
         <div class="header-right">
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Buscar por placa..." oninput="filtrarVehiculos()">
-                <button class="clear-btn" id="clearBtn" onclick="limpiarBusqueda()"><i class="fas fa-times-circle"></i></button>
-            </div>
             <button class="btn btn-outline" onclick="exportarDatos()"><i class="fas fa-file-export"></i> Exportar</button>
             <button class="btn btn-outline" onclick="importarDatos()"><i class="fas fa-file-import"></i> Importar</button>
-            <button class="btn btn-placas" onclick="cargarPlacasPredeterminadas()"><i class="fas fa-upload"></i> Cargar placas</button>
             <span id="syncStatus" class="sync-status"><i class="fas fa-sync-alt fa-spin"></i> Conectando...</span>
         </div>
     </div>
 
-    <div class="vehicle-list" id="vehicleList">
-        <button class="btn-add-vehicle" onclick="nuevoVehiculo()"><i class="fas fa-plus"></i> Agregar vehículo</button>
+    <!-- LISTA DE VEHÍCULOS CON BOTÓN DESPLEGABLE Y BUSCADOR -->
+    <div class="vehicle-list-wrapper">
+        <div class="vehicle-list-header">
+            <div class="info">
+                <i class="fas fa-list"></i> <strong id="totalVehiculos">0</strong> vehículos 
+                <span id="filtroInfo" style="display:none;">· filtrados: <strong id="totalFiltrados">0</strong></span>
+            </div>
+            <div class="header-actions">
+                <div class="search-placas">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar placa..." oninput="filtrarVehiculos()">
+                    <button class="clear-btn" id="clearBtn" onclick="limpiarBusqueda()"><i class="fas fa-times-circle"></i></button>
+                </div>
+                <button class="btn-toggle-placas" onclick="toggleListaPlacas()">
+                    <i class="fas fa-chevron-down" id="toggleListaIcon"></i> 
+                    <span id="toggleListaTexto">Mostrar placas</span>
+                </button>
+                <button class="btn-add-vehicle" onclick="nuevoVehiculo()"><i class="fas fa-plus"></i> Agregar</button>
+            </div>
+        </div>
+        <div class="vehicle-list-container" id="vehicleListContainer">
+            <div class="vehicle-list" id="vehicleList"></div>
+        </div>
     </div>
 
+    <!-- FORMULARIO CON CAMPO EXTINTOR -->
     <div class="form-panel" id="formPanel">
         <h3><i class="fas fa-plus-circle"></i> <span id="formTitle">Nuevo Vehículo</span></h3>
         <div class="form-grid">
@@ -361,9 +757,10 @@
                 <label><i class="fas fa-road"></i> Km en último mantenimiento</label>
                 <input type="number" class="form-control" id="fKmMant" placeholder="0">
             </div>
-            <div class="form-group" style="grid-column: 1 / -1;">
-                <label><i class="fas fa-exclamation-triangle" style="color: #e66a00;"></i> Reporte de averías</label>
-                <textarea class="form-control textarea" id="fAverias" placeholder="Describe las averías o fallas del vehículo (ej: ruido en el motor, problemas de frenos, fugas, etc.)"></textarea>
+            <!-- 🔥 NUEVO CAMPO: VENCIMIENTO DE EXTINTOR -->
+            <div class="form-group">
+                <label><i class="fas fa-fire-extinguisher" style="color:#e66a00;"></i> Vencimiento Extintor</label>
+                <input type="date" class="form-control" id="fExtintor">
             </div>
         </div>
         <div class="form-actions">
@@ -373,12 +770,22 @@
         <div id="feedbackMessage"></div>
     </div>
 
+    <!-- VISTA DEL VEHÍCULO -->
     <div id="vehicleView">
         <div class="empty-state">
             <i class="fas fa-sync-alt fa-spin" style="font-size:36px;color:#0066cc;"></i>
             <p>Cargando datos...</p>
         </div>
     </div>
+
+    <!-- FIRMA -->
+    <div class="footer-signature">
+        <span class="icono"><i class="fas fa-code"></i></span>
+        Desarrollado por <span class="nombre">PaulEManrique</span>
+        <span class="icono"><i class="fas fa-heart" style="color: #d32f2f;"></i></span>
+        <div class="version">v2.6 · Control de Flota con Firebase</div>
+    </div>
+
 </div>
 
 <script>
@@ -406,6 +813,7 @@ let vehicles = [];
 let filteredVehicles = [];
 let selectedIndex = 0;
 let editingIndex = -1;
+let listaPlacasAbierta = false;
 
 // ============================================================
 // 🔧 FUNCIONES PARA MODELO MANUAL
@@ -501,13 +909,21 @@ function cargarDesdeFirebase() {
                 vehiculo.key = key;
                 
                 if (!vehiculo.hasOwnProperty('averias')) {
-                    vehiculo.averias = '';
-                    vehiclesRef.child(key).update({ averias: '' });
+                    vehiculo.averias = [];
                 }
                 
                 if (!vehiculo.hasOwnProperty('intCombustible')) {
                     vehiculo.intCombustible = 40000;
                     vehiclesRef.child(key).update({ intCombustible: 40000 });
+                }
+                
+                if (!vehiculo.hasOwnProperty('extintor')) {
+                    vehiculo.extintor = '';
+                    vehiclesRef.child(key).update({ extintor: '' });
+                }
+                
+                if (!Array.isArray(vehiculo.averias)) {
+                    vehiculo.averias = [];
                 }
                 
                 vehicles.push(vehiculo);
@@ -516,6 +932,7 @@ function cargarDesdeFirebase() {
         }
         
         actualizarStatus(`✅ ${vehicles.length} vehículos`, 'synced');
+        document.getElementById('totalVehiculos').textContent = vehicles.length;
         filtrarVehiculos();
         renderVehicleView(selectedIndex);
     }, (error) => {
@@ -525,74 +942,68 @@ function cargarDesdeFirebase() {
 }
 
 // ============================================================
-// 📋 CARGAR PLACAS PREDETERMINADAS A FIREBASE
+// 🎨 CALCULAR ESTADO DEL VEHÍCULO (con EXTINTOR)
 // ============================================================
-async function cargarPlacasPredeterminadas() {
-    const placas = [
-        "APD-835", "APJ-912", "APM-936", "AYB-701", "AZR-944", "AZT-781",
-        "BSR-921", "BTO-748", "BWB-603", "BXJ-718", "BYP-595",
-        "CCQ-836", "CEE-354", "CHG-289", "CNH-087",
-        "D7Y-940",
-        "F1U-957",
-        "LTM 1050",
-        "RT780",
-        "V0T-627", "V0U-041", "V0X-833", "V4W-779", "V6H-718", "V7O-730", "V7S-792", "V7U-846", "V8H-917", "V8T-824", "V9J-722",
-        "VAB-845", "VAQ-005", "VAP-476", "VAP-587", "VAP-774", "VAP-796", "VAP-826", "VAP-920", "VAR-508", "VAZ-878",
-        "VBJ-005", "VBJ-462", "VBJ-494", "VBJ-626", "VBK-206", "VBO-519", "VBQ-955", "VBQ-963", "VBQ-968", "VBX-797",
-        "VCB-394", "VCB-395", "VCD-462", "VCD-470", "VCD-945", "VCE-712", "VCE-750", "VCE-758", "VCF-939", "VCH-357", "VCH-613",
-        "VCI-025", "VCJ-257", "VCJ-284", "VCJ-608", "VCM-847", "VCP-736", "VCQ-501", "VCQ-527", "VCQ-561", "VCQ-577",
-        "VCR-165", "VCS-675", "VCS-684", "VCV-415", "VCZ-454",
-        "VDG-470", "VDK-332", "VDN-919", "VDR-359", "VDW-950",
-        "VER-895", "VES-828", "VEW-879", "VFJ-967", "VFM-959", "VFF-797", "VFF-958", "VFF-969", "VFU-966",
-        "Z-45/25", "Z-60/34", "GS-5390", "ZA14J", "Z-80/60", "Z-62/40", "S-100"
-    ];
+function tieneAveriasPendientes(v) {
+    if (!v.averias || !Array.isArray(v.averias)) return false;
+    return v.averias.some(a => a.estado !== 'reparado');
+}
 
-    if (!confirm(`¿Cargar ${placas.length} vehículos a la base de datos?`)) {
-        return;
-    }
-
-    let contador = 0;
-    let errores = 0;
-
-    for (const placa of placas) {
-        try {
-            const snapshot = await vehiclesRef.orderByChild('placa').equalTo(placa).once('value');
-            
-            if (snapshot.exists()) {
-                console.log(`⏭️ Placa ${placa} ya existe, omitiendo...`);
-                continue;
-            }
-
-            const nuevoVehiculo = {
-                placa: placa,
-                marca: 'Por asignar',
-                modelo: 'Por asignar',
-                anio: '----',
-                kmActual: 0,
-                intAceite: 10000,
-                intCombustible: 40000,
-                soat: '',
-                itv: '',
-                fechaMant: '',
-                kmMant: 0,
-                averias: '',
-                servicios: []
-            };
-
-            await vehiclesRef.push().set(nuevoVehiculo);
-            contador++;
-            console.log(`✅ ${contador}. ${placa} agregada`);
-        } catch (error) {
-            errores++;
-            console.error(`❌ Error al agregar ${placa}:`, error);
-        }
-    }
-
-    mostrarFeedback(`✅ ${contador} vehículos agregados. ${errores} errores.`, '#d4edda', '#28a745');
+function calcularEstadoVehiculo(v) {
+    const hoy = new Date();
+    hoy.setHours(0,0,0,0);
     
-    setTimeout(() => {
-        cargarDesdeFirebase();
-    }, 1000);
+    function diasHasta(f) {
+        if (!f) return Infinity;
+        const d = new Date(f + 'T00:00:00');
+        return Math.round((d - hoy) / (1000*60*60*24));
+    }
+    
+    function estadoDias(d) {
+        if (d < 0) return { clase: 'estado-rojo', etiqueta: 'VENCIDO', icono: 'fas fa-times-circle' };
+        if (d <= 7) return { clase: 'estado-naranja', etiqueta: '¡URGENTE!', icono: 'fas fa-exclamation-triangle' };
+        if (d <= 30) return { clase: 'estado-amarillo', etiqueta: 'Próximo', icono: 'fas fa-clock' };
+        return { clase: 'estado-verde', etiqueta: 'Vigente', icono: 'fas fa-check-circle' };
+    }
+    
+    function estadoKm(d) {
+        if (d < 0) return { clase: 'estado-rojo', etiqueta: 'VENCIDO', icono: 'fas fa-times-circle' };
+        if (d <= 500) return { clase: 'estado-naranja', etiqueta: '¡URGENTE!', icono: 'fas fa-exclamation-triangle' };
+        if (d <= 1500) return { clase: 'estado-amarillo', etiqueta: 'Próximo', icono: 'fas fa-clock' };
+        return { clase: 'estado-verde', etiqueta: 'OK', icono: 'fas fa-check-circle' };
+    }
+    
+    const ds = diasHasta(v.soat);
+    const es = estadoDias(ds);
+    const di = diasHasta(v.itv);
+    const ei = estadoDias(di);
+    const de = diasHasta(v.extintor);
+    const ee = estadoDias(de);
+    
+    const proxAceite = v.intAceite || 10000;
+    const ultimoKm = v.kmMant || 0;
+    let proxKm = ultimoKm + proxAceite;
+    if (proxKm <= v.kmActual) proxKm = v.kmActual + proxAceite;
+    const diffKm = proxKm - v.kmActual;
+    const ek = estadoKm(diffKm);
+    
+    const tieneAveria = tieneAveriasPendientes(v);
+    const estadoMant = tieneAveria ? { clase: 'estado-rojo', etiqueta: 'AVERÍA', icono: 'fas fa-exclamation-triangle' } : ek;
+    
+    const estados = [es.clase, ei.clase, ee.clase, estadoMant.clase];
+    let general = 'estado-verde';
+    if (estados.includes('estado-rojo')) general = 'estado-rojo';
+    else if (estados.includes('estado-naranja')) general = 'estado-naranja';
+    else if (estados.includes('estado-amarillo')) general = 'estado-amarillo';
+    
+    return {
+        soat: es,
+        itv: ei,
+        extintor: ee,
+        mantenimiento: estadoMant,
+        general: general,
+        tieneAveria: tieneAveria
+    };
 }
 
 // ============================================================
@@ -601,19 +1012,31 @@ async function cargarPlacasPredeterminadas() {
 function filtrarVehiculos() {
     const searchTerm = document.getElementById('searchInput').value.trim().toUpperCase();
     const clearBtn = document.getElementById('clearBtn');
+    const container = document.getElementById('vehicleListContainer');
     
     if (searchTerm.length > 0) {
         clearBtn.classList.add('visible');
+        container.classList.add('abierto');
+        document.getElementById('toggleListaIcon').className = 'fas fa-chevron-up';
+        document.getElementById('toggleListaTexto').textContent = 'Ocultar placas';
+        listaPlacasAbierta = true;
     } else {
         clearBtn.classList.remove('visible');
+        container.classList.remove('abierto');
+        listaPlacasAbierta = false;
+        document.getElementById('toggleListaIcon').className = 'fas fa-chevron-down';
+        document.getElementById('toggleListaTexto').textContent = 'Mostrar placas';
     }
     
     if (searchTerm === '') {
         filteredVehicles = [...vehicles];
+        document.getElementById('filtroInfo').style.display = 'none';
     } else {
         filteredVehicles = vehicles.filter(v => 
             v.placa.toUpperCase().includes(searchTerm)
         );
+        document.getElementById('filtroInfo').style.display = 'inline';
+        document.getElementById('totalFiltrados').textContent = filteredVehicles.length;
     }
     
     renderVehicleList();
@@ -638,7 +1061,37 @@ function filtrarVehiculos() {
 function limpiarBusqueda() {
     document.getElementById('searchInput').value = '';
     document.getElementById('clearBtn').classList.remove('visible');
+    document.getElementById('vehicleListContainer').classList.remove('abierto');
+    listaPlacasAbierta = false;
+    document.getElementById('toggleListaIcon').className = 'fas fa-chevron-down';
+    document.getElementById('toggleListaTexto').textContent = 'Mostrar placas';
     filtrarVehiculos();
+}
+
+// ============================================================
+// 📋 TOGGLE LISTA DE PLACAS
+// ============================================================
+function toggleListaPlacas() {
+    const container = document.getElementById('vehicleListContainer');
+    const icon = document.getElementById('toggleListaIcon');
+    const texto = document.getElementById('toggleListaTexto');
+    const searchTerm = document.getElementById('searchInput').value.trim();
+    
+    if (searchTerm.length > 0) {
+        return;
+    }
+    
+    listaPlacasAbierta = !listaPlacasAbierta;
+    
+    if (listaPlacasAbierta) {
+        container.classList.add('abierto');
+        icon.className = 'fas fa-chevron-up';
+        texto.textContent = 'Ocultar placas';
+    } else {
+        container.classList.remove('abierto');
+        icon.className = 'fas fa-chevron-down';
+        texto.textContent = 'Mostrar placas';
+    }
 }
 
 // ============================================================
@@ -668,18 +1121,34 @@ async function guardarEnFirebase(vehiculo, esNuevo = true) {
 }
 
 // ============================================================
-// 🗑️ ELIMINAR DE REALTIME DATABASE
+// 🗑️ ELIMINAR DE REALTIME DATABASE (CON CLAVE)
 // ============================================================
-async function eliminarDeFirebase(key) {
-    try {
-        actualizarStatus('Eliminando...', '');
-        await vehiclesRef.child(key).remove();
-        actualizarStatus('✅ Eliminado', 'synced');
-        return true;
-    } catch (error) {
-        console.error('Error al eliminar:', error);
-        actualizarStatus('❌ Error al eliminar', 'error');
-        return false;
+async function eliminarVehiculo(index) {
+    const v = vehicles[index];
+    
+    const clave = prompt(`🔒 Para eliminar el vehículo ${v.placa}, escribe la palabra clave: ELIMINAR`);
+    
+    if (clave === null) {
+        mostrarFeedback('❌ Eliminación cancelada.', '#fff3cd', '#ffc107');
+        return;
+    }
+    
+    if (clave.toUpperCase() !== 'ELIMINAR') {
+        mostrarFeedback('❌ Clave incorrecta. La eliminación ha sido cancelada.', '#fff3cd', '#ffc107');
+        return;
+    }
+    
+    if (confirm(`⚠️ ¿Estás seguro de eliminar el vehículo ${v.placa}? Esta acción no se puede deshacer.`)) {
+        try {
+            actualizarStatus('Eliminando...', '');
+            await vehiclesRef.child(v.key).remove();
+            actualizarStatus('✅ Eliminado', 'synced');
+            mostrarFeedback(`✅ Vehículo ${v.placa} eliminado correctamente.`, '#d4edda', '#28a745');
+            limpiarBusqueda();
+        } catch (error) {
+            console.error('Error al eliminar:', error);
+            mostrarFeedback('❌ Error al eliminar el vehículo.', '#fff0f0', '#d32f2f');
+        }
     }
 }
 
@@ -712,9 +1181,10 @@ async function guardarVehiculo() {
         intCombustible: parseInt(document.getElementById('fIntCombustible').value) || 40000,
         soat: document.getElementById('fSoat').value || '',
         itv: document.getElementById('fItv').value || '',
+        extintor: document.getElementById('fExtintor').value || '',
         fechaMant: document.getElementById('fFechaMant').value || '',
         kmMant: parseInt(document.getElementById('fKmMant').value) || 0,
-        averias: document.getElementById('fAverias').value.trim() || '',
+        averias: [],
         servicios: []
     };
 
@@ -722,6 +1192,7 @@ async function guardarVehiculo() {
         const existente = vehicles[editingIndex];
         const actualizado = { ...existente, ...data };
         actualizado.key = existente.key;
+        actualizado.averias = existente.averias || [];
         const exito = await guardarEnFirebase(actualizado, false);
         if (exito) {
             vehicles[editingIndex] = actualizado;
@@ -740,14 +1211,6 @@ async function guardarVehiculo() {
     limpiarBusqueda();
 }
 
-async function eliminarVehiculo(index) {
-    const v = vehicles[index];
-    if (confirm(`¿Eliminar ${v.placa}?`)) {
-        await eliminarDeFirebase(v.key);
-        limpiarBusqueda();
-    }
-}
-
 function editarVehiculo(index) {
     editingIndex = index;
     const v = vehicles[index];
@@ -760,9 +1223,9 @@ function editarVehiculo(index) {
     document.getElementById('fIntCombustible').value = v.intCombustible || 40000;
     document.getElementById('fSoat').value = v.soat || '';
     document.getElementById('fItv').value = v.itv || '';
+    document.getElementById('fExtintor').value = v.extintor || '';
     document.getElementById('fFechaMant').value = v.fechaMant || '';
     document.getElementById('fKmMant').value = v.kmMant || 0;
-    document.getElementById('fAverias').value = v.averias || '';
     document.getElementById('formTitle').textContent = 'Editar Vehículo';
     document.getElementById('formPanel').classList.add('visible');
 }
@@ -787,9 +1250,9 @@ function limpiarFormulario() {
     document.getElementById('fIntCombustible').value = 40000;
     document.getElementById('fSoat').value = '';
     document.getElementById('fItv').value = '';
+    document.getElementById('fExtintor').value = '';
     document.getElementById('fFechaMant').value = '';
     document.getElementById('fKmMant').value = '';
-    document.getElementById('fAverias').value = '';
     document.getElementById('formTitle').textContent = 'Nuevo Vehículo';
     document.getElementById('feedbackMessage').style.display = 'none';
 }
@@ -804,26 +1267,139 @@ function mostrarFeedback(texto, bg, border) {
 }
 
 // ============================================================
-// 🎨 RENDERIZADO
+// 📋 GESTIÓN DE AVERÍAS
+// ============================================================
+async function agregarAveria(index) {
+    const v = vehicles[index];
+    const input = document.getElementById('averiaInput-' + index);
+    const texto = input.value.trim();
+    
+    if (!texto) {
+        mostrarFeedback('⚠️ Escribe una descripción de la avería.', '#fff3cd', '#ffc107');
+        return;
+    }
+    
+    const nuevaAveria = {
+        id: Date.now(),
+        texto: texto,
+        fecha: new Date().toISOString().split('T')[0],
+        estado: 'pendiente'
+    };
+    
+    if (!v.averias) v.averias = [];
+    v.averias.push(nuevaAveria);
+    
+    const exito = await guardarEnFirebase(v, false);
+    if (exito) {
+        input.value = '';
+        mostrarFeedback('✅ Avería reportada correctamente.', '#d4edda', '#28a745');
+        renderVehicleView(index);
+        renderVehicleList();
+    }
+}
+
+async function repararAveria(vehicleIndex, averiaId) {
+    const v = vehicles[vehicleIndex];
+    const averia = v.averias.find(a => a.id === averiaId);
+    if (averia) {
+        averia.estado = 'reparado';
+        const exito = await guardarEnFirebase(v, false);
+        if (exito) {
+            mostrarFeedback('✅ Avería marcada como reparada.', '#d4edda', '#28a745');
+            renderVehicleView(vehicleIndex);
+            renderVehicleList();
+        }
+    }
+}
+
+async function eliminarAveria(vehicleIndex, averiaId) {
+    if (!confirm('¿Eliminar este reporte de avería?')) return;
+    
+    const v = vehicles[vehicleIndex];
+    v.averias = v.averias.filter(a => a.id !== averiaId);
+    const exito = await guardarEnFirebase(v, false);
+    if (exito) {
+        mostrarFeedback('✅ Reporte de avería eliminado.', '#d4edda', '#28a745');
+        renderVehicleView(vehicleIndex);
+        renderVehicleList();
+    }
+}
+
+// ============================================================
+// 🔢 ACTUALIZAR KILOMETRAJE DESDE LA TARJETA
+// ============================================================
+async function actualizarKilometraje(index) {
+    const v = vehicles[index];
+    const input = document.getElementById('kmInput-' + index);
+    const btn = document.getElementById('kmSaveBtn-' + index);
+    const nuevoKm = parseInt(input.value);
+    
+    if (isNaN(nuevoKm) || nuevoKm < 0) {
+        mostrarFeedback('⚠️ Ingresa un kilómetraje válido.', '#fff3cd', '#ffc107');
+        return;
+    }
+    
+    try {
+        actualizarStatus('Actualizando km...', '');
+        await vehiclesRef.child(v.key).update({ kmActual: nuevoKm });
+        v.kmActual = nuevoKm;
+        actualizarStatus('✅ Km actualizado', 'synced');
+        mostrarFeedback(`✅ Kilometraje actualizado a ${nuevoKm.toLocaleString()} km`, '#d4edda', '#28a745');
+        btn.classList.remove('visible');
+        renderVehicleView(index);
+        renderVehicleList();
+    } catch (error) {
+        console.error('Error:', error);
+        mostrarFeedback('❌ Error al actualizar el kilometraje.', '#fff0f0', '#d32f2f');
+    }
+}
+
+function mostrarBotonKm(index) {
+    const btn = document.getElementById('kmSaveBtn-' + index);
+    if (btn) btn.classList.add('visible');
+}
+
+// ============================================================
+// 🎨 RENDERIZADO CON COLORES Y PRIORIDAD
 // ============================================================
 function renderVehicleList() {
     const container = document.getElementById('vehicleList');
+    let html = '';
     
-    let html = `<button class="btn-add-vehicle" onclick="nuevoVehiculo()"><i class="fas fa-plus"></i> Agregar vehículo</button>`;
+    const prioridad = (v) => {
+        const estado = calcularEstadoVehiculo(v);
+        const tieneAveria = tieneAveriasPendientes(v);
+        if (tieneAveria) return 0;
+        if (estado.general === 'estado-rojo') return 1;
+        if (estado.general === 'estado-naranja') return 2;
+        if (estado.general === 'estado-amarillo') return 3;
+        return 4;
+    };
     
-    if (filteredVehicles.length > 0) {
-        filteredVehicles.forEach((v, i) => {
+    const sortedVehicles = [...filteredVehicles].sort((a, b) => {
+        return prioridad(a) - prioridad(b);
+    });
+    
+    if (sortedVehicles.length > 0) {
+        sortedVehicles.forEach((v, i) => {
             const realIndex = vehicles.indexOf(v);
             const active = (realIndex === selectedIndex) ? 'active' : '';
+            const estado = calcularEstadoVehiculo(v);
+            const tieneAveria = tieneAveriasPendientes(v);
+            const prioridadAlta = tieneAveria || estado.general === 'estado-rojo' || estado.general === 'estado-naranja';
+            const averiasCount = v.averias ? v.averias.filter(a => a.estado === 'pendiente').length : 0;
             html += `
-                <div class="vehicle-tab ${active}" onclick="selectVehicle(${realIndex})">
+                <div class="vehicle-tab ${estado.general} ${active} ${prioridadAlta ? 'prioridad-alta' : ''}" onclick="selectVehicle(${realIndex})">
                     <i class="fas fa-car"></i> ${v.placa}
                     <span class="badge-count">${v.kmActual.toLocaleString()} km</span>
+                    ${tieneAveria ? `<span class="alerta-averia"><i class="fas fa-exclamation-triangle"></i> ${averiasCount}</span>` : ''}
                 </div>
             `;
         });
     } else if (vehicles.length > 0 && document.getElementById('searchInput').value.trim() !== '') {
         html += `<span class="no-results"><i class="fas fa-search"></i> No se encontraron vehículos</span>`;
+    } else {
+        html = `<span class="no-results"><i class="fas fa-info-circle"></i> No hay vehículos registrados</span>`;
     }
     
     container.innerHTML = html;
@@ -833,6 +1409,9 @@ function selectVehicle(index) {
     selectedIndex = index;
     renderVehicleList();
     renderVehicleView(index);
+    if (!listaPlacasAbierta) {
+        toggleListaPlacas();
+    }
 }
 
 function nuevoVehiculo() {
@@ -893,15 +1472,25 @@ function renderVehicleView(index) {
     const es = estadoDias(ds);
     const di = diasHasta(v.itv);
     const ei = estadoDias(di);
+    const de = diasHasta(v.extintor);
+    const ee = estadoDias(de);
 
-    let em = { clase: 'alert-green', etiqueta: 'OK' };
-    let tm = 'Reciente';
-    if (v.fechaMant) {
+    const tieneAveria = tieneAveriasPendientes(v);
+    let em, tm;
+    
+    if (tieneAveria) {
+        em = { clase: 'alert-red', etiqueta: 'AVERÍA' };
+        tm = '⚠️ Avería pendiente';
+    } else if (v.fechaMant) {
         const fm = new Date(v.fechaMant + 'T00:00:00');
         const dm = Math.round((hoy - fm) / (1000*60*60*24));
         if (dm > 365) { em = { clase: 'alert-red', etiqueta: 'Vencido' }; tm = 'Muy antiguo'; }
         else if (dm > 180) { em = { clase: 'alert-orange', etiqueta: 'Atención' }; tm = 'Antiguo'; }
         else if (dm > 90) { em = { clase: 'alert-yellow', etiqueta: 'OK' }; tm = 'Reciente'; }
+        else { em = { clase: 'alert-green', etiqueta: 'OK' }; tm = 'Reciente'; }
+    } else {
+        em = { clase: 'alert-yellow', etiqueta: 'No registrado' };
+        tm = 'No registrado';
     }
 
     const proxAceite = v.intAceite || 10000;
@@ -910,6 +1499,8 @@ function renderVehicleView(index) {
     if (proxKm <= v.kmActual) proxKm = v.kmActual + proxAceite;
     const diffKm = proxKm - v.kmActual;
     const ek = estadoKm(diffKm);
+    
+    const estadoGeneral = calcularEstadoVehiculo(v);
 
     const alertas = [
         { titulo: 'SOAT', icono: 'fas fa-file-contract', clase: es.clase, etiqueta: es.etiqueta,
@@ -918,44 +1509,115 @@ function renderVehicleView(index) {
         { titulo: 'ITV', icono: 'fas fa-clipboard-check', clase: ei.clase, etiqueta: ei.etiqueta,
           texto: di < 0 ? 'VENCIDA' : (di <= 30 ? `Vence en ${di} días` : 'Vigente'),
           detalle: v.itv ? formatearFecha(v.itv) : 'No registrado' },
+        { titulo: 'Extintor', icono: 'fas fa-fire-extinguisher', clase: ee.clase, etiqueta: ee.etiqueta,
+          texto: de < 0 ? 'VENCIDO' : (de <= 30 ? `Vence en ${de} días` : 'Vigente'),
+          detalle: v.extintor ? formatearFecha(v.extintor) : 'No registrado' },
         { titulo: 'Último mantenimiento', icono: 'fas fa-oil-can', clase: em.clase, etiqueta: em.etiqueta,
           texto: tm, detalle: v.fechaMant ? `${formatearFecha(v.fechaMant)} (${v.kmMant.toLocaleString()} km)` : 'No registrado' },
         { titulo: 'Próximo servicio', icono: 'fas fa-tachometer-alt', clase: ek.clase, etiqueta: ek.etiqueta,
           texto: `${proxKm.toLocaleString()} km`, detalle: `faltan ${diffKm.toLocaleString()} km · intervalo ${proxAceite.toLocaleString()} km` }
     ];
 
-    let html = `
-        <div class="vehicle-detail">
-            <div class="info">
-                <span><i class="fas fa-id-card"></i> <strong>${v.placa}</strong></span>
-                <span><i class="fas fa-car"></i> ${v.marca} ${v.modelo} (${v.anio})</span>
-                <span><i class="fas fa-road"></i> <strong>${v.kmActual.toLocaleString()}</strong> km</span>
-                <span><i class="fas fa-calendar-alt"></i> ${v.fechaMant ? formatearFecha(v.fechaMant) : '—'}</span>
-                <span><i class="fas fa-oil-can"></i> c/${v.intAceite.toLocaleString()} km</span>
-            </div>
-            <div>
-                <button class="btn btn-outline" onclick="editarVehiculo(${index})"><i class="fas fa-edit"></i> Editar</button>
-                <button class="btn btn-danger" onclick="eliminarVehiculo(${index})"><i class="fas fa-trash"></i></button>
-            </div>
-        </div>
-        <div class="alert-grid">
-            ${alertas.map(a => `
-                <div class="alert-card ${a.clase}">
-                    <i class="${a.icono}"></i>
-                    <div class="info">
-                        <div class="label">${a.titulo}</div>
-                        <div class="value">${a.texto} <small>${a.detalle}</small></div>
-                    </div>
-                    <span class="badge-status">${a.etiqueta}</span>
+    let averiasHtml = '';
+    const averiasPendientes = v.averias ? v.averias.filter(a => a.estado === 'pendiente') : [];
+    const averiasReparadas = v.averias ? v.averias.filter(a => a.estado === 'reparado') : [];
+    
+    if (v.averias && v.averias.length > 0) {
+        averiasHtml = `
+            <div class="averias-section">
+                <div class="header">
+                    <h4><i class="fas fa-exclamation-triangle" style="color:#e66a00;"></i> Reporte de averías</h4>
+                    <span style="font-size:12px;color:#657e9e;">
+                        ${averiasPendientes.length} pendientes · ${averiasReparadas.length} reparadas
+                    </span>
                 </div>
-            `).join('')}
-        </div>
-        ${v.averias ? `
-            <div class="averias-box">
-                <div class="label"><i class="fas fa-exclamation-triangle"></i> Reporte de averías</div>
-                <p>${v.averias}</p>
+                ${averiasPendientes.map(a => `
+                    <div class="averia-item">
+                        <div class="texto">
+                            <i class="fas fa-circle" style="color:#e66a00;font-size:8px;"></i>
+                            ${a.texto}
+                            <span class="fecha">${a.fecha}</span>
+                            <span class="estado pendiente">● Pendiente</span>
+                        </div>
+                        <div class="acciones-averia">
+                            <button class="btn-sm btn-sm-success" onclick="repararAveria(${index}, ${a.id})"><i class="fas fa-check"></i> Reparado</button>
+                            <button class="btn-sm btn-sm-outline" onclick="eliminarAveria(${index}, ${a.id})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `).join('')}
+                ${averiasReparadas.map(a => `
+                    <div class="averia-item reparado">
+                        <div class="texto">
+                            <i class="fas fa-circle" style="color:#0f7b3a;font-size:8px;"></i>
+                            ${a.texto}
+                            <span class="fecha">${a.fecha}</span>
+                            <span class="estado reparado">✓ Reparado</span>
+                        </div>
+                        <div class="acciones-averia">
+                            <button class="btn-sm btn-sm-outline" onclick="eliminarAveria(${index}, ${a.id})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `).join('')}
+                <div class="averia-input-group">
+                    <input type="text" id="averiaInput-${index}" placeholder="Nueva avería..." onkeypress="if(event.key==='Enter') agregarAveria(${index})">
+                    <button class="btn-sm btn-sm-warning" onclick="agregarAveria(${index})"><i class="fas fa-plus"></i> Reportar</button>
+                </div>
             </div>
-        ` : ''}
+        `;
+    } else {
+        averiasHtml = `
+            <div class="averias-section">
+                <div class="header">
+                    <h4><i class="fas fa-exclamation-triangle" style="color:#e66a00;"></i> Reporte de averías</h4>
+                </div>
+                <div class="no-averias">No hay averías reportadas.</div>
+                <div class="averia-input-group">
+                    <input type="text" id="averiaInput-${index}" placeholder="Nueva avería..." onkeypress="if(event.key==='Enter') agregarAveria(${index})">
+                    <button class="btn-sm btn-sm-warning" onclick="agregarAveria(${index})"><i class="fas fa-plus"></i> Reportar</button>
+                </div>
+            </div>
+        `;
+    }
+
+    let html = `
+        <div class="vehicle-detail ${estadoGeneral.general}">
+            <div class="info-row">
+                <div class="vehiculo-nombre">
+                    <strong><i class="fas fa-id-card"></i> ${v.placa}</strong>
+                    <span>${v.marca} ${v.modelo} (${v.anio})</span>
+                    <div class="km-editable">
+                        <i class="fas fa-road icono-km"></i>
+                        <input type="number" id="kmInput-${index}" value="${v.kmActual}" min="0" oninput="mostrarBotonKm(${index})">
+                        <span class="km-label">km</span>
+                        <button class="guardar-km" id="kmSaveBtn-${index}" onclick="actualizarKilometraje(${index})">
+                            <i class="fas fa-save"></i>
+                        </button>
+                    </div>
+                    <span class="badge-km" style="background:#d4edda;"><i class="fas fa-oil-can"></i> c/${v.intAceite.toLocaleString()} km</span>
+                    ${tieneAveria ? '<span class="alerta-averia-tarjeta"><i class="fas fa-exclamation-triangle"></i> Avería pendiente</span>' : ''}
+                </div>
+                <div class="acciones">
+                    <button class="btn-edit-azul" onclick="editarVehiculo(${index})"><i class="fas fa-edit"></i> Editar</button>
+                    <button class="btn-small btn-delete" onclick="eliminarVehiculo(${index})"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            
+            <div class="detalles-container">
+                <div class="alert-grid">
+                    ${alertas.map(a => `
+                        <div class="alert-card ${a.clase}">
+                            <i class="${a.icono}"></i>
+                            <div class="info">
+                                <div class="label">${a.titulo}</div>
+                                <div class="value"><strong>${a.texto}</strong> <small>${a.detalle}</small></div>
+                            </div>
+                            <span class="badge-status">${a.etiqueta}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                ${averiasHtml}
+            </div>
+        </div>
     `;
     container.innerHTML = html;
 }
@@ -1003,6 +1665,8 @@ function importarDatos() {
                 if (confirm(`Importar ${datos.length} vehículos?`)) {
                     for (const v of datos) {
                         const data = { ...v };
+                        if (!data.averias) data.averias = [];
+                        if (!data.extintor) data.extintor = '';
                         await vehiclesRef.push().set(data);
                     }
                     mostrarFeedback(`✅ ${datos.length} importados`, '#d4edda', '#28a745');
