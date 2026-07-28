@@ -15,7 +15,6 @@
         .app-header h1 { font-weight: 700; font-size: 26px; color: #0b1e33; display: flex; align-items: center; gap: 12px; }
         .app-header h1 i { color: #0066cc; background: #e5f0ff; padding: 10px; border-radius: 16px; font-size: 22px; }
 
-        /* BARRA DE BÚSQUEDA */
         .search-bar {
             display: flex;
             gap: 12px;
@@ -29,40 +28,15 @@
             max-width: 400px;
             min-width: 200px;
         }
-        .search-bar:focus-within {
-            border-color: #0066cc;
-            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
-            background: white;
-        }
+        .search-bar:focus-within { border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); background: white; }
         .search-bar i { color: #657e9e; font-size: 16px; }
-        .search-bar input {
-            border: none;
-            background: transparent;
-            padding: 10px 0;
-            font-size: 14px;
-            width: 100%;
-            outline: none;
-            color: #0b1e33;
-        }
+        .search-bar input { border: none; background: transparent; padding: 10px 0; font-size: 14px; width: 100%; outline: none; color: #0b1e33; }
         .search-bar input::placeholder { color: #a0b4cc; }
-        .search-bar .clear-btn {
-            background: none;
-            border: none;
-            color: #a0b4cc;
-            cursor: pointer;
-            padding: 4px 8px;
-            font-size: 14px;
-            display: none;
-        }
+        .search-bar .clear-btn { background: none; border: none; color: #a0b4cc; cursor: pointer; padding: 4px 8px; font-size: 14px; display: none; }
         .search-bar .clear-btn.visible { display: block; }
         .search-bar .clear-btn:hover { color: #d32f2f; }
 
-        .header-right {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+        .header-right { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
         .sync-status { font-size: 13px; color: #546e88; background: #f0f5ff; padding: 6px 14px; border-radius: 40px; display: inline-flex; align-items: center; gap: 8px; }
         .sync-status.synced { color: #0f7b3a; background: #e1f5e8; }
@@ -75,15 +49,12 @@
         .btn-success:hover { background: #0b662f; }
         .btn-danger { background: #d32f2f; border: 1px solid #d32f2f; color: white; }
         .btn-danger:hover { background: #b71c1c; }
-        .btn-primary { background: #0066cc; border: 1px solid #0066cc; color: white; }
-        .btn-primary:hover { background: #004f99; }
 
         .vehicle-list { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 24px 0; padding-bottom: 20px; border-bottom: 2px solid #eaf0f8; min-height: 60px; align-items: center; }
         .vehicle-tab { padding: 10px 20px; border-radius: 40px; background: #f4f7fc; border: 2px solid transparent; cursor: pointer; font-weight: 600; font-size: 14px; color: #3d5777; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
         .vehicle-tab:hover { background: #e5edf8; }
         .vehicle-tab.active { background: #0066cc; color: white; border-color: #0066cc; }
         .vehicle-tab .badge-count { background: rgba(255,255,255,0.3); padding: 0 10px; border-radius: 40px; font-size: 12px; }
-        .vehicle-tab.hidden { display: none; }
         .btn-add-vehicle { background: transparent; border: 2px dashed #b8cbe0; padding: 10px 20px; border-radius: 40px; font-weight: 600; color: #3d5777; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
         .btn-add-vehicle:hover { background: #f0f5ff; border-color: #0066cc; }
         .no-results { color: #657e9e; font-size: 14px; padding: 8px 16px; background: #f8faff; border-radius: 40px; }
@@ -97,7 +68,16 @@
         .form-group label i { color: #0066cc; width: 16px; }
         .form-control { padding: 10px 14px; border-radius: 14px; border: 1px solid #d3dfee; background: white; font-size: 14px; transition: 0.15s; }
         .form-control:focus { outline: none; border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); }
+        .form-control select { appearance: auto; cursor: pointer; }
+        .form-control.textarea { resize: vertical; min-height: 60px; font-family: inherit; }
         .form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px solid #eaf0f8; }
+
+        .modelo-input-wrapper { display: flex; gap: 8px; align-items: center; width: 100%; }
+        .modelo-input-wrapper select { flex: 1; }
+        .modelo-input-wrapper input { flex: 1; display: none; }
+        .modelo-input-wrapper input.visible { display: block; }
+        .modelo-input-wrapper .btn-small { padding: 6px 12px; font-size: 12px; border-radius: 12px; border: 1px solid #d3dfee; background: white; cursor: pointer; white-space: nowrap; }
+        .modelo-input-wrapper .btn-small:hover { background: #f0f5ff; border-color: #0066cc; }
 
         .alert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
         .alert-card { background: #f8fbff; border-radius: 18px; padding: 16px 20px; border: 1px solid #e2ebf6; display: flex; align-items: center; gap: 14px; border-left: 6px solid #0f7b3a; }
@@ -124,17 +104,13 @@
         .vehicle-detail .info { display: flex; flex-wrap: wrap; gap: 12px 28px; }
         .vehicle-detail .info span { font-size: 14px; color: #2b405a; }
         .vehicle-detail .info strong { color: #0b1e33; }
+        .vehicle-detail .averias-box { margin-top: 12px; padding: 12px 16px; background: #fff8e1; border-left: 4px solid #f1b24a; border-radius: 8px; width: 100%; }
+        .vehicle-detail .averias-box .label { font-weight: 600; font-size: 13px; color: #8e6b00; }
+        .vehicle-detail .averias-box p { font-size: 14px; color: #4a3a00; margin-top: 4px; white-space: pre-wrap; }
 
         #feedbackMessage { margin-top: 16px; padding: 12px 18px; border-radius: 18px; display: none; align-items: center; gap: 14px; font-size: 14px; }
         .empty-state { text-align: center; padding: 40px 20px; color: #657e9e; }
         .empty-state i { font-size: 48px; color: #b8cbe0; margin-bottom: 12px; }
-
-        .result-count {
-            font-size: 13px;
-            color: #657e9e;
-            margin-left: 8px;
-            font-weight: 400;
-        }
 
         @media (max-width: 600px) {
             .app-container { padding: 16px; }
@@ -142,17 +118,16 @@
             .search-bar { max-width: 100%; }
             .app-header { flex-direction: column; align-items: stretch; gap: 12px; }
             .header-right { flex-wrap: wrap; }
+            .modelo-input-wrapper { flex-wrap: wrap; }
         }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <!-- HEADER CON BUSCADOR -->
     <div class="app-header">
         <h1><i class="fas fa-truck"></i> Control de Flota</h1>
         <div class="header-right">
-            <!-- BUSCADOR -->
             <div class="search-bar">
                 <i class="fas fa-search"></i>
                 <input type="text" id="searchInput" placeholder="Buscar por placa..." oninput="filtrarVehiculos()">
@@ -164,12 +139,10 @@
         </div>
     </div>
 
-    <!-- LISTA DE VEHÍCULOS FILTRADA -->
     <div class="vehicle-list" id="vehicleList">
         <button class="btn-add-vehicle" onclick="nuevoVehiculo()"><i class="fas fa-plus"></i> Agregar vehículo</button>
     </div>
 
-    <!-- FORMULARIO -->
     <div class="form-panel" id="formPanel">
         <h3><i class="fas fa-plus-circle"></i> <span id="formTitle">Nuevo Vehículo</span></h3>
         <div class="form-grid">
@@ -178,15 +151,183 @@
                 <input type="text" class="form-control" id="fPlaca" placeholder="ABC-123" oninput="this.value=this.value.toUpperCase()">
             </div>
             <div class="form-group">
-                <label><i class="fas fa-car"></i> Marca *</label>
-                <input type="text" class="form-control" id="fMarca" placeholder="Toyota">
+                <label><i class="fas fa-car"></i> Marca</label>
+                <select class="form-control" id="fMarca">
+                    <option value="">Seleccionar marca...</option>
+                    <option value="Changan">Changan</option>
+                    <option value="Chery">Chery</option>
+                    <option value="Chevrolet">Chevrolet</option>
+                    <option value="DAF">DAF</option>
+                    <option value="Dongfeng">Dongfeng</option>
+                    <option value="Ford">Ford</option>
+                    <option value="Foton">Foton</option>
+                    <option value="Freightliner">Freightliner</option>
+                    <option value="Fuso">Fuso</option>
+                    <option value="GMC">GMC</option>
+                    <option value="Great Wall Motor (GWM)">Great Wall Motor (GWM)</option>
+                    <option value="Hino">Hino</option>
+                    <option value="Honda">Honda</option>
+                    <option value="Hyundai">Hyundai</option>
+                    <option value="International">International</option>
+                    <option value="Isuzu">Isuzu</option>
+                    <option value="IVECO">IVECO</option>
+                    <option value="JAC Motors">JAC Motors</option>
+                    <option value="Jeep">Jeep</option>
+                    <option value="Kenworth">Kenworth</option>
+                    <option value="Kia">Kia</option>
+                    <option value="Mack">Mack</option>
+                    <option value="MAN">MAN</option>
+                    <option value="Mazda">Mazda</option>
+                    <option value="Mercedes-Benz">Mercedes-Benz</option>
+                    <option value="Mitsubishi">Mitsubishi</option>
+                    <option value="Nissan">Nissan</option>
+                    <option value="Peterbilt">Peterbilt</option>
+                    <option value="RAM">RAM</option>
+                    <option value="Scania">Scania</option>
+                    <option value="Shacman">Shacman</option>
+                    <option value="Sinotruk (Howo)">Sinotruk (Howo)</option>
+                    <option value="Subaru">Subaru</option>
+                    <option value="Toyota">Toyota</option>
+                    <option value="UD Trucks">UD Trucks</option>
+                    <option value="Volkswagen">Volkswagen</option>
+                    <option value="Volvo">Volvo</option>
+                    <option value="Otro">Otro</option>
+                </select>
             </div>
             <div class="form-group">
-                <label><i class="fas fa-car-side"></i> Modelo *</label>
-                <input type="text" class="form-control" id="fModelo" placeholder="Hilux">
+                <label><i class="fas fa-car-side"></i> Modelo</label>
+                <div class="modelo-input-wrapper">
+                    <select class="form-control" id="fModeloSelect" onchange="cambiarModelo()">
+                        <option value="">Seleccionar modelo...</option>
+                        <optgroup label="Ford">
+                            <option value="Ranger">Ranger</option>
+                            <option value="F-150">F-150</option>
+                            <option value="Maverick">Maverick</option>
+                            <option value="Explorer">Explorer</option>
+                            <option value="Bronco">Bronco</option>
+                        </optgroup>
+                        <optgroup label="Chevrolet">
+                            <option value="Silverado">Silverado</option>
+                            <option value="Colorado">Colorado</option>
+                            <option value="Tracker">Tracker</option>
+                            <option value="Equinox">Equinox</option>
+                            <option value="Tahoe">Tahoe</option>
+                        </optgroup>
+                        <optgroup label="RAM">
+                            <option value="RAM 1500">RAM 1500</option>
+                            <option value="RAM 2500">RAM 2500</option>
+                            <option value="Rampage">Rampage</option>
+                        </optgroup>
+                        <optgroup label="GMC">
+                            <option value="Sierra">Sierra</option>
+                            <option value="Canyon">Canyon</option>
+                            <option value="Yukon">Yukon</option>
+                        </optgroup>
+                        <optgroup label="Jeep">
+                            <option value="Wrangler">Wrangler</option>
+                            <option value="Grand Cherokee">Grand Cherokee</option>
+                            <option value="Compass">Compass</option>
+                            <option value="Gladiator">Gladiator</option>
+                        </optgroup>
+                        <optgroup label="Toyota">
+                            <option value="Hilux">Hilux</option>
+                            <option value="Tacoma">Tacoma</option>
+                            <option value="RAV4">RAV4</option>
+                            <option value="Land Cruiser Prado">Land Cruiser Prado</option>
+                            <option value="Fortuner">Fortuner</option>
+                        </optgroup>
+                        <optgroup label="Nissan">
+                            <option value="Frontier (Navara)">Frontier (Navara)</option>
+                            <option value="Kicks">Kicks</option>
+                            <option value="Qashqai">Qashqai</option>
+                            <option value="Patrol">Patrol</option>
+                        </optgroup>
+                        <optgroup label="Mitsubishi">
+                            <option value="L200 (Triton)">L200 (Triton)</option>
+                            <option value="Montero Sport">Montero Sport</option>
+                            <option value="Outlander">Outlander</option>
+                            <option value="ASX">ASX</option>
+                        </optgroup>
+                        <optgroup label="Isuzu">
+                            <option value="D-Max">D-Max</option>
+                        </optgroup>
+                        <optgroup label="Mazda">
+                            <option value="BT-50">BT-50</option>
+                            <option value="CX-5">CX-5</option>
+                            <option value="CX-30">CX-30</option>
+                            <option value="CX-90">CX-90</option>
+                        </optgroup>
+                        <optgroup label="Honda">
+                            <option value="CR-V">CR-V</option>
+                            <option value="HR-V">HR-V</option>
+                            <option value="Pilot">Pilot</option>
+                            <option value="Ridgeline">Ridgeline</option>
+                        </optgroup>
+                        <optgroup label="Subaru">
+                            <option value="Forester">Forester</option>
+                            <option value="Crosstrek">Crosstrek</option>
+                            <option value="Outback">Outback</option>
+                        </optgroup>
+                        <optgroup label="Great Wall (GWM)">
+                            <option value="Evoltis">Evoltis</option>
+                            <option value="Poer">Poer</option>
+                            <option value="Wingle 7">Wingle 7</option>
+                            <option value="Haval H6">Haval H6</option>
+                            <option value="Haval Jolion">Haval Jolion</option>
+                            <option value="Tank 300">Tank 300</option>
+                        </optgroup>
+                        <optgroup label="Changan">
+                            <option value="Hunter">Hunter</option>
+                            <option value="CS35 Plus">CS35 Plus</option>
+                            <option value="CS55 Plus">CS55 Plus</option>
+                            <option value="X7 Plus">X7 Plus</option>
+                        </optgroup>
+                        <optgroup label="JAC Motors">
+                            <option value="JAC T6">JAC T6</option>
+                            <option value="JAC T8">JAC T8</option>
+                            <option value="JAC T9">JAC T9</option>
+                            <option value="JS4">JS4</option>
+                            <option value="JS6">JS6</option>
+                        </optgroup>
+                        <optgroup label="Chery">
+                            <option value="Tiggo 2 Pro">Tiggo 2 Pro</option>
+                            <option value="Tiggo 4 Pro">Tiggo 4 Pro</option>
+                            <option value="Tiggo 7 Pro">Tiggo 7 Pro</option>
+                            <option value="Tiggo 8 Pro">Tiggo 8 Pro</option>
+                        </optgroup>
+                        <optgroup label="Foton">
+                            <option value="Tunland G7">Tunland G7</option>
+                            <option value="Tunland V9">Tunland V9</option>
+                        </optgroup>
+                        <optgroup label="Volkswagen">
+                            <option value="Amarok">Amarok</option>
+                            <option value="Saveiro">Saveiro</option>
+                            <option value="T-Cross">T-Cross</option>
+                            <option value="Nivus">Nivus</option>
+                            <option value="Tiguan">Tiguan</option>
+                        </optgroup>
+                        <optgroup label="Hyundai">
+                            <option value="Santa Cruz">Santa Cruz</option>
+                            <option value="Creta">Creta</option>
+                            <option value="Tucson">Tucson</option>
+                            <option value="Santa Fe">Santa Fe</option>
+                            <option value="Palisade">Palisade</option>
+                        </optgroup>
+                        <optgroup label="Kia">
+                            <option value="Sonet">Sonet</option>
+                            <option value="Seltos">Seltos</option>
+                            <option value="Sportage">Sportage</option>
+                            <option value="Sorento">Sorento</option>
+                            <option value="Telluride">Telluride</option>
+                        </optgroup>
+                        <option value="__OTRO__">✏️ Otro (escribir manualmente)</option>
+                    </select>
+                    <input type="text" class="form-control" id="fModeloManual" placeholder="Escribir modelo..." style="display:none;">
+                    <button type="button" class="btn-small" id="toggleModeloBtn" onclick="toggleModeloManual()"><i class="fas fa-pen"></i></button>
+                </div>
             </div>
             <div class="form-group">
-                <label><i class="fas fa-calendar-alt"></i> Año *</label>
+                <label><i class="fas fa-calendar-alt"></i> Año</label>
                 <input type="number" class="form-control" id="fAnio" placeholder="2022">
             </div>
             <div class="form-group">
@@ -196,10 +337,6 @@
             <div class="form-group">
                 <label><i class="fas fa-oil-can"></i> Intervalo aceite (km)</label>
                 <input type="number" class="form-control" id="fIntAceite" placeholder="10000" value="10000">
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-wind"></i> Intervalo filtro aire (km)</label>
-                <input type="number" class="form-control" id="fIntAire" placeholder="25000" value="25000">
             </div>
             <div class="form-group">
                 <label><i class="fas fa-tint"></i> Intervalo filtro comb. (km)</label>
@@ -221,6 +358,10 @@
                 <label><i class="fas fa-road"></i> Km en último mantenimiento</label>
                 <input type="number" class="form-control" id="fKmMant" placeholder="0">
             </div>
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <label><i class="fas fa-exclamation-triangle" style="color: #e66a00;"></i> Reporte de averías</label>
+                <textarea class="form-control textarea" id="fAverias" placeholder="Describe las averías o fallas del vehículo (ej: ruido en el motor, problemas de frenos, fugas, etc.)"></textarea>
+            </div>
         </div>
         <div class="form-actions">
             <button class="btn btn-outline" onclick="cancelarFormulario()"><i class="fas fa-times"></i> Cancelar</button>
@@ -229,7 +370,6 @@
         <div id="feedbackMessage"></div>
     </div>
 
-    <!-- VISTA DEL VEHÍCULO -->
     <div id="vehicleView">
         <div class="empty-state">
             <i class="fas fa-sync-alt fa-spin" style="font-size:36px;color:#0066cc;"></i>
@@ -265,7 +405,85 @@ let selectedIndex = 0;
 let editingIndex = -1;
 
 // ============================================================
-// 📥 CARGAR DATOS DESDE REALTIME DATABASE
+// 🔧 FUNCIONES PARA MODELO MANUAL
+// ============================================================
+function cambiarModelo() {
+    const select = document.getElementById('fModeloSelect');
+    const manual = document.getElementById('fModeloManual');
+    const btn = document.getElementById('toggleModeloBtn');
+    
+    if (select.value === '__OTRO__') {
+        manual.style.display = 'block';
+        manual.focus();
+        btn.innerHTML = '<i class="fas fa-list"></i>';
+        select.style.display = 'none';
+    } else {
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+    }
+}
+
+function toggleModeloManual() {
+    const select = document.getElementById('fModeloSelect');
+    const manual = document.getElementById('fModeloManual');
+    const btn = document.getElementById('toggleModeloBtn');
+    
+    if (manual.style.display === 'block') {
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+        select.value = '';
+    } else {
+        select.style.display = 'none';
+        manual.style.display = 'block';
+        manual.focus();
+        btn.innerHTML = '<i class="fas fa-list"></i>';
+        if (select.value && select.value !== '__OTRO__') {
+            manual.value = select.value;
+        }
+    }
+}
+
+function obtenerModelo() {
+    const select = document.getElementById('fModeloSelect');
+    const manual = document.getElementById('fModeloManual');
+    
+    if (manual.style.display === 'block' && manual.value.trim() !== '') {
+        return manual.value.trim();
+    } else if (select.value && select.value !== '__OTRO__') {
+        return select.value;
+    }
+    return '';
+}
+
+function setModelo(valor) {
+    const select = document.getElementById('fModeloSelect');
+    const manual = document.getElementById('fModeloManual');
+    
+    let found = false;
+    for (let option of select.options) {
+        if (option.value === valor) {
+            select.value = valor;
+            found = true;
+            break;
+        }
+    }
+    
+    if (found) {
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
+    } else if (valor) {
+        select.style.display = 'none';
+        manual.style.display = 'block';
+        manual.value = valor;
+        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-list"></i>';
+    }
+}
+
+// ============================================================
+// 📥 CARGAR DATOS DESDE REALTIME DATABASE (CON CORRECCIÓN)
 // ============================================================
 function cargarDesdeFirebase() {
     actualizarStatus('Cargando datos...', '');
@@ -278,13 +496,27 @@ function cargarDesdeFirebase() {
             Object.keys(data).forEach(key => {
                 const vehiculo = data[key];
                 vehiculo.key = key;
+                
+                // 🔥 AGREGAR CAMPO AVERIAS SI NO EXISTE
+                if (!vehiculo.hasOwnProperty('averias')) {
+                    vehiculo.averias = '';
+                    // Actualizar en Firebase (solo si no existe)
+                    vehiclesRef.child(key).update({ averias: '' });
+                }
+                
+                // 🔥 AGREGAR CAMPO intCombustible SI NO EXISTE
+                if (!vehiculo.hasOwnProperty('intCombustible')) {
+                    vehiculo.intCombustible = 40000;
+                    vehiclesRef.child(key).update({ intCombustible: 40000 });
+                }
+                
                 vehicles.push(vehiculo);
             });
             vehicles.sort((a, b) => a.placa.localeCompare(b.placa));
         }
         
         actualizarStatus(`✅ ${vehicles.length} vehículos`, 'synced');
-        filtrarVehiculos(); // Aplica el filtro actual
+        filtrarVehiculos();
         renderVehicleView(selectedIndex);
     }, (error) => {
         console.error('Error:', error);
@@ -299,14 +531,12 @@ function filtrarVehiculos() {
     const searchTerm = document.getElementById('searchInput').value.trim().toUpperCase();
     const clearBtn = document.getElementById('clearBtn');
     
-    // Mostrar/ocultar botón de limpiar
     if (searchTerm.length > 0) {
         clearBtn.classList.add('visible');
     } else {
         clearBtn.classList.remove('visible');
     }
     
-    // Filtrar vehículos
     if (searchTerm === '') {
         filteredVehicles = [...vehicles];
     } else {
@@ -317,16 +547,13 @@ function filtrarVehiculos() {
     
     renderVehicleList();
     
-    // Si hay resultados, seleccionar el primero
     if (filteredVehicles.length > 0) {
-        // Buscar el índice real del primer vehículo filtrado
         const firstRealIndex = vehicles.indexOf(filteredVehicles[0]);
         if (firstRealIndex >= 0) {
             selectedIndex = firstRealIndex;
             renderVehicleView(selectedIndex);
         }
     } else {
-        // No hay resultados
         document.getElementById('vehicleView').innerHTML = `
             <div class="empty-state">
                 <i class="fas fa-search" style="font-size:48px;color:#b8cbe0;"></i>
@@ -402,19 +629,21 @@ async function guardarVehiculo() {
         return;
     }
 
+    const modelo = obtenerModelo();
+
     const data = {
         placa: placa,
-        marca: document.getElementById('fMarca').value.trim() || 'Desconocida',
-        modelo: document.getElementById('fModelo').value.trim() || 'Desconocido',
+        marca: document.getElementById('fMarca').value || 'Desconocida',
+        modelo: modelo || 'Desconocido',
         anio: document.getElementById('fAnio').value || '----',
         kmActual: parseInt(document.getElementById('fKmActual').value) || 0,
         intAceite: parseInt(document.getElementById('fIntAceite').value) || 10000,
-        intAire: parseInt(document.getElementById('fIntAire').value) || 25000,
         intCombustible: parseInt(document.getElementById('fIntCombustible').value) || 40000,
         soat: document.getElementById('fSoat').value || '',
         itv: document.getElementById('fItv').value || '',
         fechaMant: document.getElementById('fFechaMant').value || '',
         kmMant: parseInt(document.getElementById('fKmMant').value) || 0,
+        averias: document.getElementById('fAverias').value.trim() || '',
         servicios: []
     };
 
@@ -437,7 +666,6 @@ async function guardarVehiculo() {
 
     document.getElementById('formPanel').classList.remove('visible');
     limpiarFormulario();
-    // Limpiar búsqueda para mostrar todos
     limpiarBusqueda();
 }
 
@@ -445,7 +673,6 @@ async function eliminarVehiculo(index) {
     const v = vehicles[index];
     if (confirm(`¿Eliminar ${v.placa}?`)) {
         await eliminarDeFirebase(v.key);
-        // Limpiar búsqueda para actualizar
         limpiarBusqueda();
     }
 }
@@ -455,16 +682,16 @@ function editarVehiculo(index) {
     const v = vehicles[index];
     document.getElementById('fPlaca').value = v.placa;
     document.getElementById('fMarca').value = v.marca;
-    document.getElementById('fModelo').value = v.modelo;
+    setModelo(v.modelo);
     document.getElementById('fAnio').value = v.anio;
     document.getElementById('fKmActual').value = v.kmActual;
     document.getElementById('fIntAceite').value = v.intAceite || 10000;
-    document.getElementById('fIntAire').value = v.intAire || 25000;
     document.getElementById('fIntCombustible').value = v.intCombustible || 40000;
     document.getElementById('fSoat').value = v.soat || '';
     document.getElementById('fItv').value = v.itv || '';
     document.getElementById('fFechaMant').value = v.fechaMant || '';
     document.getElementById('fKmMant').value = v.kmMant || 0;
+    document.getElementById('fAverias').value = v.averias || '';
     document.getElementById('formTitle').textContent = 'Editar Vehículo';
     document.getElementById('formPanel').classList.add('visible');
 }
@@ -478,16 +705,20 @@ function cancelarFormulario() {
 function limpiarFormulario() {
     document.getElementById('fPlaca').value = '';
     document.getElementById('fMarca').value = '';
-    document.getElementById('fModelo').value = '';
+    document.getElementById('fModeloSelect').value = '';
+    document.getElementById('fModeloManual').value = '';
+    document.getElementById('fModeloManual').style.display = 'none';
+    document.getElementById('fModeloSelect').style.display = 'block';
+    document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
     document.getElementById('fAnio').value = '';
     document.getElementById('fKmActual').value = '';
     document.getElementById('fIntAceite').value = 10000;
-    document.getElementById('fIntAire').value = 25000;
     document.getElementById('fIntCombustible').value = 40000;
     document.getElementById('fSoat').value = '';
     document.getElementById('fItv').value = '';
     document.getElementById('fFechaMant').value = '';
     document.getElementById('fKmMant').value = '';
+    document.getElementById('fAverias').value = '';
     document.getElementById('formTitle').textContent = 'Nuevo Vehículo';
     document.getElementById('feedbackMessage').style.display = 'none';
 }
@@ -507,13 +738,10 @@ function mostrarFeedback(texto, bg, border) {
 function renderVehicleList() {
     const container = document.getElementById('vehicleList');
     
-    // Siempre mostrar el botón "Agregar"
     let html = `<button class="btn-add-vehicle" onclick="nuevoVehiculo()"><i class="fas fa-plus"></i> Agregar vehículo</button>`;
     
-    // Mostrar vehículos filtrados
     if (filteredVehicles.length > 0) {
         filteredVehicles.forEach((v, i) => {
-            // Encontrar el índice real en el array completo
             const realIndex = vehicles.indexOf(v);
             const active = (realIndex === selectedIndex) ? 'active' : '';
             html += `
@@ -524,11 +752,7 @@ function renderVehicleList() {
             `;
         });
     } else if (vehicles.length > 0 && document.getElementById('searchInput').value.trim() !== '') {
-        // No hay resultados de búsqueda
         html += `<span class="no-results"><i class="fas fa-search"></i> No se encontraron vehículos</span>`;
-    } else if (vehicles.length === 0) {
-        // No hay vehículos registrados
-        // El mensaje se muestra en vehicleView
     }
     
     container.innerHTML = html;
@@ -538,8 +762,6 @@ function selectVehicle(index) {
     selectedIndex = index;
     renderVehicleList();
     renderVehicleView(index);
-    // Limpiar búsqueda para mostrar todos
-    // (opcional: mantener el filtro)
 }
 
 function nuevoVehiculo() {
@@ -565,7 +787,6 @@ function renderVehicleView(index) {
     }
     
     if (!vehicles[index]) {
-        // Si el índice no existe, mostrar el primero disponible
         if (vehicles.length > 0) {
             selectedIndex = 0;
             renderVehicleView(0);
@@ -658,6 +879,12 @@ function renderVehicleView(index) {
                 </div>
             `).join('')}
         </div>
+        ${v.averias ? `
+            <div class="averias-box">
+                <div class="label"><i class="fas fa-exclamation-triangle"></i> Reporte de averías</div>
+                <p>${v.averias}</p>
+            </div>
+        ` : ''}
     `;
     container.innerHTML = html;
 }
@@ -723,7 +950,6 @@ function importarDatos() {
 // ============================================================
 document.addEventListener('DOMContentLoaded', cargarDesdeFirebase);
 
-// Enter en el buscador para limpiar o buscar
 document.getElementById('searchInput').addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         limpiarBusqueda();
