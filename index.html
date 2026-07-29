@@ -225,6 +225,19 @@
         .modelo-input-wrapper .btn-small { padding: 6px 12px; font-size: 12px; border-radius: 12px; border: 1px solid #d3dfee; background: white; cursor: pointer; white-space: nowrap; }
         .modelo-input-wrapper .btn-small:hover { background: #f0f5ff; border-color: #0066cc; }
 
+        /* Estilo para marca manual */
+        .marca-manual-wrapper {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            width: 100%;
+        }
+        .marca-manual-wrapper select { flex: 1; }
+        .marca-manual-wrapper input { flex: 1; display: none; }
+        .marca-manual-wrapper input.visible { display: block; }
+        .marca-manual-wrapper .btn-small { padding: 6px 12px; font-size: 12px; border-radius: 12px; border: 1px solid #d3dfee; background: white; cursor: pointer; white-space: nowrap; }
+        .marca-manual-wrapper .btn-small:hover { background: #f0f5ff; border-color: #0066cc; }
+
         .alert-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -500,6 +513,7 @@
             .averia-input-group { flex-direction: column; }
             .averia-input-group input { width: 100%; }
             .km-editable input { width: 60px; }
+            .marca-manual-wrapper { flex-wrap: wrap; }
         }
     </style>
 </head>
@@ -510,8 +524,6 @@
     <div class="app-header">
         <h1><i class="fas fa-truck"></i> Control de Unidades MTTO IMCO</h1>
         <div class="header-right">
-            <button class="btn btn-outline" onclick="exportarDatos()"><i class="fas fa-file-export"></i> Exportar</button>
-            <button class="btn btn-outline" onclick="importarDatos()"><i class="fas fa-file-import"></i> Importar</button>
             <span id="syncStatus" class="sync-status"><i class="fas fa-sync-alt fa-spin"></i> Conectando...</span>
         </div>
     </div>
@@ -541,185 +553,67 @@
         </div>
     </div>
 
-    <!-- FORMULARIO CON CAMPO EXTINTOR -->
+    <!-- FORMULARIO CON MARCA MANUAL -->
     <div class="form-panel" id="formPanel">
         <h3><i class="fas fa-plus-circle"></i> <span id="formTitle">Nuevo Vehículo</span></h3>
         <div class="form-grid">
             <div class="form-group">
-                <label><i class="fas fa-id-card"></i> Placa *</label>
+                <label><i class="fas fa-id-card"></i> Placa/Codigo *</label>
                 <input type="text" class="form-control" id="fPlaca" placeholder="ABC-123" oninput="this.value=this.value.toUpperCase()">
             </div>
             <div class="form-group">
                 <label><i class="fas fa-car"></i> Marca</label>
-                <select class="form-control" id="fMarca">
-                    <option value="">Seleccionar marca...</option>
-                    <option value="Changan">Changan</option>
-                    <option value="Chery">Chery</option>
-                    <option value="Chevrolet">Chevrolet</option>
-                    <option value="DAF">DAF</option>
-                    <option value="Dongfeng">Dongfeng</option>
-                    <option value="Ford">Ford</option>
-                    <option value="Foton">Foton</option>
-                    <option value="Freightliner">Freightliner</option>
-                    <option value="Fuso">Fuso</option>
-                    <option value="GMC">GMC</option>
-                    <option value="Great Wall Motor (GWM)">Great Wall Motor (GWM)</option>
-                    <option value="Hino">Hino</option>
-                    <option value="Honda">Honda</option>
-                    <option value="Hyundai">Hyundai</option>
-                    <option value="International">International</option>
-                    <option value="Isuzu">Isuzu</option>
-                    <option value="IVECO">IVECO</option>
-                    <option value="JAC Motors">JAC Motors</option>
-                    <option value="Jeep">Jeep</option>
-                    <option value="Kenworth">Kenworth</option>
-                    <option value="Kia">Kia</option>
-                    <option value="Mack">Mack</option>
-                    <option value="MAN">MAN</option>
-                    <option value="Mazda">Mazda</option>
-                    <option value="Mercedes-Benz">Mercedes-Benz</option>
-                    <option value="Mitsubishi">Mitsubishi</option>
-                    <option value="Nissan">Nissan</option>
-                    <option value="Peterbilt">Peterbilt</option>
-                    <option value="RAM">RAM</option>
-                    <option value="Scania">Scania</option>
-                    <option value="Shacman">Shacman</option>
-                    <option value="Sinotruk (Howo)">Sinotruk (Howo)</option>
-                    <option value="Subaru">Subaru</option>
-                    <option value="Toyota">Toyota</option>
-                    <option value="UD Trucks">UD Trucks</option>
-                    <option value="Volkswagen">Volkswagen</option>
-                    <option value="Volvo">Volvo</option>
-                    <option value="Otro">Otro</option>
-                </select>
+                <div class="marca-manual-wrapper">
+                    <select class="form-control" id="fMarca" onchange="cambiarMarca()">
+                        <option value="">Seleccionar marca...</option>
+                        <option value="Changan">Changan</option>
+                        <option value="Chery">Chery</option>
+                        <option value="Chevrolet">Chevrolet</option>
+                        <option value="DAF">DAF</option>
+                        <option value="Dongfeng">Dongfeng</option>
+                        <option value="Ford">Ford</option>
+                        <option value="Foton">Foton</option>
+                        <option value="Freightliner">Freightliner</option>
+                        <option value="Fuso">Fuso</option>
+                        <option value="GMC">GMC</option>
+                        <option value="Great Wall Motor (GWM)">Great Wall Motor (GWM)</option>
+                        <option value="Hino">Hino</option>
+                        <option value="Honda">Honda</option>
+                        <option value="Hyundai">Hyundai</option>
+                        <option value="International">International</option>
+                        <option value="Isuzu">Isuzu</option>
+                        <option value="IVECO">IVECO</option>
+                        <option value="JAC Motors">JAC Motors</option>
+                        <option value="Jeep">Jeep</option>
+                        <option value="Kenworth">Kenworth</option>
+                        <option value="Kia">Kia</option>
+                        <option value="Mack">Mack</option>
+                        <option value="MAN">MAN</option>
+                        <option value="Mazda">Mazda</option>
+                        <option value="Mercedes-Benz">Mercedes-Benz</option>
+                        <option value="Mitsubishi">Mitsubishi</option>
+                        <option value="Nissan">Nissan</option>
+                        <option value="Peterbilt">Peterbilt</option>
+                        <option value="RAM">RAM</option>
+                        <option value="Scania">Scania</option>
+                        <option value="Shacman">Shacman</option>
+                        <option value="Sinotruk (Howo)">Sinotruk (Howo)</option>
+                        <option value="Subaru">Subaru</option>
+                        <option value="Toyota">Toyota</option>
+                        <option value="UD Trucks">UD Trucks</option>
+                        <option value="Volkswagen">Volkswagen</option>
+                        <option value="Volvo">Volvo</option>
+                        <option value="__OTRO__">✏️ Otro (escribir manualmente)</option>
+                    </select>
+                    <input type="text" class="form-control" id="fMarcaManual" placeholder="Escribir marca..." style="display:none;">
+                    <button type="button" class="btn-small" id="toggleMarcaBtn" onclick="toggleMarcaManual()"><i class="fas fa-pen"></i></button>
+                </div>
             </div>
             <div class="form-group">
                 <label><i class="fas fa-car-side"></i> Modelo</label>
                 <div class="modelo-input-wrapper">
                     <select class="form-control" id="fModeloSelect" onchange="cambiarModelo()">
                         <option value="">Seleccionar modelo...</option>
-                        <optgroup label="Ford">
-                            <option value="Ranger">Ranger</option>
-                            <option value="F-150">F-150</option>
-                            <option value="Maverick">Maverick</option>
-                            <option value="Explorer">Explorer</option>
-                            <option value="Bronco">Bronco</option>
-                        </optgroup>
-                        <optgroup label="Chevrolet">
-                            <option value="Silverado">Silverado</option>
-                            <option value="Colorado">Colorado</option>
-                            <option value="Tracker">Tracker</option>
-                            <option value="Equinox">Equinox</option>
-                            <option value="Tahoe">Tahoe</option>
-                        </optgroup>
-                        <optgroup label="RAM">
-                            <option value="RAM 1500">RAM 1500</option>
-                            <option value="RAM 2500">RAM 2500</option>
-                            <option value="Rampage">Rampage</option>
-                        </optgroup>
-                        <optgroup label="GMC">
-                            <option value="Sierra">Sierra</option>
-                            <option value="Canyon">Canyon</option>
-                            <option value="Yukon">Yukon</option>
-                        </optgroup>
-                        <optgroup label="Jeep">
-                            <option value="Wrangler">Wrangler</option>
-                            <option value="Grand Cherokee">Grand Cherokee</option>
-                            <option value="Compass">Compass</option>
-                            <option value="Gladiator">Gladiator</option>
-                        </optgroup>
-                        <optgroup label="Toyota">
-                            <option value="Hilux">Hilux</option>
-                            <option value="Tacoma">Tacoma</option>
-                            <option value="RAV4">RAV4</option>
-                            <option value="Land Cruiser Prado">Land Cruiser Prado</option>
-                            <option value="Fortuner">Fortuner</option>
-                        </optgroup>
-                        <optgroup label="Nissan">
-                            <option value="Frontier (Navara)">Frontier (Navara)</option>
-                            <option value="Kicks">Kicks</option>
-                            <option value="Qashqai">Qashqai</option>
-                            <option value="Patrol">Patrol</option>
-                        </optgroup>
-                        <optgroup label="Mitsubishi">
-                            <option value="L200 (Triton)">L200 (Triton)</option>
-                            <option value="Montero Sport">Montero Sport</option>
-                            <option value="Outlander">Outlander</option>
-                            <option value="ASX">ASX</option>
-                        </optgroup>
-                        <optgroup label="Isuzu">
-                            <option value="D-Max">D-Max</option>
-                        </optgroup>
-                        <optgroup label="Mazda">
-                            <option value="BT-50">BT-50</option>
-                            <option value="CX-5">CX-5</option>
-                            <option value="CX-30">CX-30</option>
-                            <option value="CX-90">CX-90</option>
-                        </optgroup>
-                        <optgroup label="Honda">
-                            <option value="CR-V">CR-V</option>
-                            <option value="HR-V">HR-V</option>
-                            <option value="Pilot">Pilot</option>
-                            <option value="Ridgeline">Ridgeline</option>
-                        </optgroup>
-                        <optgroup label="Subaru">
-                            <option value="Forester">Forester</option>
-                            <option value="Crosstrek">Crosstrek</option>
-                            <option value="Outback">Outback</option>
-                        </optgroup>
-                        <optgroup label="Great Wall (GWM)">
-                            <option value="Evoltis">Evoltis</option>
-                            <option value="Poer">Poer</option>
-                            <option value="Wingle 7">Wingle 7</option>
-                            <option value="Haval H6">Haval H6</option>
-                            <option value="Haval Jolion">Haval Jolion</option>
-                            <option value="Tank 300">Tank 300</option>
-                        </optgroup>
-                        <optgroup label="Changan">
-                            <option value="Hunter">Hunter</option>
-                            <option value="CS35 Plus">CS35 Plus</option>
-                            <option value="CS55 Plus">CS55 Plus</option>
-                            <option value="X7 Plus">X7 Plus</option>
-                        </optgroup>
-                        <optgroup label="JAC Motors">
-                            <option value="JAC T6">JAC T6</option>
-                            <option value="JAC T8">JAC T8</option>
-                            <option value="JAC T9">JAC T9</option>
-                            <option value="JS4">JS4</option>
-                            <option value="JS6">JS6</option>
-                        </optgroup>
-                        <optgroup label="Chery">
-                            <option value="Tiggo 2 Pro">Tiggo 2 Pro</option>
-                            <option value="Tiggo 4 Pro">Tiggo 4 Pro</option>
-                            <option value="Tiggo 7 Pro">Tiggo 7 Pro</option>
-                            <option value="Tiggo 8 Pro">Tiggo 8 Pro</option>
-                        </optgroup>
-                        <optgroup label="Foton">
-                            <option value="Tunland G7">Tunland G7</option>
-                            <option value="Tunland V9">Tunland V9</option>
-                        </optgroup>
-                        <optgroup label="Volkswagen">
-                            <option value="Amarok">Amarok</option>
-                            <option value="Saveiro">Saveiro</option>
-                            <option value="T-Cross">T-Cross</option>
-                            <option value="Nivus">Nivus</option>
-                            <option value="Tiguan">Tiguan</option>
-                        </optgroup>
-                        <optgroup label="Hyundai">
-                            <option value="Santa Cruz">Santa Cruz</option>
-                            <option value="Creta">Creta</option>
-                            <option value="Tucson">Tucson</option>
-                            <option value="Santa Fe">Santa Fe</option>
-                            <option value="Palisade">Palisade</option>
-                        </optgroup>
-                        <optgroup label="Kia">
-                            <option value="Sonet">Sonet</option>
-                            <option value="Seltos">Seltos</option>
-                            <option value="Sportage">Sportage</option>
-                            <option value="Sorento">Sorento</option>
-                            <option value="Telluride">Telluride</option>
-                        </optgroup>
-                        <option value="__OTRO__">✏️ Otro (escribir manualmente)</option>
                     </select>
                     <input type="text" class="form-control" id="fModeloManual" placeholder="Escribir modelo..." style="display:none;">
                     <button type="button" class="btn-small" id="toggleModeloBtn" onclick="toggleModeloManual()"><i class="fas fa-pen"></i></button>
@@ -730,16 +624,12 @@
                 <input type="number" class="form-control" id="fAnio" placeholder="2022" min="1900" max="2099">
             </div>
             <div class="form-group">
-                <label><i class="fas fa-tachometer-alt"></i> Km actual *</label>
+                <label><i class="fas fa-tachometer-alt"></i> H o Km Actual *</label>
                 <input type="number" class="form-control" id="fKmActual" placeholder="0">
             </div>
             <div class="form-group">
-                <label><i class="fas fa-oil-can"></i> Intervalo aceite (km)</label>
+                <label><i class="fas fa-oil-can"></i> Intervalo Cambio Aceite/Filtros (Km, H)</label>
                 <input type="number" class="form-control" id="fIntAceite" placeholder="10000" value="10000">
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-tint"></i> Intervalo filtro comb. (km)</label>
-                <input type="number" class="form-control" id="fIntCombustible" placeholder="40000" value="40000">
             </div>
             <div class="form-group">
                 <label><i class="fas fa-file-contract"></i> Vencimiento SOAT</label>
@@ -750,14 +640,13 @@
                 <input type="date" class="form-control" id="fItv">
             </div>
             <div class="form-group">
-                <label><i class="fas fa-calendar-check"></i> Último mantenimiento</label>
+                <label><i class="fas fa-calendar-check"></i> Cert/Op-Último Mant.</label>
                 <input type="date" class="form-control" id="fFechaMant">
             </div>
             <div class="form-group">
-                <label><i class="fas fa-road"></i> Km en último mantenimiento</label>
+                <label><i class="fas fa-road"></i> H o Km Último Mantenimiento</label>
                 <input type="number" class="form-control" id="fKmMant" placeholder="0">
             </div>
-            <!-- 🔥 NUEVO CAMPO: VENCIMIENTO DE EXTINTOR -->
             <div class="form-group">
                 <label><i class="fas fa-fire-extinguisher" style="color:#e66a00;"></i> Vencimiento Extintor</label>
                 <input type="date" class="form-control" id="fExtintor">
@@ -783,7 +672,7 @@
         <span class="icono"><i class="fas fa-code"></i></span>
         Desarrollado por <span class="nombre">PaulEManrique</span>
         <span class="icono"><i class="fas fa-heart" style="color: #d32f2f;"></i></span>
-        <div class="version">v2.6 · Control de Flota con Firebase</div>
+        <div class="version">v3.0 · Control de Flota con Firebase</div>
     </div>
 
 </div>
@@ -816,8 +705,212 @@ let editingIndex = -1;
 let listaPlacasAbierta = false;
 
 // ============================================================
-// 🔧 FUNCIONES PARA MODELO MANUAL
+// 📋 BASE DE DATOS DE MODELOS POR MARCA
 // ============================================================
+const modelosPorMarca = {
+    'Changan': ['Hunter', 'CS35 Plus', 'CS55 Plus', 'X7 Plus'],
+    'Chery': ['Tiggo 2 Pro', 'Tiggo 4 Pro', 'Tiggo 7 Pro', 'Tiggo 8 Pro'],
+    'Chevrolet': ['Silverado', 'Colorado', 'Tracker', 'Equinox', 'Tahoe'],
+    'DAF': [],
+    'Dongfeng': [],
+    'Ford': ['Ranger', 'F-150', 'Maverick', 'Explorer', 'Bronco'],
+    'Foton': ['Tunland G7', 'Tunland V9'],
+    'Freightliner': [],
+    'Fuso': [],
+    'GMC': ['Sierra', 'Canyon', 'Yukon'],
+    'Great Wall Motor (GWM)': ['Evoltis', 'Poer', 'Wingle 7', 'Haval H6', 'Haval Jolion', 'Tank 300'],
+    'Hino': [],
+    'Honda': ['CR-V', 'HR-V', 'Pilot', 'Ridgeline'],
+    'Hyundai': ['Santa Cruz', 'Creta', 'Tucson', 'Santa Fe', 'Palisade'],
+    'International': [],
+    'Isuzu': ['D-Max'],
+    'IVECO': [],
+    'JAC Motors': ['JAC T6', 'JAC T8', 'JAC T9', 'JS4', 'JS6'],
+    'Jeep': ['Wrangler', 'Grand Cherokee', 'Compass', 'Gladiator'],
+    'Kenworth': [],
+    'Kia': ['Sonet', 'Seltos', 'Sportage', 'Sorento', 'Telluride'],
+    'Mack': [],
+    'MAN': [],
+    'Mazda': ['BT-50', 'CX-5', 'CX-30', 'CX-90'],
+    'Mercedes-Benz': [],
+    'Mitsubishi': ['L200 (Triton)', 'Montero Sport', 'Outlander', 'ASX'],
+    'Nissan': ['Frontier (Navara)', 'Kicks', 'Qashqai', 'Patrol'],
+    'Peterbilt': [],
+    'RAM': ['RAM 1500', 'RAM 2500', 'Rampage'],
+    'Scania': [],
+    'Shacman': [],
+    'Sinotruk (Howo)': [],
+    'Subaru': ['Forester', 'Crosstrek', 'Outback'],
+    'Toyota': ['Hilux', 'Tacoma', 'RAV4', 'Land Cruiser Prado', 'Fortuner'],
+    'UD Trucks': [],
+    'Volkswagen': ['Amarok', 'Saveiro', 'T-Cross', 'Nivus', 'Tiguan'],
+    'Volvo': []
+};
+
+// ============================================================
+// 🔧 FUNCIONES PARA MARCA MANUAL
+// ============================================================
+function cambiarMarca() {
+    const select = document.getElementById('fMarca');
+    const manual = document.getElementById('fMarcaManual');
+    const btn = document.getElementById('toggleMarcaBtn');
+    
+    if (select.value === '__OTRO__') {
+        manual.style.display = 'block';
+        manual.focus();
+        btn.innerHTML = '<i class="fas fa-list"></i>';
+        select.style.display = 'none';
+        // Limpiar modelos ya que la marca es manual
+        document.getElementById('fModeloSelect').innerHTML = '<option value="">Seleccionar modelo...</option>';
+        document.getElementById('fModeloManual').value = '';
+        document.getElementById('fModeloManual').style.display = 'none';
+        document.getElementById('fModeloSelect').style.display = 'block';
+        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
+    } else {
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+        // Filtrar modelos por la marca seleccionada
+        filtrarModelosPorMarca();
+    }
+}
+
+function toggleMarcaManual() {
+    const select = document.getElementById('fMarca');
+    const manual = document.getElementById('fMarcaManual');
+    const btn = document.getElementById('toggleMarcaBtn');
+    
+    if (manual.style.display === 'block') {
+        // Volver al select
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+        select.value = '';
+        // Limpiar modelos
+        document.getElementById('fModeloSelect').innerHTML = '<option value="">Seleccionar modelo...</option>';
+        document.getElementById('fModeloManual').value = '';
+        document.getElementById('fModeloManual').style.display = 'none';
+        document.getElementById('fModeloSelect').style.display = 'block';
+        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
+    } else {
+        // Cambiar a manual
+        select.style.display = 'none';
+        manual.style.display = 'block';
+        manual.focus();
+        btn.innerHTML = '<i class="fas fa-list"></i>';
+        // Limpiar modelos
+        document.getElementById('fModeloSelect').innerHTML = '<option value="">Seleccionar modelo...</option>';
+        document.getElementById('fModeloManual').value = '';
+        document.getElementById('fModeloManual').style.display = 'none';
+        document.getElementById('fModeloSelect').style.display = 'block';
+        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
+    }
+}
+
+function obtenerMarca() {
+    const select = document.getElementById('fMarca');
+    const manual = document.getElementById('fMarcaManual');
+    
+    if (manual.style.display === 'block' && manual.value.trim() !== '') {
+        return manual.value.trim();
+    } else if (select.value && select.value !== '__OTRO__') {
+        return select.value;
+    }
+    return '';
+}
+
+function setMarca(valor) {
+    const select = document.getElementById('fMarca');
+    const manual = document.getElementById('fMarcaManual');
+    const btn = document.getElementById('toggleMarcaBtn');
+    
+    if (!valor) {
+        select.value = '';
+        manual.value = '';
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+        return;
+    }
+    
+    // Buscar en el select
+    let found = false;
+    for (let option of select.options) {
+        if (option.value === valor) {
+            select.value = valor;
+            found = true;
+            break;
+        }
+    }
+    
+    if (found) {
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+        filtrarModelosPorMarca();
+    } else {
+        // Si no está en la lista, ir a manual
+        select.style.display = 'none';
+        manual.style.display = 'block';
+        manual.value = valor;
+        btn.innerHTML = '<i class="fas fa-list"></i>';
+        // Limpiar modelos
+        document.getElementById('fModeloSelect').innerHTML = '<option value="">Seleccionar modelo...</option>';
+        document.getElementById('fModeloManual').value = '';
+        document.getElementById('fModeloManual').style.display = 'none';
+        document.getElementById('fModeloSelect').style.display = 'block';
+        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
+    }
+}
+
+// ============================================================
+// 🔧 FUNCIONES PARA MODELO MANUAL Y FILTRADO
+// ============================================================
+function filtrarModelosPorMarca() {
+    const marcaSelect = document.getElementById('fMarca');
+    const marcaManual = document.getElementById('fMarcaManual');
+    const select = document.getElementById('fModeloSelect');
+    const manual = document.getElementById('fModeloManual');
+    
+    // Determinar la marca actual (select o manual)
+    let marca = '';
+    if (marcaManual.style.display === 'block' && marcaManual.value.trim() !== '') {
+        marca = marcaManual.value.trim();
+    } else if (marcaSelect.value && marcaSelect.value !== '__OTRO__') {
+        marca = marcaSelect.value;
+    }
+    
+    // Limpiar select
+    select.innerHTML = '<option value="">Seleccionar modelo...</option>';
+    
+    // Si hay modelos para esta marca, agregarlos
+    if (marca && modelosPorMarca[marca] && modelosPorMarca[marca].length > 0) {
+        modelosPorMarca[marca].forEach(modelo => {
+            const option = document.createElement('option');
+            option.value = modelo;
+            option.textContent = modelo;
+            select.appendChild(option);
+        });
+        // Agregar opción "Otro" al final
+        const optionOtro = document.createElement('option');
+        optionOtro.value = '__OTRO__';
+        optionOtro.textContent = '✏️ Otro (escribir manualmente)';
+        select.appendChild(optionOtro);
+    } else {
+        // Si no hay modelos, mostrar solo "Otro"
+        const optionOtro = document.createElement('option');
+        optionOtro.value = '__OTRO__';
+        optionOtro.textContent = '✏️ Otro (escribir manualmente)';
+        select.appendChild(optionOtro);
+    }
+    
+    // Resetear campo manual
+    manual.value = '';
+    manual.style.display = 'none';
+    select.style.display = 'block';
+    document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
+}
+
 function cambiarModelo() {
     const select = document.getElementById('fModeloSelect');
     const manual = document.getElementById('fModeloManual');
@@ -841,16 +934,22 @@ function toggleModeloManual() {
     const btn = document.getElementById('toggleModeloBtn');
     
     if (manual.style.display === 'block') {
+        // Volver al select
         manual.style.display = 'none';
         select.style.display = 'block';
         btn.innerHTML = '<i class="fas fa-pen"></i>';
-        select.value = '';
+        if (select.value === '__OTRO__') {
+            select.value = '';
+        }
+        // Forzar la actualización del select
+        filtrarModelosPorMarca();
     } else {
+        // Cambiar a manual
         select.style.display = 'none';
         manual.style.display = 'block';
         manual.focus();
         btn.innerHTML = '<i class="fas fa-list"></i>';
-        if (select.value && select.value !== '__OTRO__') {
+        if (select.value && select.value !== '__OTRO__' && select.value !== '') {
             manual.value = select.value;
         }
     }
@@ -862,7 +961,7 @@ function obtenerModelo() {
     
     if (manual.style.display === 'block' && manual.value.trim() !== '') {
         return manual.value.trim();
-    } else if (select.value && select.value !== '__OTRO__') {
+    } else if (select.value && select.value !== '__OTRO__' && select.value !== '') {
         return select.value;
     }
     return '';
@@ -872,6 +971,19 @@ function setModelo(valor) {
     const select = document.getElementById('fModeloSelect');
     const manual = document.getElementById('fModeloManual');
     
+    // Primero asegurar que el select tenga los modelos de la marca actual
+    filtrarModelosPorMarca();
+    
+    if (!valor) {
+        select.value = '';
+        manual.value = '';
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
+        return;
+    }
+    
+    // Buscar en el select
     let found = false;
     for (let option of select.options) {
         if (option.value === valor) {
@@ -885,7 +997,8 @@ function setModelo(valor) {
         manual.style.display = 'none';
         select.style.display = 'block';
         document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
-    } else if (valor) {
+    } else {
+        // Si no está en la lista, ir a manual
         select.style.display = 'none';
         manual.style.display = 'block';
         manual.value = valor;
@@ -910,11 +1023,6 @@ function cargarDesdeFirebase() {
                 
                 if (!vehiculo.hasOwnProperty('averias')) {
                     vehiculo.averias = [];
-                }
-                
-                if (!vehiculo.hasOwnProperty('intCombustible')) {
-                    vehiculo.intCombustible = 40000;
-                    vehiclesRef.child(key).update({ intCombustible: 40000 });
                 }
                 
                 if (!vehiculo.hasOwnProperty('extintor')) {
@@ -1169,16 +1277,16 @@ async function guardarVehiculo() {
         return;
     }
 
+    const marca = obtenerMarca();
     const modelo = obtenerModelo();
 
     const data = {
         placa: placa,
-        marca: document.getElementById('fMarca').value || 'Desconocida',
+        marca: marca || 'Desconocida',
         modelo: modelo || 'Desconocido',
         anio: document.getElementById('fAnio').value || '----',
         kmActual: parseInt(document.getElementById('fKmActual').value) || 0,
         intAceite: parseInt(document.getElementById('fIntAceite').value) || 10000,
-        intCombustible: parseInt(document.getElementById('fIntCombustible').value) || 40000,
         soat: document.getElementById('fSoat').value || '',
         itv: document.getElementById('fItv').value || '',
         extintor: document.getElementById('fExtintor').value || '',
@@ -1215,12 +1323,11 @@ function editarVehiculo(index) {
     editingIndex = index;
     const v = vehicles[index];
     document.getElementById('fPlaca').value = v.placa;
-    document.getElementById('fMarca').value = v.marca;
+    setMarca(v.marca);
     setModelo(v.modelo);
     document.getElementById('fAnio').value = v.anio;
     document.getElementById('fKmActual').value = v.kmActual;
     document.getElementById('fIntAceite').value = v.intAceite || 10000;
-    document.getElementById('fIntCombustible').value = v.intCombustible || 40000;
     document.getElementById('fSoat').value = v.soat || '';
     document.getElementById('fItv').value = v.itv || '';
     document.getElementById('fExtintor').value = v.extintor || '';
@@ -1239,7 +1346,11 @@ function cancelarFormulario() {
 function limpiarFormulario() {
     document.getElementById('fPlaca').value = '';
     document.getElementById('fMarca').value = '';
-    document.getElementById('fModeloSelect').value = '';
+    document.getElementById('fMarcaManual').value = '';
+    document.getElementById('fMarcaManual').style.display = 'none';
+    document.getElementById('fMarca').style.display = 'block';
+    document.getElementById('toggleMarcaBtn').innerHTML = '<i class="fas fa-pen"></i>';
+    document.getElementById('fModeloSelect').innerHTML = '<option value="">Seleccionar modelo...</option>';
     document.getElementById('fModeloManual').value = '';
     document.getElementById('fModeloManual').style.display = 'none';
     document.getElementById('fModeloSelect').style.display = 'block';
@@ -1247,7 +1358,6 @@ function limpiarFormulario() {
     document.getElementById('fAnio').value = '';
     document.getElementById('fKmActual').value = '';
     document.getElementById('fIntAceite').value = 10000;
-    document.getElementById('fIntCombustible').value = 40000;
     document.getElementById('fSoat').value = '';
     document.getElementById('fItv').value = '';
     document.getElementById('fExtintor').value = '';
@@ -1626,58 +1736,6 @@ function formatearFecha(f) {
     if (!f) return '—';
     const p = f.split('-');
     return `${p[2]}/${p[1]}/${p[0]}`;
-}
-
-// ============================================================
-// 📤 EXPORTAR / IMPORTAR
-// ============================================================
-function exportarDatos() {
-    if (vehicles.length === 0) { alert('Sin datos'); return; }
-    const data = vehicles.map(v => {
-        const copy = { ...v };
-        delete copy.key;
-        return copy;
-    });
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `flota_${new Date().toISOString().slice(0,10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-}
-
-function importarDatos() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json';
-    input.onchange = async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = async (ev) => {
-            try {
-                const datos = JSON.parse(ev.target.result);
-                if (!Array.isArray(datos) || datos.length === 0) {
-                    alert('Archivo inválido');
-                    return;
-                }
-                if (confirm(`Importar ${datos.length} vehículos?`)) {
-                    for (const v of datos) {
-                        const data = { ...v };
-                        if (!data.averias) data.averias = [];
-                        if (!data.extintor) data.extintor = '';
-                        await vehiclesRef.push().set(data);
-                    }
-                    mostrarFeedback(`✅ ${datos.length} importados`, '#d4edda', '#28a745');
-                }
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        };
-        reader.readAsText(file);
-    };
-    input.click();
 }
 
 // ============================================================
