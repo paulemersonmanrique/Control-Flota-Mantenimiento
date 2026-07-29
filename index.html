@@ -162,7 +162,7 @@
         
         .vehicle-tab .badge-count { padding: 0 8px; border-radius: 40px; font-size: 11px; background: rgba(0,0,0,0.1); }
         
-        .vehicle-tab .alerta-averia {
+        .vehicle-tab .alerta-observacion {
             font-size: 12px;
             color: #856404;
             background: #fff3cd;
@@ -225,7 +225,6 @@
         .modelo-input-wrapper .btn-small { padding: 6px 12px; font-size: 12px; border-radius: 12px; border: 1px solid #d3dfee; background: white; cursor: pointer; white-space: nowrap; }
         .modelo-input-wrapper .btn-small:hover { background: #f0f5ff; border-color: #0066cc; }
 
-        /* Estilo para marca manual */
         .marca-manual-wrapper {
             display: flex;
             gap: 8px;
@@ -351,7 +350,7 @@
         .km-editable .guardar-km.visible { display: block; }
         .km-editable .guardar-km:hover { background: #004f99; }
         
-        .vehicle-detail .alerta-averia-tarjeta {
+        .vehicle-detail .alerta-observacion-tarjeta {
             display: inline-flex;
             align-items: center;
             gap: 4px;
@@ -380,29 +379,29 @@
             margin-top: 16px;
         }
 
-        .averias-section {
+        .observaciones-section {
             margin-top: 12px;
             padding: 12px 16px;
             background: #fafafa;
             border-radius: 12px;
             border: 1px solid #eaf0f8;
         }
-        .averias-section .header {
+        .observaciones-section .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
-        .averias-section .header h4 {
+        .observaciones-section .header h4 {
             font-size: 14px;
             color: #1a324b;
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        .averias-section .header h4 i { color: #e66a00; }
+        .observaciones-section .header h4 i { color: #e66a00; }
         
-        .averia-item {
+        .observacion-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -412,39 +411,39 @@
             border-left: 4px solid #e66a00;
             margin-bottom: 6px;
         }
-        .averia-item.reparado {
+        .observacion-item.resuelto {
             border-left-color: #0f7b3a;
             opacity: 0.7;
         }
-        .averia-item .texto {
+        .observacion-item .texto {
             flex: 1;
             font-size: 13px;
             color: #2b405a;
         }
-        .averia-item .texto .fecha {
+        .observacion-item .texto .fecha {
             font-size: 11px;
             color: #657e9e;
             margin-left: 8px;
         }
-        .averia-item .texto .estado {
+        .observacion-item .texto .estado {
             font-size: 11px;
             font-weight: 600;
             margin-left: 8px;
         }
-        .averia-item .texto .estado.pendiente { color: #e66a00; }
-        .averia-item .texto .estado.reparado { color: #0f7b3a; }
-        .averia-item .acciones-averia {
+        .observacion-item .texto .estado.pendiente { color: #e66a00; }
+        .observacion-item .texto .estado.resuelto { color: #0f7b3a; }
+        .observacion-item .acciones-observacion {
             display: flex;
             gap: 4px;
         }
         
-        .averia-input-group {
+        .observacion-input-group {
             display: flex;
             gap: 8px;
             margin-top: 8px;
             flex-wrap: wrap;
         }
-        .averia-input-group input {
+        .observacion-input-group input {
             flex: 1;
             min-width: 150px;
             padding: 8px 12px;
@@ -452,20 +451,20 @@
             border: 1px solid #d3dfee;
             font-size: 13px;
         }
-        .averia-input-group input:focus { outline: none; border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); }
+        .observacion-input-group input:focus { outline: none; border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); }
 
-        .no-averias { color: #657e9e; font-size: 13px; padding: 8px 0; }
+        .no-observaciones { color: #657e9e; font-size: 13px; padding: 8px 0; }
 
-        .vehicle-detail .averias-box {
+        .vehicle-detail .observaciones-box {
             padding: 10px 14px;
             background: #fff8e1;
             border-left: 4px solid #f1b24a;
             border-radius: 8px;
             margin-top: 8px;
         }
-        .vehicle-detail .averias-box .label { font-weight: 600; font-size: 12px; color: #8e6b00; display: flex; align-items: center; gap: 6px; }
-        .vehicle-detail .averias-box .label i { color: #e66a00; }
-        .vehicle-detail .averias-box p { font-size: 13px; color: #4a3a00; margin-top: 2px; white-space: pre-wrap; }
+        .vehicle-detail .observaciones-box .label { font-weight: 600; font-size: 12px; color: #8e6b00; display: flex; align-items: center; gap: 6px; }
+        .vehicle-detail .observaciones-box .label i { color: #e66a00; }
+        .vehicle-detail .observaciones-box p { font-size: 13px; color: #4a3a00; margin-top: 2px; white-space: pre-wrap; }
 
         #feedbackMessage { margin-top: 16px; padding: 12px 18px; border-radius: 18px; display: none; align-items: center; gap: 14px; font-size: 14px; }
         .empty-state { text-align: center; padding: 40px 20px; color: #657e9e; }
@@ -510,8 +509,8 @@
             .search-placas input { width: 100%; }
             .vehicle-detail .info-row { flex-direction: column; align-items: stretch; }
             .vehicle-detail .info-row .acciones { justify-content: flex-start; }
-            .averia-input-group { flex-direction: column; }
-            .averia-input-group input { width: 100%; }
+            .observacion-input-group { flex-direction: column; }
+            .observacion-input-group input { width: 100%; }
             .km-editable input { width: 60px; }
             .marca-manual-wrapper { flex-wrap: wrap; }
         }
@@ -553,12 +552,12 @@
         </div>
     </div>
 
-    <!-- FORMULARIO CON MARCA MANUAL -->
+    <!-- FORMULARIO -->
     <div class="form-panel" id="formPanel">
         <h3><i class="fas fa-plus-circle"></i> <span id="formTitle">Nuevo Vehículo</span></h3>
         <div class="form-grid">
             <div class="form-group">
-                <label><i class="fas fa-id-card"></i> Placa/Codigo *</label>
+                <label><i class="fas fa-id-card"></i> Placa *</label>
                 <input type="text" class="form-control" id="fPlaca" placeholder="ABC-123" oninput="this.value=this.value.toUpperCase()">
             </div>
             <div class="form-group">
@@ -595,6 +594,7 @@
                         <option value="Nissan">Nissan</option>
                         <option value="Peterbilt">Peterbilt</option>
                         <option value="RAM">RAM</option>
+                        <option value="Renault">Renault</option>
                         <option value="Scania">Scania</option>
                         <option value="Shacman">Shacman</option>
                         <option value="Sinotruk (Howo)">Sinotruk (Howo)</option>
@@ -624,11 +624,11 @@
                 <input type="number" class="form-control" id="fAnio" placeholder="2022" min="1900" max="2099">
             </div>
             <div class="form-group">
-                <label><i class="fas fa-tachometer-alt"></i> H o Km Actual *</label>
+                <label><i class="fas fa-tachometer-alt"></i> (Hr o Km) actual *</label>
                 <input type="number" class="form-control" id="fKmActual" placeholder="0">
             </div>
             <div class="form-group">
-                <label><i class="fas fa-oil-can"></i> Intervalo Cambio Aceite/Filtros (Km, H)</label>
+                <label><i class="fas fa-oil-can"></i> Intervalo aceite y filtros (Hr o Km)</label>
                 <input type="number" class="form-control" id="fIntAceite" placeholder="10000" value="10000">
             </div>
             <div class="form-group">
@@ -640,11 +640,11 @@
                 <input type="date" class="form-control" id="fItv">
             </div>
             <div class="form-group">
-                <label><i class="fas fa-calendar-check"></i> Cert/Op-Último Mant.</label>
+                <label><i class="fas fa-calendar-check"></i> Último mantenimiento</label>
                 <input type="date" class="form-control" id="fFechaMant">
             </div>
             <div class="form-group">
-                <label><i class="fas fa-road"></i> H o Km Último Mantenimiento</label>
+                <label><i class="fas fa-road"></i> (Hr o Km) en último mantenimiento</label>
                 <input type="number" class="form-control" id="fKmMant" placeholder="0">
             </div>
             <div class="form-group">
@@ -672,7 +672,7 @@
         <span class="icono"><i class="fas fa-code"></i></span>
         Desarrollado por <span class="nombre">PaulEManrique</span>
         <span class="icono"><i class="fas fa-heart" style="color: #d32f2f;"></i></span>
-        <div class="version">v3.0 · Control de Flota con Firebase</div>
+        <div class="version">v3.3 · Control de Flota con Firebase</div>
     </div>
 
 </div>
@@ -708,43 +708,44 @@ let listaPlacasAbierta = false;
 // 📋 BASE DE DATOS DE MODELOS POR MARCA
 // ============================================================
 const modelosPorMarca = {
-    'Changan': ['Hunter', 'CS35 Plus', 'CS55 Plus', 'X7 Plus'],
+    'Ford': ['Ranger', 'F-150', 'Maverick', 'Explorer', 'Bronco', 'Sierra', 'Mustang Mach-E'],
+    'Chevrolet': ['Silverado', 'Colorado', 'Tracker', 'Equinox', 'Tahoe', 'Suburban', 'Captiva', 'Groove', 'Montana'],
+    'RAM': ['1500', '2500', 'Rampage', '700', 'V700'],
+    'GMC': ['Sierra', 'Canyon', 'Yukon', 'Terrain', 'Acadia'],
+    'Jeep': ['Wrangler', 'Grand Cherokee', 'Compass', 'Gladiator', 'Commander', 'Renegade'],
+    'Toyota': ['Hilux', 'Tacoma', 'RAV4', 'Land Cruiser Prado', 'Fortuner', 'Corolla Cross', 'Yaris Cross', '4Runner', 'Hiace'],
+    'Nissan': ['Frontier', 'Kicks', 'Qashqai', 'Patrol', 'X-Trail', 'Urvan'],
+    'Mitsubishi': ['L200', 'Montero Sport', 'Outlander', 'ASX', 'Xpander'],
+    'Isuzu': ['D-Max', 'Serie N', 'Serie F', 'Serie CYZ'],
+    'Mazda': ['BT-50', 'CX-5', 'CX-30', 'CX-90', 'CX-3', 'CX-50'],
+    'Honda': ['CR-V', 'HR-V', 'Pilot', 'Ridgeline', 'WR-V'],
+    'Subaru': ['Forester', 'Crosstrek', 'Outback', 'Evoltis', 'WRX'],
+    'Great Wall Motor (GWM)': ['Poer', 'Wingle 7', 'Haval H6', 'Haval Jolion', 'Tank 300', 'Tank 500', 'Haval Dargo'],
+    'Changan': ['Hunter', 'CS35 Plus', 'CS55 Plus', 'X7 Plus', 'Uni-T', 'Uni-K'],
+    'JAC Motors': ['T6', 'T8', 'T9', 'JS4', 'JS6', 'Urban', 'Gallop'],
     'Chery': ['Tiggo 2 Pro', 'Tiggo 4 Pro', 'Tiggo 7 Pro', 'Tiggo 8 Pro'],
-    'Chevrolet': ['Silverado', 'Colorado', 'Tracker', 'Equinox', 'Tahoe'],
-    'DAF': [],
-    'Dongfeng': [],
-    'Ford': ['Ranger', 'F-150', 'Maverick', 'Explorer', 'Bronco'],
-    'Foton': ['Tunland G7', 'Tunland V9'],
-    'Freightliner': [],
-    'Fuso': [],
-    'GMC': ['Sierra', 'Canyon', 'Yukon'],
-    'Great Wall Motor (GWM)': ['Evoltis', 'Poer', 'Wingle 7', 'Haval H6', 'Haval Jolion', 'Tank 300'],
-    'Hino': [],
-    'Honda': ['CR-V', 'HR-V', 'Pilot', 'Ridgeline'],
-    'Hyundai': ['Santa Cruz', 'Creta', 'Tucson', 'Santa Fe', 'Palisade'],
-    'International': [],
-    'Isuzu': ['D-Max'],
-    'IVECO': [],
-    'JAC Motors': ['JAC T6', 'JAC T8', 'JAC T9', 'JS4', 'JS6'],
-    'Jeep': ['Wrangler', 'Grand Cherokee', 'Compass', 'Gladiator'],
-    'Kenworth': [],
-    'Kia': ['Sonet', 'Seltos', 'Sportage', 'Sorento', 'Telluride'],
-    'Mack': [],
-    'MAN': [],
-    'Mazda': ['BT-50', 'CX-5', 'CX-30', 'CX-90'],
-    'Mercedes-Benz': [],
-    'Mitsubishi': ['L200 (Triton)', 'Montero Sport', 'Outlander', 'ASX'],
-    'Nissan': ['Frontier (Navara)', 'Kicks', 'Qashqai', 'Patrol'],
-    'Peterbilt': [],
-    'RAM': ['RAM 1500', 'RAM 2500', 'Rampage'],
-    'Scania': [],
-    'Shacman': [],
-    'Sinotruk (Howo)': [],
-    'Subaru': ['Forester', 'Crosstrek', 'Outback'],
-    'Toyota': ['Hilux', 'Tacoma', 'RAV4', 'Land Cruiser Prado', 'Fortuner'],
-    'UD Trucks': [],
-    'Volkswagen': ['Amarok', 'Saveiro', 'T-Cross', 'Nivus', 'Tiguan'],
-    'Volvo': []
+    'Foton': ['Tunland G7', 'Tunland V9', 'Aumark', 'Ollin', 'Auman', 'EST', 'View'],
+    'Volkswagen': ['Amarok', 'Saveiro', 'T-Cross', 'Nivus', 'Tiguan', 'Taos', 'Teramont', 'Delivery', 'Constellation'],
+    'Hyundai': ['Santa Cruz', 'Creta', 'Tucson', 'Santa Fe', 'Palisade', 'Venue', 'Mighty', 'H1', 'Staria'],
+    'Kia': ['Sonet', 'Seltos', 'Sportage', 'Sorento', 'Telluride', 'Carnival', 'K2700'],
+    'Renault': ['Duster', 'Kardian', 'Kwid', 'Koleos', 'Arkana', 'Boreal', 'Austral', 'Filante', 'Captur', 'Espace', 'Oroch', 'Alaskan', 'Master', 'Trafic', 'Kangoo', 'Renault Trucks Gama T', 'Renault Trucks Gama C', 'Renault Trucks Gama K', 'Renault Trucks Gama D'],
+    'Volvo': ['XC40', 'XC60', 'XC90', 'FH', 'FMX', 'FM', 'VM'],
+    'Scania': ['Serie R', 'Serie G', 'Serie P', 'Serie S', 'Serie XT'],
+    'Mercedes-Benz': ['Sprinter', 'Actros', 'Arocs', 'Atego', 'Accelo', 'GLC', 'GLE', 'GLS'],
+    'MAN': ['TGX', 'TGS', 'TGM', 'TGL'],
+    'IVECO': ['S-Way', 'T-Way', 'Eurocargo', 'Daily'],
+    'DAF': ['XF', 'XG', 'XD', 'LF'],
+    'Hino': ['Dutro', 'Ranger', 'Profia'],
+    'Fuso': ['Canter', 'FI', 'FJ', 'Super Great', 'Rosa'],
+    'UD Trucks': ['Croner', 'Quester', 'Quon'],
+    'Freightliner': ['Cascadia', 'M2 106', 'M2 112', '114SD'],
+    'International': ['LT', 'HV', 'MV', 'HX'],
+    'Kenworth': ['T680', 'T880', 'W900', 'T370'],
+    'Peterbilt': ['579', '567', '389', '536'],
+    'Mack': ['Anthem', 'Granite', 'MD Series'],
+    'Sinotruk (Howo)': ['A7', 'T7H', 'SITRAK C7H', 'MAX'],
+    'Shacman': ['X3000', 'F3000', 'X5000'],
+    'Dongfeng': ['Captain', 'KR', 'KL', 'KX']
 };
 
 // ============================================================
@@ -760,7 +761,6 @@ function cambiarMarca() {
         manual.focus();
         btn.innerHTML = '<i class="fas fa-list"></i>';
         select.style.display = 'none';
-        // Limpiar modelos ya que la marca es manual
         document.getElementById('fModeloSelect').innerHTML = '<option value="">Seleccionar modelo...</option>';
         document.getElementById('fModeloManual').value = '';
         document.getElementById('fModeloManual').style.display = 'none';
@@ -770,7 +770,6 @@ function cambiarMarca() {
         manual.style.display = 'none';
         select.style.display = 'block';
         btn.innerHTML = '<i class="fas fa-pen"></i>';
-        // Filtrar modelos por la marca seleccionada
         filtrarModelosPorMarca();
     }
 }
@@ -781,24 +780,20 @@ function toggleMarcaManual() {
     const btn = document.getElementById('toggleMarcaBtn');
     
     if (manual.style.display === 'block') {
-        // Volver al select
         manual.style.display = 'none';
         select.style.display = 'block';
         btn.innerHTML = '<i class="fas fa-pen"></i>';
         select.value = '';
-        // Limpiar modelos
         document.getElementById('fModeloSelect').innerHTML = '<option value="">Seleccionar modelo...</option>';
         document.getElementById('fModeloManual').value = '';
         document.getElementById('fModeloManual').style.display = 'none';
         document.getElementById('fModeloSelect').style.display = 'block';
         document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
     } else {
-        // Cambiar a manual
         select.style.display = 'none';
         manual.style.display = 'block';
         manual.focus();
         btn.innerHTML = '<i class="fas fa-list"></i>';
-        // Limpiar modelos
         document.getElementById('fModeloSelect').innerHTML = '<option value="">Seleccionar modelo...</option>';
         document.getElementById('fModeloManual').value = '';
         document.getElementById('fModeloManual').style.display = 'none';
@@ -833,7 +828,6 @@ function setMarca(valor) {
         return;
     }
     
-    // Buscar en el select
     let found = false;
     for (let option of select.options) {
         if (option.value === valor) {
@@ -849,12 +843,10 @@ function setMarca(valor) {
         btn.innerHTML = '<i class="fas fa-pen"></i>';
         filtrarModelosPorMarca();
     } else {
-        // Si no está en la lista, ir a manual
         select.style.display = 'none';
         manual.style.display = 'block';
         manual.value = valor;
         btn.innerHTML = '<i class="fas fa-list"></i>';
-        // Limpiar modelos
         document.getElementById('fModeloSelect').innerHTML = '<option value="">Seleccionar modelo...</option>';
         document.getElementById('fModeloManual').value = '';
         document.getElementById('fModeloManual').style.display = 'none';
@@ -872,7 +864,6 @@ function filtrarModelosPorMarca() {
     const select = document.getElementById('fModeloSelect');
     const manual = document.getElementById('fModeloManual');
     
-    // Determinar la marca actual (select o manual)
     let marca = '';
     if (marcaManual.style.display === 'block' && marcaManual.value.trim() !== '') {
         marca = marcaManual.value.trim();
@@ -880,10 +871,8 @@ function filtrarModelosPorMarca() {
         marca = marcaSelect.value;
     }
     
-    // Limpiar select
     select.innerHTML = '<option value="">Seleccionar modelo...</option>';
     
-    // Si hay modelos para esta marca, agregarlos
     if (marca && modelosPorMarca[marca] && modelosPorMarca[marca].length > 0) {
         modelosPorMarca[marca].forEach(modelo => {
             const option = document.createElement('option');
@@ -891,20 +880,17 @@ function filtrarModelosPorMarca() {
             option.textContent = modelo;
             select.appendChild(option);
         });
-        // Agregar opción "Otro" al final
         const optionOtro = document.createElement('option');
         optionOtro.value = '__OTRO__';
         optionOtro.textContent = '✏️ Otro (escribir manualmente)';
         select.appendChild(optionOtro);
     } else {
-        // Si no hay modelos, mostrar solo "Otro"
         const optionOtro = document.createElement('option');
         optionOtro.value = '__OTRO__';
         optionOtro.textContent = '✏️ Otro (escribir manualmente)';
         select.appendChild(optionOtro);
     }
     
-    // Resetear campo manual
     manual.value = '';
     manual.style.display = 'none';
     select.style.display = 'block';
@@ -934,17 +920,14 @@ function toggleModeloManual() {
     const btn = document.getElementById('toggleModeloBtn');
     
     if (manual.style.display === 'block') {
-        // Volver al select
         manual.style.display = 'none';
         select.style.display = 'block';
         btn.innerHTML = '<i class="fas fa-pen"></i>';
         if (select.value === '__OTRO__') {
             select.value = '';
         }
-        // Forzar la actualización del select
         filtrarModelosPorMarca();
     } else {
-        // Cambiar a manual
         select.style.display = 'none';
         manual.style.display = 'block';
         manual.focus();
@@ -971,7 +954,6 @@ function setModelo(valor) {
     const select = document.getElementById('fModeloSelect');
     const manual = document.getElementById('fModeloManual');
     
-    // Primero asegurar que el select tenga los modelos de la marca actual
     filtrarModelosPorMarca();
     
     if (!valor) {
@@ -983,7 +965,6 @@ function setModelo(valor) {
         return;
     }
     
-    // Buscar en el select
     let found = false;
     for (let option of select.options) {
         if (option.value === valor) {
@@ -998,7 +979,6 @@ function setModelo(valor) {
         select.style.display = 'block';
         document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
     } else {
-        // Si no está en la lista, ir a manual
         select.style.display = 'none';
         manual.style.display = 'block';
         manual.value = valor;
@@ -1021,8 +1001,8 @@ function cargarDesdeFirebase() {
                 const vehiculo = data[key];
                 vehiculo.key = key;
                 
-                if (!vehiculo.hasOwnProperty('averias')) {
-                    vehiculo.averias = [];
+                if (!vehiculo.hasOwnProperty('observaciones')) {
+                    vehiculo.observaciones = [];
                 }
                 
                 if (!vehiculo.hasOwnProperty('extintor')) {
@@ -1030,8 +1010,8 @@ function cargarDesdeFirebase() {
                     vehiclesRef.child(key).update({ extintor: '' });
                 }
                 
-                if (!Array.isArray(vehiculo.averias)) {
-                    vehiculo.averias = [];
+                if (!Array.isArray(vehiculo.observaciones)) {
+                    vehiculo.observaciones = [];
                 }
                 
                 vehicles.push(vehiculo);
@@ -1050,11 +1030,11 @@ function cargarDesdeFirebase() {
 }
 
 // ============================================================
-// 🎨 CALCULAR ESTADO DEL VEHÍCULO (con EXTINTOR)
+// 🎨 CALCULAR ESTADO DEL VEHÍCULO
 // ============================================================
-function tieneAveriasPendientes(v) {
-    if (!v.averias || !Array.isArray(v.averias)) return false;
-    return v.averias.some(a => a.estado !== 'reparado');
+function tieneObservacionesPendientes(v) {
+    if (!v.observaciones || !Array.isArray(v.observaciones)) return false;
+    return v.observaciones.some(a => a.estado !== 'resuelto');
 }
 
 function calcularEstadoVehiculo(v) {
@@ -1095,8 +1075,8 @@ function calcularEstadoVehiculo(v) {
     const diffKm = proxKm - v.kmActual;
     const ek = estadoKm(diffKm);
     
-    const tieneAveria = tieneAveriasPendientes(v);
-    const estadoMant = tieneAveria ? { clase: 'estado-rojo', etiqueta: 'AVERÍA', icono: 'fas fa-exclamation-triangle' } : ek;
+    const tieneObservacion = tieneObservacionesPendientes(v);
+    const estadoMant = tieneObservacion ? { clase: 'estado-rojo', etiqueta: 'OBSERVACIÓN', icono: 'fas fa-exclamation-triangle' } : ek;
     
     const estados = [es.clase, ei.clase, ee.clase, estadoMant.clase];
     let general = 'estado-verde';
@@ -1110,7 +1090,7 @@ function calcularEstadoVehiculo(v) {
         extintor: ee,
         mantenimiento: estadoMant,
         general: general,
-        tieneAveria: tieneAveria
+        tieneObservacion: tieneObservacion
     };
 }
 
@@ -1292,7 +1272,7 @@ async function guardarVehiculo() {
         extintor: document.getElementById('fExtintor').value || '',
         fechaMant: document.getElementById('fFechaMant').value || '',
         kmMant: parseInt(document.getElementById('fKmMant').value) || 0,
-        averias: [],
+        observaciones: [],
         servicios: []
     };
 
@@ -1300,7 +1280,7 @@ async function guardarVehiculo() {
         const existente = vehicles[editingIndex];
         const actualizado = { ...existente, ...data };
         actualizado.key = existente.key;
-        actualizado.averias = existente.averias || [];
+        actualizado.observaciones = existente.observaciones || [];
         const exito = await guardarEnFirebase(actualizado, false);
         if (exito) {
             vehicles[editingIndex] = actualizado;
@@ -1377,59 +1357,59 @@ function mostrarFeedback(texto, bg, border) {
 }
 
 // ============================================================
-// 📋 GESTIÓN DE AVERÍAS
+// 📋 GESTIÓN DE OBSERVACIONES
 // ============================================================
-async function agregarAveria(index) {
+async function agregarObservacion(index) {
     const v = vehicles[index];
-    const input = document.getElementById('averiaInput-' + index);
+    const input = document.getElementById('observacionInput-' + index);
     const texto = input.value.trim();
     
     if (!texto) {
-        mostrarFeedback('⚠️ Escribe una descripción de la avería.', '#fff3cd', '#ffc107');
+        mostrarFeedback('⚠️ Escribe una descripción de la observación.', '#fff3cd', '#ffc107');
         return;
     }
     
-    const nuevaAveria = {
+    const nuevaObservacion = {
         id: Date.now(),
         texto: texto,
         fecha: new Date().toISOString().split('T')[0],
         estado: 'pendiente'
     };
     
-    if (!v.averias) v.averias = [];
-    v.averias.push(nuevaAveria);
+    if (!v.observaciones) v.observaciones = [];
+    v.observaciones.push(nuevaObservacion);
     
     const exito = await guardarEnFirebase(v, false);
     if (exito) {
         input.value = '';
-        mostrarFeedback('✅ Avería reportada correctamente.', '#d4edda', '#28a745');
+        mostrarFeedback('✅ Observación reportada correctamente.', '#d4edda', '#28a745');
         renderVehicleView(index);
         renderVehicleList();
     }
 }
 
-async function repararAveria(vehicleIndex, averiaId) {
+async function resolverObservacion(vehicleIndex, observacionId) {
     const v = vehicles[vehicleIndex];
-    const averia = v.averias.find(a => a.id === averiaId);
-    if (averia) {
-        averia.estado = 'reparado';
+    const observacion = v.observaciones.find(a => a.id === observacionId);
+    if (observacion) {
+        observacion.estado = 'resuelto';
         const exito = await guardarEnFirebase(v, false);
         if (exito) {
-            mostrarFeedback('✅ Avería marcada como reparada.', '#d4edda', '#28a745');
+            mostrarFeedback('✅ Observación marcada como resuelta.', '#d4edda', '#28a745');
             renderVehicleView(vehicleIndex);
             renderVehicleList();
         }
     }
 }
 
-async function eliminarAveria(vehicleIndex, averiaId) {
-    if (!confirm('¿Eliminar este reporte de avería?')) return;
+async function eliminarObservacion(vehicleIndex, observacionId) {
+    if (!confirm('¿Eliminar este reporte de observación?')) return;
     
     const v = vehicles[vehicleIndex];
-    v.averias = v.averias.filter(a => a.id !== averiaId);
+    v.observaciones = v.observaciones.filter(a => a.id !== observacionId);
     const exito = await guardarEnFirebase(v, false);
     if (exito) {
-        mostrarFeedback('✅ Reporte de avería eliminado.', '#d4edda', '#28a745');
+        mostrarFeedback('✅ Reporte de observación eliminado.', '#d4edda', '#28a745');
         renderVehicleView(vehicleIndex);
         renderVehicleList();
     }
@@ -1445,22 +1425,22 @@ async function actualizarKilometraje(index) {
     const nuevoKm = parseInt(input.value);
     
     if (isNaN(nuevoKm) || nuevoKm < 0) {
-        mostrarFeedback('⚠️ Ingresa un kilómetraje válido.', '#fff3cd', '#ffc107');
+        mostrarFeedback('⚠️ Ingresa un valor válido (Hr o Km).', '#fff3cd', '#ffc107');
         return;
     }
     
     try {
-        actualizarStatus('Actualizando km...', '');
+        actualizarStatus('Actualizando...', '');
         await vehiclesRef.child(v.key).update({ kmActual: nuevoKm });
         v.kmActual = nuevoKm;
-        actualizarStatus('✅ Km actualizado', 'synced');
-        mostrarFeedback(`✅ Kilometraje actualizado a ${nuevoKm.toLocaleString()} km`, '#d4edda', '#28a745');
+        actualizarStatus('✅ Actualizado', 'synced');
+        mostrarFeedback(`✅ Valor actualizado a ${nuevoKm.toLocaleString()} (Hr o Km)`, '#d4edda', '#28a745');
         btn.classList.remove('visible');
         renderVehicleView(index);
         renderVehicleList();
     } catch (error) {
         console.error('Error:', error);
-        mostrarFeedback('❌ Error al actualizar el kilometraje.', '#fff0f0', '#d32f2f');
+        mostrarFeedback('❌ Error al actualizar el valor.', '#fff0f0', '#d32f2f');
     }
 }
 
@@ -1478,8 +1458,8 @@ function renderVehicleList() {
     
     const prioridad = (v) => {
         const estado = calcularEstadoVehiculo(v);
-        const tieneAveria = tieneAveriasPendientes(v);
-        if (tieneAveria) return 0;
+        const tieneObservacion = tieneObservacionesPendientes(v);
+        if (tieneObservacion) return 0;
         if (estado.general === 'estado-rojo') return 1;
         if (estado.general === 'estado-naranja') return 2;
         if (estado.general === 'estado-amarillo') return 3;
@@ -1495,14 +1475,14 @@ function renderVehicleList() {
             const realIndex = vehicles.indexOf(v);
             const active = (realIndex === selectedIndex) ? 'active' : '';
             const estado = calcularEstadoVehiculo(v);
-            const tieneAveria = tieneAveriasPendientes(v);
-            const prioridadAlta = tieneAveria || estado.general === 'estado-rojo' || estado.general === 'estado-naranja';
-            const averiasCount = v.averias ? v.averias.filter(a => a.estado === 'pendiente').length : 0;
+            const tieneObservacion = tieneObservacionesPendientes(v);
+            const prioridadAlta = tieneObservacion || estado.general === 'estado-rojo' || estado.general === 'estado-naranja';
+            const observacionesCount = v.observaciones ? v.observaciones.filter(a => a.estado === 'pendiente').length : 0;
             html += `
                 <div class="vehicle-tab ${estado.general} ${active} ${prioridadAlta ? 'prioridad-alta' : ''}" onclick="selectVehicle(${realIndex})">
                     <i class="fas fa-car"></i> ${v.placa}
-                    <span class="badge-count">${v.kmActual.toLocaleString()} km</span>
-                    ${tieneAveria ? `<span class="alerta-averia"><i class="fas fa-exclamation-triangle"></i> ${averiasCount}</span>` : ''}
+                    <span class="badge-count">${v.kmActual.toLocaleString()} (Hr o Km)</span>
+                    ${tieneObservacion ? `<span class="alerta-observacion"><i class="fas fa-exclamation-triangle"></i> ${observacionesCount}</span>` : ''}
                 </div>
             `;
         });
@@ -1585,12 +1565,12 @@ function renderVehicleView(index) {
     const de = diasHasta(v.extintor);
     const ee = estadoDias(de);
 
-    const tieneAveria = tieneAveriasPendientes(v);
+    const tieneObservacion = tieneObservacionesPendientes(v);
     let em, tm;
     
-    if (tieneAveria) {
-        em = { clase: 'alert-red', etiqueta: 'AVERÍA' };
-        tm = '⚠️ Avería pendiente';
+    if (tieneObservacion) {
+        em = { clase: 'alert-red', etiqueta: 'OBSERVACIÓN' };
+        tm = '⚠️ Observación pendiente';
     } else if (v.fechaMant) {
         const fm = new Date(v.fechaMant + 'T00:00:00');
         const dm = Math.round((hoy - fm) / (1000*60*60*24));
@@ -1623,67 +1603,67 @@ function renderVehicleView(index) {
           texto: de < 0 ? 'VENCIDO' : (de <= 30 ? `Vence en ${de} días` : 'Vigente'),
           detalle: v.extintor ? formatearFecha(v.extintor) : 'No registrado' },
         { titulo: 'Último mantenimiento', icono: 'fas fa-oil-can', clase: em.clase, etiqueta: em.etiqueta,
-          texto: tm, detalle: v.fechaMant ? `${formatearFecha(v.fechaMant)} (${v.kmMant.toLocaleString()} km)` : 'No registrado' },
+          texto: tm, detalle: v.fechaMant ? `${formatearFecha(v.fechaMant)} (${v.kmMant.toLocaleString()} Hr o Km)` : 'No registrado' },
         { titulo: 'Próximo servicio', icono: 'fas fa-tachometer-alt', clase: ek.clase, etiqueta: ek.etiqueta,
-          texto: `${proxKm.toLocaleString()} km`, detalle: `faltan ${diffKm.toLocaleString()} km · intervalo ${proxAceite.toLocaleString()} km` }
+          texto: `${proxKm.toLocaleString()} (Hr o Km)`, detalle: `faltan ${diffKm.toLocaleString()} (Hr o Km) · intervalo ${proxAceite.toLocaleString()} (Hr o Km)` }
     ];
 
-    let averiasHtml = '';
-    const averiasPendientes = v.averias ? v.averias.filter(a => a.estado === 'pendiente') : [];
-    const averiasReparadas = v.averias ? v.averias.filter(a => a.estado === 'reparado') : [];
+    let observacionesHtml = '';
+    const observacionesPendientes = v.observaciones ? v.observaciones.filter(a => a.estado === 'pendiente') : [];
+    const observacionesResueltas = v.observaciones ? v.observaciones.filter(a => a.estado === 'resuelto') : [];
     
-    if (v.averias && v.averias.length > 0) {
-        averiasHtml = `
-            <div class="averias-section">
+    if (v.observaciones && v.observaciones.length > 0) {
+        observacionesHtml = `
+            <div class="observaciones-section">
                 <div class="header">
-                    <h4><i class="fas fa-exclamation-triangle" style="color:#e66a00;"></i> Reporte de averías</h4>
+                    <h4><i class="fas fa-exclamation-triangle" style="color:#e66a00;"></i> Reporte de observaciones</h4>
                     <span style="font-size:12px;color:#657e9e;">
-                        ${averiasPendientes.length} pendientes · ${averiasReparadas.length} reparadas
+                        ${observacionesPendientes.length} pendientes · ${observacionesResueltas.length} resueltas
                     </span>
                 </div>
-                ${averiasPendientes.map(a => `
-                    <div class="averia-item">
+                ${observacionesPendientes.map(a => `
+                    <div class="observacion-item">
                         <div class="texto">
                             <i class="fas fa-circle" style="color:#e66a00;font-size:8px;"></i>
                             ${a.texto}
                             <span class="fecha">${a.fecha}</span>
                             <span class="estado pendiente">● Pendiente</span>
                         </div>
-                        <div class="acciones-averia">
-                            <button class="btn-sm btn-sm-success" onclick="repararAveria(${index}, ${a.id})"><i class="fas fa-check"></i> Reparado</button>
-                            <button class="btn-sm btn-sm-outline" onclick="eliminarAveria(${index}, ${a.id})"><i class="fas fa-trash"></i></button>
+                        <div class="acciones-observacion">
+                            <button class="btn-sm btn-sm-success" onclick="resolverObservacion(${index}, ${a.id})"><i class="fas fa-check"></i> Resuelto</button>
+                            <button class="btn-sm btn-sm-outline" onclick="eliminarObservacion(${index}, ${a.id})"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
                 `).join('')}
-                ${averiasReparadas.map(a => `
-                    <div class="averia-item reparado">
+                ${observacionesResueltas.map(a => `
+                    <div class="observacion-item resuelto">
                         <div class="texto">
                             <i class="fas fa-circle" style="color:#0f7b3a;font-size:8px;"></i>
                             ${a.texto}
                             <span class="fecha">${a.fecha}</span>
-                            <span class="estado reparado">✓ Reparado</span>
+                            <span class="estado resuelto">✓ Resuelto</span>
                         </div>
-                        <div class="acciones-averia">
-                            <button class="btn-sm btn-sm-outline" onclick="eliminarAveria(${index}, ${a.id})"><i class="fas fa-trash"></i></button>
+                        <div class="acciones-observacion">
+                            <button class="btn-sm btn-sm-outline" onclick="eliminarObservacion(${index}, ${a.id})"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
                 `).join('')}
-                <div class="averia-input-group">
-                    <input type="text" id="averiaInput-${index}" placeholder="Nueva avería..." onkeypress="if(event.key==='Enter') agregarAveria(${index})">
-                    <button class="btn-sm btn-sm-warning" onclick="agregarAveria(${index})"><i class="fas fa-plus"></i> Reportar</button>
+                <div class="observacion-input-group">
+                    <input type="text" id="observacionInput-${index}" placeholder="Nueva observación..." onkeypress="if(event.key==='Enter') agregarObservacion(${index})">
+                    <button class="btn-sm btn-sm-warning" onclick="agregarObservacion(${index})"><i class="fas fa-plus"></i> Reportar</button>
                 </div>
             </div>
         `;
     } else {
-        averiasHtml = `
-            <div class="averias-section">
+        observacionesHtml = `
+            <div class="observaciones-section">
                 <div class="header">
-                    <h4><i class="fas fa-exclamation-triangle" style="color:#e66a00;"></i> Reporte de averías</h4>
+                    <h4><i class="fas fa-exclamation-triangle" style="color:#e66a00;"></i> Reporte de observaciones</h4>
                 </div>
-                <div class="no-averias">No hay averías reportadas.</div>
-                <div class="averia-input-group">
-                    <input type="text" id="averiaInput-${index}" placeholder="Nueva avería..." onkeypress="if(event.key==='Enter') agregarAveria(${index})">
-                    <button class="btn-sm btn-sm-warning" onclick="agregarAveria(${index})"><i class="fas fa-plus"></i> Reportar</button>
+                <div class="no-observaciones">No hay observaciones reportadas.</div>
+                <div class="observacion-input-group">
+                    <input type="text" id="observacionInput-${index}" placeholder="Nueva observación..." onkeypress="if(event.key==='Enter') agregarObservacion(${index})">
+                    <button class="btn-sm btn-sm-warning" onclick="agregarObservacion(${index})"><i class="fas fa-plus"></i> Reportar</button>
                 </div>
             </div>
         `;
@@ -1698,13 +1678,13 @@ function renderVehicleView(index) {
                     <div class="km-editable">
                         <i class="fas fa-road icono-km"></i>
                         <input type="number" id="kmInput-${index}" value="${v.kmActual}" min="0" oninput="mostrarBotonKm(${index})">
-                        <span class="km-label">km</span>
+                        <span class="km-label">(Hr o Km)</span>
                         <button class="guardar-km" id="kmSaveBtn-${index}" onclick="actualizarKilometraje(${index})">
                             <i class="fas fa-save"></i>
                         </button>
                     </div>
-                    <span class="badge-km" style="background:#d4edda;"><i class="fas fa-oil-can"></i> c/${v.intAceite.toLocaleString()} km</span>
-                    ${tieneAveria ? '<span class="alerta-averia-tarjeta"><i class="fas fa-exclamation-triangle"></i> Avería pendiente</span>' : ''}
+                    <span class="badge-km" style="background:#d4edda;"><i class="fas fa-oil-can"></i> c/${v.intAceite.toLocaleString()} (Hr o Km)</span>
+                    ${tieneObservacion ? '<span class="alerta-observacion-tarjeta"><i class="fas fa-exclamation-triangle"></i> Observación pendiente</span>' : ''}
                 </div>
                 <div class="acciones">
                     <button class="btn-edit-azul" onclick="editarVehiculo(${index})"><i class="fas fa-edit"></i> Editar</button>
@@ -1725,7 +1705,7 @@ function renderVehicleView(index) {
                         </div>
                     `).join('')}
                 </div>
-                ${averiasHtml}
+                ${observacionesHtml}
             </div>
         </div>
     `;
