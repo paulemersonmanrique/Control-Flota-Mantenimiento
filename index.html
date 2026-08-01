@@ -8,7 +8,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
-        /* ... (todos tus estilos iguales) ... */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, system-ui, sans-serif; }
         body { background: #f0f4fa; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         
@@ -339,16 +338,56 @@
         .form-panel { background: #f8fbff; border-radius: 20px; padding: 20px 24px; border: 1px solid #eaf0f8; margin-bottom: 20px; display: none; }
         .form-panel.visible { display: block; }
         .form-panel h3 { font-size: 20px; font-weight: 600; color: #14273e; margin-bottom: 16px; border-bottom: 1px solid #eef4fc; padding-bottom: 12px; }
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px 18px; }
-        .form-group { display: flex; flex-direction: column; gap: 4px; }
-        .form-group label { font-size: 14px; font-weight: 500; color: #1a324b; display: flex; align-items: center; gap: 6px; }
-        .form-group label i { color: #0066cc; width: 16px; }
-        .form-control { padding: 10px 14px; border-radius: 14px; border: 1px solid #d3dfee; background: white; font-size: 15px; transition: 0.15s; }
-        .form-control:focus { outline: none; border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); }
-        .form-control select { appearance: auto; cursor: pointer; }
-        .form-control.textarea { resize: vertical; min-height: 60px; font-family: inherit; }
-        .form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px; padding-top: 14px; border-top: 1px solid #eaf0f8; }
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 12px 18px; }
 
+        /* FILA PRINCIPAL: 6 COLUMNAS */
+        .row-principal {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr 0.7fr 1fr 0.8fr;
+            gap: 12px 14px;
+            grid-column: 1 / -1;
+        }
+        .row-principal .form-group {
+            margin: 0;
+        }
+        .row-principal .form-group label {
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        .row-principal .form-control {
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+        .row-principal .select-manual-wrapper select,
+        .row-principal .select-manual-wrapper input,
+        .row-principal .tipo-select-wrapper select {
+            padding: 8px 10px;
+            font-size: 13px;
+        }
+        .row-principal .select-manual-wrapper .btn-small {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+        .row-principal .tipo-icono-preview {
+            font-size: 18px;
+            min-width: 24px;
+        }
+        .row-principal .tipo-select-wrapper {
+            gap: 4px;
+        }
+
+        /* FILA SECUNDARIA: 3 COLUMNAS */
+        .row-secundaria {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px 18px;
+            grid-column: 1 / -1;
+        }
+        .row-secundaria .form-group {
+            margin: 0;
+        }
+
+        /* FILA DE 2 COLUMNAS */
         .row-dual {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -363,9 +402,70 @@
             grid-column: 1 / -1;
         }
 
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        .form-group label { font-size: 14px; font-weight: 500; color: #1a324b; display: flex; align-items: center; gap: 6px; }
+        .form-group label i { color: #0066cc; width: 16px; }
+        .form-control { padding: 10px 14px; border-radius: 14px; border: 1px solid #d3dfee; background: white; font-size: 15px; transition: 0.15s; }
+        .form-control:focus { outline: none; border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); }
+        .form-control select { appearance: auto; cursor: pointer; }
+        .form-control.textarea { resize: vertical; min-height: 60px; font-family: inherit; }
+        .form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px; padding-top: 14px; border-top: 1px solid #eaf0f8; }
+
+        /* SELECTOR CON OPCIÓN MANUAL */
+        .select-manual-wrapper {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            width: 100%;
+        }
+        .select-manual-wrapper select {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 14px;
+            border: 1px solid #d3dfee;
+            background: white;
+            font-size: 15px;
+            transition: 0.15s;
+        }
+        .select-manual-wrapper select:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
+        }
+        .select-manual-wrapper input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 14px;
+            border: 1px solid #d3dfee;
+            background: white;
+            font-size: 15px;
+            transition: 0.15s;
+            display: none;
+        }
+        .select-manual-wrapper input:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
+        }
+        .select-manual-wrapper input.visible {
+            display: block;
+        }
+        .select-manual-wrapper .btn-small {
+            padding: 6px 10px;
+            border-radius: 12px;
+            border: 1px solid #d3dfee;
+            background: white;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 13px;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .select-manual-wrapper .btn-small:hover { background: #f0f5ff; border-color: #0066cc; }
+
         .tipo-select-wrapper {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
             width: 100%;
         }
@@ -389,20 +489,6 @@
             min-width: 30px;
             text-align: center;
         }
-
-        .modelo-input-wrapper { display: flex; gap: 8px; align-items: center; width: 100%; }
-        .modelo-input-wrapper select { flex: 1; }
-        .modelo-input-wrapper input { flex: 1; display: none; }
-        .modelo-input-wrapper input.visible { display: block; }
-        .modelo-input-wrapper .btn-small { padding: 6px 12px; border-radius: 12px; border: 1px solid #d3dfee; background: white; cursor: pointer; white-space: nowrap; }
-        .modelo-input-wrapper .btn-small:hover { background: #f0f5ff; border-color: #0066cc; }
-
-        .marca-manual-wrapper { display: flex; gap: 8px; align-items: center; width: 100%; }
-        .marca-manual-wrapper select { flex: 1; }
-        .marca-manual-wrapper input { flex: 1; display: none; }
-        .marca-manual-wrapper input.visible { display: block; }
-        .marca-manual-wrapper .btn-small { padding: 6px 12px; border-radius: 12px; border: 1px solid #d3dfee; background: white; cursor: pointer; white-space: nowrap; }
-        .marca-manual-wrapper .btn-small:hover { background: #f0f5ff; border-color: #0066cc; }
 
         .alert-grid {
             display: grid;
@@ -767,9 +853,49 @@
         .footer-signature .icono { color: #0066cc; margin: 0 6px; }
         .footer-signature .version { font-size: 12px; color: #a0b4cc; margin-top: 4px; }
 
+        @media (max-width: 1024px) {
+            .row-principal {
+                grid-template-columns: 1fr 1fr;
+            }
+            .row-principal .form-group:nth-child(5) {
+                grid-column: 1 / 2;
+            }
+            .row-principal .form-group:nth-child(6) {
+                grid-column: 2 / 3;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .row-principal {
+                grid-template-columns: 1fr 1fr;
+            }
+            .row-principal .form-group:nth-child(1) { grid-column: 1 / 2; }
+            .row-principal .form-group:nth-child(2) { grid-column: 2 / 3; }
+            .row-principal .form-group:nth-child(3) { grid-column: 1 / 2; }
+            .row-principal .form-group:nth-child(4) { grid-column: 2 / 3; }
+            .row-principal .form-group:nth-child(5) { grid-column: 1 / 2; }
+            .row-principal .form-group:nth-child(6) { grid-column: 2 / 3; }
+            
+            .row-secundaria {
+                grid-template-columns: 1fr 1fr;
+            }
+            .row-dual {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 600px) {
             .app-container { padding: 12px 14px; }
-            .form-grid { grid-template-columns: 1fr; }
+            .row-principal { grid-template-columns: 1fr; }
+            .row-principal .form-group:nth-child(1),
+            .row-principal .form-group:nth-child(2),
+            .row-principal .form-group:nth-child(3),
+            .row-principal .form-group:nth-child(4),
+            .row-principal .form-group:nth-child(5),
+            .row-principal .form-group:nth-child(6) {
+                grid-column: 1 / 2;
+            }
+            .row-secundaria { grid-template-columns: 1fr; }
             .row-dual { grid-template-columns: 1fr; }
             .header-right { flex-direction: column; align-items: stretch; }
             .app-header { flex-direction: column; align-items: stretch; gap: 10px; }
@@ -781,12 +907,12 @@
             .observacion-input-group { flex-direction: column; }
             .observacion-input-group input { width: 100%; }
             .km-editable input { width: 60px; }
-            .marca-manual-wrapper { flex-wrap: wrap; }
             .filter-buttons { justify-content: center; }
             .filter-btn { min-width: 80px; padding: 6px 12px; font-size: 11px; }
             .modal-content { width: 95%; height: 90vh; max-height: none; }
             .modal-header { padding: 12px 16px; }
             .modal-header .modal-title { font-size: 15px; }
+            .select-manual-wrapper { flex-wrap: wrap; }
             
             .inicio-container { padding: 30px 20px; }
             .inicio-container .logo { font-size: 48px; }
@@ -833,7 +959,7 @@
             <i class="fas fa-sign-in-alt"></i> Ingresar a la interfaz
         </button>
 
-        <div class="version-inicio">v3.8 · Control de Flota con Firebase</div>
+        <div class="version-inicio">v3.9 · Control de Flota con Firebase</div>
     </div>
 </div>
 
@@ -890,84 +1016,62 @@
     <div class="form-panel" id="formPanel">
         <h3><i class="fas fa-plus-circle"></i> <span id="formTitle">Nuevo Vehículo</span></h3>
         <div class="form-grid">
-            <div class="form-group">
-                <label><i class="fas fa-id-card"></i> Placa *</label>
-                <input type="text" class="form-control" id="fPlaca" placeholder="ABC-123" oninput="this.value=this.value.toUpperCase()">
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-car"></i> Marca</label>
-                <div class="marca-manual-wrapper">
-                    <select class="form-control" id="fMarca" onchange="cambiarMarca()">
-                        <option value="">Seleccionar marca...</option>
-                        <option value="Changan">Changan</option>
-                        <option value="Chery">Chery</option>
-                        <option value="Chevrolet">Chevrolet</option>
-                        <option value="DAF">DAF</option>
-                        <option value="Dongfeng">Dongfeng</option>
-                        <option value="Ford">Ford</option>
-                        <option value="Foton">Foton</option>
-                        <option value="Freightliner">Freightliner</option>
-                        <option value="Fuso">Fuso</option>
-                        <option value="GMC">GMC</option>
-                        <option value="Great Wall Motor (GWM)">Great Wall Motor (GWM)</option>
-                        <option value="Hino">Hino</option>
-                        <option value="Honda">Honda</option>
-                        <option value="Hyundai">Hyundai</option>
-                        <option value="International">International</option>
-                        <option value="Isuzu">Isuzu</option>
-                        <option value="IVECO">IVECO</option>
-                        <option value="JAC Motors">JAC Motors</option>
-                        <option value="Jeep">Jeep</option>
-                        <option value="Kenworth">Kenworth</option>
-                        <option value="Kia">Kia</option>
-                        <option value="Mack">Mack</option>
-                        <option value="MAN">MAN</option>
-                        <option value="Mazda">Mazda</option>
-                        <option value="Mercedes-Benz">Mercedes-Benz</option>
-                        <option value="Mitsubishi">Mitsubishi</option>
-                        <option value="Nissan">Nissan</option>
-                        <option value="Peterbilt">Peterbilt</option>
-                        <option value="RAM">RAM</option>
-                        <option value="Renault">Renault</option>
-                        <option value="Scania">Scania</option>
-                        <option value="Shacman">Shacman</option>
-                        <option value="Sinotruk (Howo)">Sinotruk (Howo)</option>
-                        <option value="Subaru">Subaru</option>
-                        <option value="Toyota">Toyota</option>
-                        <option value="UD Trucks">UD Trucks</option>
-                        <option value="Volkswagen">Volkswagen</option>
-                        <option value="Volvo">Volvo</option>
-                        <option value="__OTRO__">✏️ Otro (escribir manualmente)</option>
-                    </select>
-                    <input type="text" class="form-control" id="fMarcaManual" placeholder="Escribir marca..." style="display:none;">
-                    <button type="button" class="btn-small" id="toggleMarcaBtn" onclick="toggleMarcaManual()"><i class="fas fa-pen"></i></button>
-                </div>
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-car-side"></i> Modelo</label>
-                <div class="modelo-input-wrapper">
-                    <select class="form-control" id="fModeloSelect" onchange="cambiarModelo()">
-                        <option value="">Seleccionar modelo...</option>
-                    </select>
-                    <input type="text" class="form-control" id="fModeloManual" placeholder="Escribir modelo..." style="display:none;">
-                    <button type="button" class="btn-small" id="toggleModeloBtn" onclick="toggleModeloManual()"><i class="fas fa-pen"></i></button>
-                </div>
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-calendar-alt"></i> Año</label>
-                <input type="number" class="form-control" id="fAnio" placeholder="2022" min="1900" max="2099">
-            </div>
-            
-            <div class="row-dual">
+            <!-- FILA PRINCIPAL: Placa, Marca, Modelo, Año, Tipo, (Hr/Km) actual -->
+            <div class="row-principal">
+                <!-- Placa -->
                 <div class="form-group">
-                    <label><i class="fas fa-tachometer-alt"></i> (Hr/Km) actual *</label>
-                    <input type="number" class="form-control" id="fKmActual" placeholder="0">
+                    <label><i class="fas fa-id-card"></i> Placa *</label>
+                    <div class="select-manual-wrapper">
+                        <select class="form-control" id="fPlacaSelect" onchange="cambiarPlacaSelect()">
+                            <option value="">Seleccionar...</option>
+                        </select>
+                        <input type="text" class="form-control" id="fPlacaManual" placeholder="Escribir nueva..." style="display:none;" oninput="this.value=this.value.toUpperCase()">
+                        <button type="button" class="btn-small" id="togglePlacaBtn" onclick="togglePlacaManual()">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                    </div>
                 </div>
+
+                <!-- Marca -->
                 <div class="form-group">
-                    <label><i class="fas fa-truck"></i> Tipo de Vehículo</label>
+                    <label><i class="fas fa-car"></i> Marca</label>
+                    <div class="select-manual-wrapper">
+                        <select class="form-control" id="fMarcaSelect" onchange="cambiarMarcaSelect()">
+                            <option value="">Seleccionar...</option>
+                        </select>
+                        <input type="text" class="form-control" id="fMarcaManual" placeholder="Escribir nueva..." style="display:none;">
+                        <button type="button" class="btn-small" id="toggleMarcaBtn" onclick="toggleMarcaManual()">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modelo -->
+                <div class="form-group">
+                    <label><i class="fas fa-car-side"></i> Modelo</label>
+                    <div class="select-manual-wrapper">
+                        <select class="form-control" id="fModeloSelect" onchange="cambiarModeloSelect()">
+                            <option value="">Seleccionar...</option>
+                        </select>
+                        <input type="text" class="form-control" id="fModeloManual" placeholder="Escribir nuevo..." style="display:none;">
+                        <button type="button" class="btn-small" id="toggleModeloBtn" onclick="toggleModeloManual()">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Año -->
+                <div class="form-group">
+                    <label><i class="fas fa-calendar-alt"></i> Año</label>
+                    <input type="number" class="form-control" id="fAnio" placeholder="2022" min="1900" max="2099">
+                </div>
+
+                <!-- Tipo de Vehículo -->
+                <div class="form-group">
+                    <label><i class="fas fa-truck"></i> Tipo</label>
                     <div class="tipo-select-wrapper">
                         <select class="form-control" id="fTipoSelect" onchange="actualizarPreviewTipo()">
-                            <option value="">Seleccionar tipo...</option>
+                            <option value="">Seleccionar...</option>
                             <option value="Camion">Camión</option>
                             <option value="Camioneta">Camioneta</option>
                             <option value="Bus">Bus</option>
@@ -983,37 +1087,55 @@
                     </div>
                     <input type="hidden" id="fTipo" value="">
                 </div>
+
+                <!-- (Hr/Km) actual -->
+                <div class="form-group">
+                    <label><i class="fas fa-tachometer-alt"></i> (Hr/Km) actual *</label>
+                    <input type="number" class="form-control" id="fKmActual" placeholder="0">
+                </div>
             </div>
 
-            <div class="form-group">
-                <label><i class="fas fa-oil-can"></i> Intervalo mantenimiento (Hr/Km)</label>
-                <input type="number" class="form-control" id="fIntAceite" placeholder="5000" value="5000">
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-file-contract"></i> Vencimiento SOAT</label>
-                <input type="date" class="form-control" id="fSoat">
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-clipboard-check"></i> Vencimiento ITV</label>
-                <input type="date" class="form-control" id="fItv">
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-certificate" style="color:#e66a00;"></i> Vencimiento ITV Autrisa</label>
-                <input type="date" class="form-control" id="fItvAutrisa">
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-calendar-check"></i> Último mantenimiento (fecha)</label>
-                <input type="date" class="form-control" id="fFechaMant">
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-road"></i> (Hr/Km) en último mantenimiento</label>
-                <input type="number" class="form-control" id="fKmMant" placeholder="0">
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-fire-extinguisher" style="color:#e66a00;"></i> Vencimiento Extintor</label>
-                <input type="date" class="form-control" id="fExtintor">
+            <!-- FILA SECUNDARIA: 3 columnas -->
+            <div class="row-secundaria">
+                <div class="form-group">
+                    <label><i class="fas fa-oil-can"></i> Intervalo MTTO (Hr/Km)</label>
+                    <input type="number" class="form-control" id="fIntAceite" placeholder="5000" value="5000">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-calendar-check"></i> Último MTTO (fecha)</label>
+                    <input type="date" class="form-control" id="fFechaMant">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-road"></i> (Hr/Km) en último MTTO</label>
+                    <input type="number" class="form-control" id="fKmMant" placeholder="0">
+                </div>
             </div>
 
+            <!-- FILA DE 2 COLUMNAS: Vencimientos -->
+            <div class="row-dual">
+                <div class="form-group">
+                    <label><i class="fas fa-file-contract"></i> Vencimiento SOAT</label>
+                    <input type="date" class="form-control" id="fSoat">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-clipboard-check"></i> Vencimiento ITV</label>
+                    <input type="date" class="form-control" id="fItv">
+                </div>
+            </div>
+
+            <!-- FILA DE 2 COLUMNAS: ITV Autrisa + Extintor -->
+            <div class="row-dual">
+                <div class="form-group">
+                    <label><i class="fas fa-certificate" style="color:#e66a00;"></i> Vencimiento ITV Autrisa</label>
+                    <input type="date" class="form-control" id="fItvAutrisa">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-fire-extinguisher" style="color:#e66a00;"></i> Vencimiento Extintor</label>
+                    <input type="date" class="form-control" id="fExtintor">
+                </div>
+            </div>
+
+            <!-- Link / Documentación -->
             <div class="form-group row-full">
                 <label><i class="fas fa-link" style="color:#8a2be2;"></i> Link / Documentación</label>
                 <input type="url" class="form-control" id="fLink" placeholder="https://ejemplo.com/documento" value="">
@@ -1040,7 +1162,7 @@
         <span class="icono"><i class="fas fa-code"></i></span>
         Desarrollado por <span class="nombre">PaulEManrique</span>
         <span class="icono"><i class="fas fa-heart" style="color: #d32f2f;"></i></span>
-        <div class="version">v3.8 · Control de Flota con Firebase</div>
+        <div class="version">v3.9 · Control de Flota con Firebase</div>
     </div>
 </div>
 
@@ -1112,6 +1234,389 @@ const tipoIconos = {
     'Otro': 'fa-car'
 };
 
+// ============================================================
+// 🔧 FUNCIONES PARA SELECTORES CON OPCIÓN MANUAL
+// ============================================================
+
+// --- PLACA ---
+function actualizarSelectPlacas() {
+    const select = document.getElementById('fPlacaSelect');
+    const placasExistentes = new Set();
+    
+    while (select.options.length > 0) {
+        select.remove(0);
+    }
+    
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Seleccionar...';
+    select.appendChild(defaultOption);
+    
+    vehicles.forEach(v => {
+        const placa = v.placa;
+        const placaNorm = normalizarPlaca(placa);
+        if (!placasExistentes.has(placaNorm) && placa) {
+            placasExistentes.add(placaNorm);
+            const option = document.createElement('option');
+            option.value = placa;
+            option.textContent = placa;
+            select.appendChild(option);
+        }
+    });
+    
+    const options = Array.from(select.options);
+    const firstOption = options[0];
+    const sortedOptions = options.slice(1).sort((a, b) => a.text.localeCompare(b.text));
+    
+    select.innerHTML = '';
+    select.appendChild(firstOption);
+    sortedOptions.forEach(opt => select.appendChild(opt));
+}
+
+function cambiarPlacaSelect() {
+    const select = document.getElementById('fPlacaSelect');
+    const manual = document.getElementById('fPlacaManual');
+    const btn = document.getElementById('togglePlacaBtn');
+    
+    if (select.value) {
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+    }
+}
+
+function togglePlacaManual() {
+    const select = document.getElementById('fPlacaSelect');
+    const manual = document.getElementById('fPlacaManual');
+    const btn = document.getElementById('togglePlacaBtn');
+    
+    if (manual.style.display === 'block') {
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+        select.value = '';
+    } else {
+        select.style.display = 'none';
+        manual.style.display = 'block';
+        manual.focus();
+        btn.innerHTML = '<i class="fas fa-list"></i>';
+    }
+}
+
+function obtenerPlaca() {
+    const select = document.getElementById('fPlacaSelect');
+    const manual = document.getElementById('fPlacaManual');
+    
+    if (manual.style.display === 'block' && manual.value.trim() !== '') {
+        return manual.value.trim().toUpperCase();
+    } else if (select.value && select.value !== '') {
+        return select.value;
+    }
+    return '';
+}
+
+function setPlaca(valor) {
+    const select = document.getElementById('fPlacaSelect');
+    const manual = document.getElementById('fPlacaManual');
+    const btn = document.getElementById('togglePlacaBtn');
+    
+    if (!valor) {
+        select.value = '';
+        manual.value = '';
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+        return;
+    }
+    
+    let found = false;
+    for (let option of select.options) {
+        if (option.value === valor) {
+            select.value = valor;
+            found = true;
+            break;
+        }
+    }
+    
+    if (found) {
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+    } else {
+        select.style.display = 'none';
+        manual.style.display = 'block';
+        manual.value = valor;
+        btn.innerHTML = '<i class="fas fa-list"></i>';
+    }
+}
+
+// --- MARCA ---
+function actualizarSelectMarcas() {
+    const select = document.getElementById('fMarcaSelect');
+    const marcasExistentes = new Set();
+    
+    while (select.options.length > 0) {
+        select.remove(0);
+    }
+    
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Seleccionar...';
+    select.appendChild(defaultOption);
+    
+    vehicles.forEach(v => {
+        const marca = v.marca;
+        if (marca && !marcasExistentes.has(marca)) {
+            marcasExistentes.add(marca);
+            const option = document.createElement('option');
+            option.value = marca;
+            option.textContent = marca;
+            select.appendChild(option);
+        }
+    });
+    
+    const options = Array.from(select.options);
+    const firstOption = options[0];
+    const sortedOptions = options.slice(1).sort((a, b) => a.text.localeCompare(b.text));
+    
+    select.innerHTML = '';
+    select.appendChild(firstOption);
+    sortedOptions.forEach(opt => select.appendChild(opt));
+}
+
+function cambiarMarcaSelect() {
+    const select = document.getElementById('fMarcaSelect');
+    const manual = document.getElementById('fMarcaManual');
+    const btn = document.getElementById('toggleMarcaBtn');
+    
+    if (select.value) {
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+        actualizarSelectModelos(select.value);
+    }
+}
+
+function toggleMarcaManual() {
+    const select = document.getElementById('fMarcaSelect');
+    const manual = document.getElementById('fMarcaManual');
+    const btn = document.getElementById('toggleMarcaBtn');
+    
+    if (manual.style.display === 'block') {
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+        select.value = '';
+        actualizarSelectModelos('');
+    } else {
+        select.style.display = 'none';
+        manual.style.display = 'block';
+        manual.focus();
+        btn.innerHTML = '<i class="fas fa-list"></i>';
+        document.getElementById('fModeloSelect').style.display = 'none';
+        document.getElementById('fModeloManual').style.display = 'block';
+        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-list"></i>';
+    }
+}
+
+function obtenerMarca() {
+    const select = document.getElementById('fMarcaSelect');
+    const manual = document.getElementById('fMarcaManual');
+    
+    if (manual.style.display === 'block' && manual.value.trim() !== '') {
+        return manual.value.trim();
+    } else if (select.value && select.value !== '') {
+        return select.value;
+    }
+    return '';
+}
+
+function setMarca(valor) {
+    const select = document.getElementById('fMarcaSelect');
+    const manual = document.getElementById('fMarcaManual');
+    const btn = document.getElementById('toggleMarcaBtn');
+    
+    if (!valor) {
+        select.value = '';
+        manual.value = '';
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+        return;
+    }
+    
+    let found = false;
+    for (let option of select.options) {
+        if (option.value === valor) {
+            select.value = valor;
+            found = true;
+            break;
+        }
+    }
+    
+    if (found) {
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+        actualizarSelectModelos(valor);
+    } else {
+        select.style.display = 'none';
+        manual.style.display = 'block';
+        manual.value = valor;
+        btn.innerHTML = '<i class="fas fa-list"></i>';
+        document.getElementById('fModeloSelect').style.display = 'none';
+        document.getElementById('fModeloManual').style.display = 'block';
+        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-list"></i>';
+    }
+}
+
+// --- MODELO ---
+function actualizarSelectModelos(marca) {
+    const select = document.getElementById('fModeloSelect');
+    const manual = document.getElementById('fModeloManual');
+    const btn = document.getElementById('toggleModeloBtn');
+    
+    while (select.options.length > 0) {
+        select.remove(0);
+    }
+    
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Seleccionar...';
+    select.appendChild(defaultOption);
+    
+    if (marca) {
+        const modelos = modelosPorMarca[marca] || [];
+        modelos.forEach(modelo => {
+            const option = document.createElement('option');
+            option.value = modelo;
+            option.textContent = modelo;
+            select.appendChild(option);
+        });
+        
+        const modelosExistentes = new Set();
+        vehicles.forEach(v => {
+            if (v.marca === marca && v.modelo && !modelosExistentes.has(v.modelo)) {
+                modelosExistentes.add(v.modelo);
+                let existe = false;
+                for (let opt of select.options) {
+                    if (opt.value === v.modelo) {
+                        existe = true;
+                        break;
+                    }
+                }
+                if (!existe) {
+                    const option = document.createElement('option');
+                    option.value = v.modelo;
+                    option.textContent = v.modelo;
+                    select.appendChild(option);
+                }
+            }
+        });
+    }
+    
+    const options = Array.from(select.options);
+    const firstOption = options[0];
+    const sortedOptions = options.slice(1).sort((a, b) => a.text.localeCompare(b.text));
+    
+    select.innerHTML = '';
+    select.appendChild(firstOption);
+    sortedOptions.forEach(opt => select.appendChild(opt));
+    
+    if (document.getElementById('fModeloManual').style.display === 'block') {
+        select.style.display = 'none';
+        manual.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-list"></i>';
+    } else {
+        select.style.display = 'block';
+        manual.style.display = 'none';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+    }
+}
+
+function cambiarModeloSelect() {
+    const select = document.getElementById('fModeloSelect');
+    const manual = document.getElementById('fModeloManual');
+    const btn = document.getElementById('toggleModeloBtn');
+    
+    if (select.value) {
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+    }
+}
+
+function toggleModeloManual() {
+    const select = document.getElementById('fModeloSelect');
+    const manual = document.getElementById('fModeloManual');
+    const btn = document.getElementById('toggleModeloBtn');
+    
+    if (manual.style.display === 'block') {
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+        select.value = '';
+    } else {
+        select.style.display = 'none';
+        manual.style.display = 'block';
+        manual.focus();
+        btn.innerHTML = '<i class="fas fa-list"></i>';
+    }
+}
+
+function obtenerModelo() {
+    const select = document.getElementById('fModeloSelect');
+    const manual = document.getElementById('fModeloManual');
+    
+    if (manual.style.display === 'block' && manual.value.trim() !== '') {
+        return manual.value.trim();
+    } else if (select.value && select.value !== '') {
+        return select.value;
+    }
+    return '';
+}
+
+function setModelo(valor) {
+    const select = document.getElementById('fModeloSelect');
+    const manual = document.getElementById('fModeloManual');
+    const btn = document.getElementById('toggleModeloBtn');
+    
+    if (!valor) {
+        select.value = '';
+        manual.value = '';
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+        return;
+    }
+    
+    const marca = obtenerMarca();
+    if (marca) {
+        actualizarSelectModelos(marca);
+    }
+    
+    let found = false;
+    for (let option of select.options) {
+        if (option.value === valor) {
+            select.value = valor;
+            found = true;
+            break;
+        }
+    }
+    
+    if (found) {
+        manual.style.display = 'none';
+        select.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-pen"></i>';
+    } else {
+        select.style.display = 'none';
+        manual.style.display = 'block';
+        manual.value = valor;
+        btn.innerHTML = '<i class="fas fa-list"></i>';
+    }
+}
+
+// --- TIPO ---
 function actualizarPreviewTipo() {
     const select = document.getElementById('fTipoSelect');
     const preview = document.getElementById('tipoPreviewIcon');
@@ -1358,245 +1863,7 @@ const modelosPorMarca = {
 };
 
 // ============================================================
-// 🔧 FUNCIONES PARA MARCA MANUAL
-// ============================================================
-function cambiarMarca() {
-    const select = document.getElementById('fMarca');
-    const manual = document.getElementById('fMarcaManual');
-    const btn = document.getElementById('toggleMarcaBtn');
-    
-    if (select.value === '__OTRO__') {
-        manual.style.display = 'block';
-        manual.focus();
-        btn.innerHTML = '<i class="fas fa-list"></i>';
-        select.style.display = 'none';
-        document.getElementById('fModeloSelect').innerHTML = '<option value="">Seleccionar modelo...</option>';
-        document.getElementById('fModeloManual').value = '';
-        document.getElementById('fModeloManual').style.display = 'none';
-        document.getElementById('fModeloSelect').style.display = 'block';
-        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
-    } else {
-        manual.style.display = 'none';
-        select.style.display = 'block';
-        btn.innerHTML = '<i class="fas fa-pen"></i>';
-        filtrarModelosPorMarca();
-    }
-}
-
-function toggleMarcaManual() {
-    const select = document.getElementById('fMarca');
-    const manual = document.getElementById('fMarcaManual');
-    const btn = document.getElementById('toggleMarcaBtn');
-    
-    if (manual.style.display === 'block') {
-        manual.style.display = 'none';
-        select.style.display = 'block';
-        btn.innerHTML = '<i class="fas fa-pen"></i>';
-        select.value = '';
-        document.getElementById('fModeloSelect').innerHTML = '<option value="">Seleccionar modelo...</option>';
-        document.getElementById('fModeloManual').value = '';
-        document.getElementById('fModeloManual').style.display = 'none';
-        document.getElementById('fModeloSelect').style.display = 'block';
-        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
-    } else {
-        select.style.display = 'none';
-        manual.style.display = 'block';
-        manual.focus();
-        btn.innerHTML = '<i class="fas fa-list"></i>';
-        document.getElementById('fModeloSelect').innerHTML = '<option value="">Seleccionar modelo...</option>';
-        document.getElementById('fModeloManual').value = '';
-        document.getElementById('fModeloManual').style.display = 'none';
-        document.getElementById('fModeloSelect').style.display = 'block';
-        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
-    }
-}
-
-function obtenerMarca() {
-    const select = document.getElementById('fMarca');
-    const manual = document.getElementById('fMarcaManual');
-    
-    if (manual.style.display === 'block' && manual.value.trim() !== '') {
-        return manual.value.trim();
-    } else if (select.value && select.value !== '__OTRO__') {
-        return select.value;
-    }
-    return '';
-}
-
-function setMarca(valor) {
-    const select = document.getElementById('fMarca');
-    const manual = document.getElementById('fMarcaManual');
-    const btn = document.getElementById('toggleMarcaBtn');
-    
-    if (!valor) {
-        select.value = '';
-        manual.value = '';
-        manual.style.display = 'none';
-        select.style.display = 'block';
-        btn.innerHTML = '<i class="fas fa-pen"></i>';
-        return;
-    }
-    
-    let found = false;
-    for (let option of select.options) {
-        if (option.value === valor) {
-            select.value = valor;
-            found = true;
-            break;
-        }
-    }
-    
-    if (found) {
-        manual.style.display = 'none';
-        select.style.display = 'block';
-        btn.innerHTML = '<i class="fas fa-pen"></i>';
-        filtrarModelosPorMarca();
-    } else {
-        select.style.display = 'none';
-        manual.style.display = 'block';
-        manual.value = valor;
-        btn.innerHTML = '<i class="fas fa-list"></i>';
-        document.getElementById('fModeloSelect').innerHTML = '<option value="">Seleccionar modelo...</option>';
-        document.getElementById('fModeloManual').value = '';
-        document.getElementById('fModeloManual').style.display = 'none';
-        document.getElementById('fModeloSelect').style.display = 'block';
-        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
-    }
-}
-
-// ============================================================
-// 🔧 FUNCIONES PARA MODELO MANUAL Y FILTRADO
-// ============================================================
-function filtrarModelosPorMarca() {
-    const marcaSelect = document.getElementById('fMarca');
-    const marcaManual = document.getElementById('fMarcaManual');
-    const select = document.getElementById('fModeloSelect');
-    const manual = document.getElementById('fModeloManual');
-    
-    let marca = '';
-    if (marcaManual.style.display === 'block' && marcaManual.value.trim() !== '') {
-        marca = marcaManual.value.trim();
-    } else if (marcaSelect.value && marcaSelect.value !== '__OTRO__') {
-        marca = marcaSelect.value;
-    }
-    
-    select.innerHTML = '<option value="">Seleccionar modelo...</option>';
-    
-    if (marca && modelosPorMarca[marca] && modelosPorMarca[marca].length > 0) {
-        modelosPorMarca[marca].forEach(modelo => {
-            const option = document.createElement('option');
-            option.value = modelo;
-            option.textContent = modelo;
-            select.appendChild(option);
-        });
-        const optionOtro = document.createElement('option');
-        optionOtro.value = '__OTRO__';
-        optionOtro.textContent = '✏️ Otro (escribir manualmente)';
-        select.appendChild(optionOtro);
-    } else {
-        const optionOtro = document.createElement('option');
-        optionOtro.value = '__OTRO__';
-        optionOtro.textContent = '✏️ Otro (escribir manualmente)';
-        select.appendChild(optionOtro);
-    }
-    
-    manual.value = '';
-    manual.style.display = 'none';
-    select.style.display = 'block';
-    document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
-}
-
-function cambiarModelo() {
-    const select = document.getElementById('fModeloSelect');
-    const manual = document.getElementById('fModeloManual');
-    const btn = document.getElementById('toggleModeloBtn');
-    
-    if (select.value === '__OTRO__') {
-        manual.style.display = 'block';
-        manual.focus();
-        btn.innerHTML = '<i class="fas fa-list"></i>';
-        select.style.display = 'none';
-    } else {
-        manual.style.display = 'none';
-        select.style.display = 'block';
-        btn.innerHTML = '<i class="fas fa-pen"></i>';
-    }
-}
-
-function toggleModeloManual() {
-    const select = document.getElementById('fModeloSelect');
-    const manual = document.getElementById('fModeloManual');
-    const btn = document.getElementById('toggleModeloBtn');
-    
-    if (manual.style.display === 'block') {
-        manual.style.display = 'none';
-        select.style.display = 'block';
-        btn.innerHTML = '<i class="fas fa-pen"></i>';
-        if (select.value === '__OTRO__') {
-            select.value = '';
-        }
-        filtrarModelosPorMarca();
-    } else {
-        select.style.display = 'none';
-        manual.style.display = 'block';
-        manual.focus();
-        btn.innerHTML = '<i class="fas fa-list"></i>';
-        if (select.value && select.value !== '__OTRO__' && select.value !== '') {
-            manual.value = select.value;
-        }
-    }
-}
-
-function obtenerModelo() {
-    const select = document.getElementById('fModeloSelect');
-    const manual = document.getElementById('fModeloManual');
-    
-    if (manual.style.display === 'block' && manual.value.trim() !== '') {
-        return manual.value.trim();
-    } else if (select.value && select.value !== '__OTRO__' && select.value !== '') {
-        return select.value;
-    }
-    return '';
-}
-
-function setModelo(valor) {
-    const select = document.getElementById('fModeloSelect');
-    const manual = document.getElementById('fModeloManual');
-    
-    filtrarModelosPorMarca();
-    
-    if (!valor) {
-        select.value = '';
-        manual.value = '';
-        manual.style.display = 'none';
-        select.style.display = 'block';
-        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
-        return;
-    }
-    
-    let found = false;
-    for (let option of select.options) {
-        if (option.value === valor) {
-            select.value = valor;
-            found = true;
-            break;
-        }
-    }
-    
-    if (found) {
-        manual.style.display = 'none';
-        select.style.display = 'block';
-        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
-    } else {
-        select.style.display = 'none';
-        manual.style.display = 'block';
-        manual.value = valor;
-        document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-list"></i>';
-    }
-}
-
-// ============================================================
-// 📥 CARGAR DATOS DESDE REALTIME DATABASE (CORREGIDO)
+// 📥 CARGAR DATOS DESDE REALTIME DATABASE
 // ============================================================
 function cargarDesdeFirebase() {
     if (loadingData) return;
@@ -1605,10 +1872,8 @@ function cargarDesdeFirebase() {
     actualizarStatus('Cargando datos...', '');
     mostrarSpinner(true);
     
-    // Limpiar listeners anteriores
     vehiclesRef.off();
     
-    // Primera carga con once() para evitar duplicados
     vehiclesRef.once('value').then((snapshot) => {
         const data = snapshot.val();
         const nuevosVehiculos = [];
@@ -1626,14 +1891,12 @@ function cargarDesdeFirebase() {
                 
                 const placaNorm = normalizarPlaca(vehiculo.placa);
                 
-                // Verificar duplicados
                 if (placasExistentes.has(placaNorm)) {
                     console.warn(`⚠️ Placa duplicada detectada: ${vehiculo.placa}, omitiendo.`);
                     return;
                 }
                 placasExistentes.add(placaNorm);
                 
-                // Asegurar campos
                 if (!vehiculo.hasOwnProperty('observaciones')) {
                     vehiculo.observaciones = [];
                 }
@@ -1657,7 +1920,6 @@ function cargarDesdeFirebase() {
             });
         }
         
-        // Ordenar y actualizar
         nuevosVehiculos.sort((a, b) => a.placa.localeCompare(b.placa));
         vehicles = nuevosVehiculos;
         
@@ -1666,28 +1928,31 @@ function cargarDesdeFirebase() {
         actualizarStatus(`✅ ${vehicles.length} vehículos`, 'synced');
         document.getElementById('totalVehiculos').textContent = vehicles.length;
         mostrarSpinner(false);
+        
+        actualizarSelectPlacas();
+        actualizarSelectMarcas();
+        actualizarSelectModelos(obtenerMarca());
+        
         filtrarVehiculos();
         actualizarContadoresFiltros();
         renderVehicleView(selectedIndex);
         
-        // Ahora escuchar cambios en tiempo real SOLO para actualizaciones
         vehiclesRef.on('child_changed', (snapshot) => {
             const key = snapshot.key;
             const vehiculo = snapshot.val();
             
-            // Buscar el vehículo en el array
             const index = vehicles.findIndex(v => v.key === key);
             if (index !== -1) {
-                // Actualizar el vehículo existente
                 const existing = vehicles[index];
                 Object.assign(existing, vehiculo);
-                // Mantener el key
                 existing.key = key;
                 
-                // Reordenar
                 vehicles.sort((a, b) => a.placa.localeCompare(b.placa));
                 
-                // Actualizar vista
+                actualizarSelectPlacas();
+                actualizarSelectMarcas();
+                actualizarSelectModelos(obtenerMarca());
+                
                 filtrarVehiculos();
                 actualizarContadoresFiltros();
                 renderVehicleView(selectedIndex);
@@ -1699,10 +1964,8 @@ function cargarDesdeFirebase() {
             const vehiculo = snapshot.val();
             vehiculo.key = key;
             
-            // Verificar si ya existe (evitar duplicados)
             const existe = vehicles.some(v => v.key === key || normalizarPlaca(v.placa) === normalizarPlaca(vehiculo.placa));
             if (!existe) {
-                // Asegurar campos
                 if (!vehiculo.hasOwnProperty('observaciones')) {
                     vehiculo.observaciones = [];
                 }
@@ -1725,6 +1988,10 @@ function cargarDesdeFirebase() {
                 vehicles.push(vehiculo);
                 vehicles.sort((a, b) => a.placa.localeCompare(b.placa));
                 
+                actualizarSelectPlacas();
+                actualizarSelectMarcas();
+                actualizarSelectModelos(obtenerMarca());
+                
                 filtrarVehiculos();
                 actualizarContadoresFiltros();
                 renderVehicleView(selectedIndex);
@@ -1736,6 +2003,10 @@ function cargarDesdeFirebase() {
         vehiclesRef.on('child_removed', (snapshot) => {
             const key = snapshot.key;
             vehicles = vehicles.filter(v => v.key !== key);
+            
+            actualizarSelectPlacas();
+            actualizarSelectMarcas();
+            actualizarSelectModelos(obtenerMarca());
             
             filtrarVehiculos();
             actualizarContadoresFiltros();
@@ -2104,7 +2375,7 @@ function mostrarSpinner(mostrar) {
 }
 
 async function guardarVehiculo() {
-    const placa = document.getElementById('fPlaca').value.trim().toUpperCase();
+    const placa = obtenerPlaca();
     if (!placa) {
         mostrarFeedback('⚠️ La placa es obligatoria.', '#fff3cd', '#ffc107');
         return;
@@ -2171,9 +2442,11 @@ async function guardarVehiculo() {
 function editarVehiculo(index) {
     editingIndex = index;
     const v = vehicles[index];
-    document.getElementById('fPlaca').value = v.placa;
+    
+    setPlaca(v.placa);
     setMarca(v.marca);
     setModelo(v.modelo);
+    
     document.getElementById('fAnio').value = v.anio;
     document.getElementById('fKmActual').value = v.kmActual;
     document.getElementById('fIntAceite').value = v.intAceite || 5000;
@@ -2202,17 +2475,9 @@ function cancelarFormulario() {
 }
 
 function limpiarFormulario() {
-    document.getElementById('fPlaca').value = '';
-    document.getElementById('fMarca').value = '';
-    document.getElementById('fMarcaManual').value = '';
-    document.getElementById('fMarcaManual').style.display = 'none';
-    document.getElementById('fMarca').style.display = 'block';
-    document.getElementById('toggleMarcaBtn').innerHTML = '<i class="fas fa-pen"></i>';
-    document.getElementById('fModeloSelect').innerHTML = '<option value="">Seleccionar modelo...</option>';
-    document.getElementById('fModeloManual').value = '';
-    document.getElementById('fModeloManual').style.display = 'none';
-    document.getElementById('fModeloSelect').style.display = 'block';
-    document.getElementById('toggleModeloBtn').innerHTML = '<i class="fas fa-pen"></i>';
+    setPlaca('');
+    setMarca('');
+    setModelo('');
     document.getElementById('fAnio').value = '';
     document.getElementById('fKmActual').value = '';
     document.getElementById('fIntAceite').value = 5000;
@@ -2425,7 +2690,6 @@ function renderVehicleView(index) {
         return;
     }
     
-    // Validar que el índice existe
     if (index < 0 || index >= vehicles.length) {
         if (vehicles.length > 0) {
             selectedIndex = 0;
