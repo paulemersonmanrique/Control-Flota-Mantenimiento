@@ -8,6 +8,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
+        /* ... (todos tus estilos iguales) ... */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, system-ui, sans-serif; }
         body { background: #f0f4fa; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         
@@ -149,6 +150,22 @@
         }
         .btn-edit-azul:hover { background: #004f99; transform: scale(1.02); }
 
+        .btn-link {
+            background: #8a2be2;
+            border: 1px solid #8a2be2;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-link:hover { background: #6a1ab2; transform: scale(1.02); }
+
         .vehicle-list-wrapper { margin: 14px 0 20px 0; padding-bottom: 16px; border-bottom: 2px solid #eaf0f8; }
         
         .vehicle-list-header {
@@ -202,7 +219,7 @@
         
         .filter-buttons {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             flex-wrap: wrap;
             margin: 8px 0 10px 0;
             padding: 6px 0;
@@ -210,34 +227,36 @@
             border-bottom: 1px solid #eaf0f8;
         }
         .filter-btn {
-            padding: 4px 14px;
+            padding: 8px 18px;
             border-radius: 40px;
-            border: 1px solid #d9e2ef;
-            background: white;
-            color: #3d5777;
-            font-size: 12px;
+            border: none;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
+            color: white;
+            min-width: 120px;
+            justify-content: center;
+            background: #6c7a8a;
+            opacity: 0.7;
         }
-        .filter-btn:hover { background: #f0f5ff; border-color: #0066cc; }
-        .filter-btn.active { background: #0066cc; color: white; border-color: #0066cc; }
+        .filter-btn:hover { opacity: 1; transform: scale(1.02); }
+        .filter-btn.active { opacity: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        
         .filter-btn .badge-filter {
-            background: rgba(0,0,0,0.1);
-            padding: 0 6px;
+            background: rgba(255,255,255,0.25);
+            padding: 0 8px;
             border-radius: 40px;
-            font-size: 10px;
+            font-size: 11px;
         }
-        .filter-btn.active .badge-filter { background: rgba(255,255,255,0.25); }
-        .filter-btn.critico { border-color: #d32f2f; color: #d32f2f; }
-        .filter-btn.critico.active { background: #d32f2f; color: white; }
-        .filter-btn.observacion { border-color: #e66a00; color: #e66a00; }
-        .filter-btn.observacion.active { background: #e66a00; color: white; }
-        .filter-btn.mantenimiento { border-color: #ffc107; color: #856404; }
-        .filter-btn.mantenimiento.active { background: #ffc107; color: #856404; }
+        
+        .filter-btn.todos { background: #0066cc; }
+        .filter-btn.critico { background: #d32f2f; }
+        .filter-btn.observacion { background: #e66a00; }
+        .filter-btn.mantenimiento { background: #0f7b3a; }
 
         .vehicle-list-container {
             overflow: hidden;
@@ -274,7 +293,7 @@
         .vehicle-tab:hover { transform: scale(1.02); }
         .vehicle-tab.active { border-color: #0066cc; box-shadow: 0 0 0 2px rgba(0,102,204,0.3); }
         
-        .vehicle-tab .tipo-icono { font-size: 14px; }
+        .vehicle-tab .tipo-icono { font-size: 14px; color: inherit; }
         .vehicle-tab .placa-texto { font-weight: 700; }
         
         .vehicle-tab .alerta-observacion {
@@ -296,9 +315,13 @@
         }
         
         .vehicle-tab.estado-verde { background: #d4edda; color: #0b5e2e; border-color: #28a745; }
+        .vehicle-tab.estado-verde .tipo-icono { color: #0b5e2e; }
         .vehicle-tab.estado-amarillo { background: #fff3cd; color: #856404; border-color: #ffc107; }
+        .vehicle-tab.estado-amarillo .tipo-icono { color: #856404; }
         .vehicle-tab.estado-naranja { background: #ffe0b3; color: #994d00; border-color: #e66a00; }
+        .vehicle-tab.estado-naranja .tipo-icono { color: #994d00; }
         .vehicle-tab.estado-rojo { background: #f5c6c6; color: #a00020; border-color: #d32f2f; }
+        .vehicle-tab.estado-rojo .tipo-icono { color: #a00020; }
         
         .vehicle-tab.prioridad-alta {
             border-width: 3px;
@@ -326,31 +349,46 @@
         .form-control.textarea { resize: vertical; min-height: 60px; font-family: inherit; }
         .form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px; padding-top: 14px; border-top: 1px solid #eaf0f8; }
 
-        .tipo-vehiculo-selector {
+        .row-dual {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-            gap: 6px;
-            padding: 6px 0;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 18px;
+            grid-column: 1 / -1;
         }
-        .tipo-option {
+        .row-dual .form-group {
+            margin: 0;
+        }
+
+        .row-full {
+            grid-column: 1 / -1;
+        }
+
+        .tipo-select-wrapper {
             display: flex;
-            flex-direction: column;
+            gap: 8px;
             align-items: center;
-            gap: 2px;
-            padding: 8px 4px;
-            border-radius: 12px;
-            border: 2px solid #d3dfee;
-            background: white;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 10px;
-            font-weight: 500;
-            color: #3d5777;
+            width: 100%;
         }
-        .tipo-option:hover { border-color: #0066cc; background: #f0f5ff; }
-        .tipo-option.selected { border-color: #0066cc; background: #e5f0ff; color: #0066cc; }
-        .tipo-option i { font-size: 20px; }
-        .tipo-option .label { font-size: 9px; text-align: center; }
+        .tipo-select-wrapper select {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 14px;
+            border: 1px solid #d3dfee;
+            background: white;
+            font-size: 15px;
+            transition: 0.15s;
+        }
+        .tipo-select-wrapper select:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
+        }
+        .tipo-select-wrapper .tipo-icono-preview {
+            font-size: 22px;
+            color: #0066cc;
+            min-width: 30px;
+            text-align: center;
+        }
 
         .modelo-input-wrapper { display: flex; gap: 8px; align-items: center; width: 100%; }
         .modelo-input-wrapper select { flex: 1; }
@@ -617,6 +655,105 @@
         }
         .loading-spinner p { color: #657e9e; font-size: 16px; }
 
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 1000px;
+            height: 85vh;
+            max-height: 800px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid #eaf0f8;
+            background: #f8fbff;
+            flex-shrink: 0;
+        }
+        .modal-header .modal-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: #0b1e33;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .modal-header .modal-title i { color: #8a2be2; }
+        .modal-header .modal-title .placa-link {
+            color: #0066cc;
+            font-weight: 600;
+        }
+        .btn-close-modal {
+            background: #d32f2f;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-close-modal:hover { background: #b71c1c; transform: scale(1.02); }
+        .modal-body {
+            flex: 1;
+            padding: 0;
+            background: #f0f4fa;
+            overflow: hidden;
+            position: relative;
+        }
+        .modal-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .modal-body .no-link-message {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #657e9e;
+            gap: 16px;
+            padding: 40px;
+        }
+        .modal-body .no-link-message i { font-size: 64px; color: #b8cbe0; }
+        .modal-body .no-link-message p { font-size: 18px; }
+
         .footer-signature {
             margin-top: 24px;
             padding-top: 16px;
@@ -633,6 +770,7 @@
         @media (max-width: 600px) {
             .app-container { padding: 12px 14px; }
             .form-grid { grid-template-columns: 1fr; }
+            .row-dual { grid-template-columns: 1fr; }
             .header-right { flex-direction: column; align-items: stretch; }
             .app-header { flex-direction: column; align-items: stretch; gap: 10px; }
             .vehicle-list-header { flex-direction: column; align-items: stretch; }
@@ -645,7 +783,10 @@
             .km-editable input { width: 60px; }
             .marca-manual-wrapper { flex-wrap: wrap; }
             .filter-buttons { justify-content: center; }
-            .tipo-vehiculo-selector { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
+            .filter-btn { min-width: 80px; padding: 6px 12px; font-size: 11px; }
+            .modal-content { width: 95%; height: 90vh; max-height: none; }
+            .modal-header { padding: 12px 16px; }
+            .modal-header .modal-title { font-size: 15px; }
             
             .inicio-container { padding: 30px 20px; }
             .inicio-container .logo { font-size: 48px; }
@@ -692,7 +833,7 @@
             <i class="fas fa-sign-in-alt"></i> Ingresar a la interfaz
         </button>
 
-        <div class="version-inicio">v3.7 · Control de Flota con Firebase</div>
+        <div class="version-inicio">v3.8 · Control de Flota con Firebase</div>
     </div>
 </div>
 
@@ -727,7 +868,7 @@
         </div>
         
         <div class="filter-buttons" id="filterButtons">
-            <button class="filter-btn active" data-filter="todos" onclick="setFilter('todos')">
+            <button class="filter-btn todos active" data-filter="todos" onclick="setFilter('todos')">
                 <i class="fas fa-th-list"></i> Todos <span class="badge-filter" id="countTodos">0</span>
             </button>
             <button class="filter-btn critico" data-filter="critico" onclick="setFilter('critico')">
@@ -816,56 +957,32 @@
                 <label><i class="fas fa-calendar-alt"></i> Año</label>
                 <input type="number" class="form-control" id="fAnio" placeholder="2022" min="1900" max="2099">
             </div>
-            <div class="form-group">
-                <label><i class="fas fa-tachometer-alt"></i> (Hr/Km) actual *</label>
-                <input type="number" class="form-control" id="fKmActual" placeholder="0">
-            </div>
             
-            <div class="form-group" style="grid-column: 1 / -1;">
-                <label><i class="fas fa-truck"></i> Tipo de Vehículo</label>
-                <div class="tipo-vehiculo-selector" id="tipoSelector">
-                    <div class="tipo-option" data-tipo="Camion" onclick="seleccionarTipo('Camion')">
-                        <i class="fas fa-truck"></i>
-                        <span class="label">Camión</span>
-                    </div>
-                    <div class="tipo-option" data-tipo="Camioneta" onclick="seleccionarTipo('Camioneta')">
-                        <i class="fas fa-truck-pickup"></i>
-                        <span class="label">Camioneta</span>
-                    </div>
-                    <div class="tipo-option" data-tipo="Bus" onclick="seleccionarTipo('Bus')">
-                        <i class="fas fa-bus"></i>
-                        <span class="label">Bus</span>
-                    </div>
-                    <div class="tipo-option" data-tipo="Minibus" onclick="seleccionarTipo('Minibus')">
-                        <i class="fas fa-bus-alt"></i>
-                        <span class="label">Minibús</span>
-                    </div>
-                    <div class="tipo-option" data-tipo="Minivan" onclick="seleccionarTipo('Minivan')">
-                        <i class="fas fa-shuttle-van"></i>
-                        <span class="label">Minivan</span>
-                    </div>
-                    <div class="tipo-option" data-tipo="Manlift" onclick="seleccionarTipo('Manlift')">
-                        <i class="fas fa-arrow-up"></i>
-                        <span class="label">Manlift</span>
-                    </div>
-                    <div class="tipo-option" data-tipo="Grua" onclick="seleccionarTipo('Grua')">
-                        <i class="fas fa-crane"></i>
-                        <span class="label">Grúa</span>
-                    </div>
-                    <div class="tipo-option" data-tipo="Camion grua" onclick="seleccionarTipo('Camion grua')">
-                        <i class="fas fa-truck"></i>
-                        <span class="label">Camión Grúa</span>
-                    </div>
-                    <div class="tipo-option" data-tipo="Montacarga" onclick="seleccionarTipo('Montacarga')">
-                        <i class="fas fa-warehouse"></i>
-                        <span class="label">Montacarga</span>
-                    </div>
-                    <div class="tipo-option" data-tipo="Otro" onclick="seleccionarTipo('Otro')">
-                        <i class="fas fa-car"></i>
-                        <span class="label">Otro</span>
-                    </div>
+            <div class="row-dual">
+                <div class="form-group">
+                    <label><i class="fas fa-tachometer-alt"></i> (Hr/Km) actual *</label>
+                    <input type="number" class="form-control" id="fKmActual" placeholder="0">
                 </div>
-                <input type="hidden" id="fTipo" value="">
+                <div class="form-group">
+                    <label><i class="fas fa-truck"></i> Tipo de Vehículo</label>
+                    <div class="tipo-select-wrapper">
+                        <select class="form-control" id="fTipoSelect" onchange="actualizarPreviewTipo()">
+                            <option value="">Seleccionar tipo...</option>
+                            <option value="Camion">Camión</option>
+                            <option value="Camioneta">Camioneta</option>
+                            <option value="Bus">Bus</option>
+                            <option value="Minibus">Minibús</option>
+                            <option value="Minivan">Minivan</option>
+                            <option value="Manlift">Manlift</option>
+                            <option value="Grua">Grúa</option>
+                            <option value="Camion grua">Camión Grúa</option>
+                            <option value="Montacarga">Montacarga</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                        <span class="tipo-icono-preview" id="tipoPreviewIcon"><i class="fas fa-truck"></i></span>
+                    </div>
+                    <input type="hidden" id="fTipo" value="">
+                </div>
             </div>
 
             <div class="form-group">
@@ -896,6 +1013,14 @@
                 <label><i class="fas fa-fire-extinguisher" style="color:#e66a00;"></i> Vencimiento Extintor</label>
                 <input type="date" class="form-control" id="fExtintor">
             </div>
+
+            <div class="form-group row-full">
+                <label><i class="fas fa-link" style="color:#8a2be2;"></i> Link / Documentación</label>
+                <input type="url" class="form-control" id="fLink" placeholder="https://ejemplo.com/documento" value="">
+                <small style="color:#657e9e; font-size:12px; margin-top:4px;">
+                    <i class="fas fa-info-circle"></i> Ingresa un enlace a documentación, ficha técnica, o ubicación del vehículo
+                </small>
+            </div>
         </div>
         <div class="form-actions">
             <button class="btn btn-outline" onclick="cancelarFormulario()"><i class="fas fa-times"></i> Cancelar</button>
@@ -915,7 +1040,28 @@
         <span class="icono"><i class="fas fa-code"></i></span>
         Desarrollado por <span class="nombre">PaulEManrique</span>
         <span class="icono"><i class="fas fa-heart" style="color: #d32f2f;"></i></span>
-        <div class="version">v3.7 · Control de Flota con Firebase</div>
+        <div class="version">v3.8 · Control de Flota con Firebase</div>
+    </div>
+</div>
+
+<!-- MODAL PARA LINK -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this) cerrarModal()">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">
+                <i class="fas fa-link"></i>
+                <span>Documentación de <span class="placa-link" id="modalPlaca">—</span></span>
+            </div>
+            <button class="btn-close-modal" onclick="cerrarModal()">
+                <i class="fas fa-times"></i> Cerrar
+            </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <div class="no-link-message">
+                <i class="fas fa-file-alt"></i>
+                <p>No hay documentación vinculada a esta unidad</p>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -948,9 +1094,10 @@ let listaPlacasAbierta = false;
 let appIniciada = false;
 let filtroActual = 'todos';
 let datosCargados = false;
+let loadingData = false;
 
 // ============================================================
-// 🏷️ TIPO DE VEHÍCULO - ICONOS Y FUNCIONES
+// 🏷️ TIPO DE VEHÍCULO - ICONOS FONT AWESOME
 // ============================================================
 const tipoIconos = {
     'Camion': 'fa-truck',
@@ -965,12 +1112,39 @@ const tipoIconos = {
     'Otro': 'fa-car'
 };
 
-function seleccionarTipo(tipo) {
-    document.getElementById('fTipo').value = tipo;
+function actualizarPreviewTipo() {
+    const select = document.getElementById('fTipoSelect');
+    const preview = document.getElementById('tipoPreviewIcon');
+    const hidden = document.getElementById('fTipo');
     
-    document.querySelectorAll('.tipo-option').forEach(el => {
-        el.classList.toggle('selected', el.dataset.tipo === tipo);
-    });
+    if (select.value) {
+        const iconClass = tipoIconos[select.value] || 'fa-truck';
+        preview.innerHTML = `<i class="fas ${iconClass}"></i>`;
+        hidden.value = select.value;
+    } else {
+        preview.innerHTML = `<i class="fas fa-truck"></i>`;
+        hidden.value = '';
+    }
+}
+
+function seleccionarTipo(tipo) {
+    const select = document.getElementById('fTipoSelect');
+    const hidden = document.getElementById('fTipo');
+    
+    if (tipo) {
+        for (let option of select.options) {
+            if (option.value === tipo) {
+                select.value = tipo;
+                break;
+            }
+        }
+        hidden.value = tipo;
+        actualizarPreviewTipo();
+    } else {
+        select.value = '';
+        hidden.value = '';
+        document.getElementById('tipoPreviewIcon').innerHTML = `<i class="fas fa-truck"></i>`;
+    }
 }
 
 function getTipoIcon(tipo) {
@@ -982,6 +1156,52 @@ function getTipoBadge(tipo) {
     const icon = getTipoIcon(tipo);
     return `<span class="tipo-badge"><i class="fas ${icon}"></i> ${tipo}</span>`;
 }
+
+// ============================================================
+// 🖼️ FUNCIONES PARA EL MODAL DE LINK
+// ============================================================
+function abrirModal(placa, link) {
+    const overlay = document.getElementById('modalOverlay');
+    const modalPlaca = document.getElementById('modalPlaca');
+    const modalBody = document.getElementById('modalBody');
+    
+    modalPlaca.textContent = placa;
+    
+    if (link && link.trim() !== '' && link.startsWith('http')) {
+        modalBody.innerHTML = `
+            <iframe src="${link}" allowfullscreen loading="lazy"></iframe>
+        `;
+    } else {
+        modalBody.innerHTML = `
+            <div class="no-link-message">
+                <i class="fas fa-file-alt"></i>
+                <p>No hay documentación vinculada a esta unidad</p>
+                <p style="font-size:14px; color:#a0b4cc;">${link ? 'El enlace ingresado no es válido' : ''}</p>
+            </div>
+        `;
+    }
+    
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function cerrarModal() {
+    const overlay = document.getElementById('modalOverlay');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    
+    const modalBody = document.getElementById('modalBody');
+    const iframe = modalBody.querySelector('iframe');
+    if (iframe) {
+        iframe.src = 'about:blank';
+    }
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        cerrarModal();
+    }
+});
 
 // ============================================================
 // 🔥 FUNCIÓN PARA NORMALIZAR PLACA
@@ -1376,21 +1596,25 @@ function setModelo(valor) {
 }
 
 // ============================================================
-// 📥 CARGAR DATOS DESDE REALTIME DATABASE
+// 📥 CARGAR DATOS DESDE REALTIME DATABASE (CORREGIDO)
 // ============================================================
 function cargarDesdeFirebase() {
+    if (loadingData) return;
+    loadingData = true;
+    
     actualizarStatus('Cargando datos...', '');
     mostrarSpinner(true);
     
+    // Limpiar listeners anteriores
     vehiclesRef.off();
     
-    vehiclesRef.on('value', (snapshot) => {
+    // Primera carga con once() para evitar duplicados
+    vehiclesRef.once('value').then((snapshot) => {
         const data = snapshot.val();
-        vehicles = [];
+        const nuevosVehiculos = [];
+        const placasExistentes = new Set();
         
         if (data) {
-            const placasExistentes = new Set();
-            
             Object.keys(data).forEach(key => {
                 const vehiculo = data[key];
                 vehiculo.key = key;
@@ -1401,52 +1625,133 @@ function cargarDesdeFirebase() {
                 }
                 
                 const placaNorm = normalizarPlaca(vehiculo.placa);
+                
+                // Verificar duplicados
                 if (placasExistentes.has(placaNorm)) {
                     console.warn(`⚠️ Placa duplicada detectada: ${vehiculo.placa}, omitiendo.`);
                     return;
                 }
                 placasExistentes.add(placaNorm);
                 
+                // Asegurar campos
                 if (!vehiculo.hasOwnProperty('observaciones')) {
                     vehiculo.observaciones = [];
                 }
-                
                 if (!vehiculo.hasOwnProperty('extintor')) {
                     vehiculo.extintor = '';
-                    vehiclesRef.child(key).update({ extintor: '' });
                 }
-                
                 if (!vehiculo.hasOwnProperty('itvAutrisa')) {
                     vehiculo.itvAutrisa = '';
-                    vehiclesRef.child(key).update({ itvAutrisa: '' });
                 }
-                
                 if (!vehiculo.hasOwnProperty('tipo')) {
                     vehiculo.tipo = '';
-                    vehiclesRef.child(key).update({ tipo: '' });
                 }
-                
+                if (!vehiculo.hasOwnProperty('link')) {
+                    vehiculo.link = '';
+                }
                 if (!Array.isArray(vehiculo.observaciones)) {
                     vehiculo.observaciones = [];
                 }
                 
-                vehicles.push(vehiculo);
+                nuevosVehiculos.push(vehiculo);
             });
         }
         
-        vehicles.sort((a, b) => a.placa.localeCompare(b.placa));
+        // Ordenar y actualizar
+        nuevosVehiculos.sort((a, b) => a.placa.localeCompare(b.placa));
+        vehicles = nuevosVehiculos;
         
         datosCargados = true;
+        loadingData = false;
         actualizarStatus(`✅ ${vehicles.length} vehículos`, 'synced');
         document.getElementById('totalVehiculos').textContent = vehicles.length;
         mostrarSpinner(false);
         filtrarVehiculos();
         actualizarContadoresFiltros();
         renderVehicleView(selectedIndex);
-    }, (error) => {
+        
+        // Ahora escuchar cambios en tiempo real SOLO para actualizaciones
+        vehiclesRef.on('child_changed', (snapshot) => {
+            const key = snapshot.key;
+            const vehiculo = snapshot.val();
+            
+            // Buscar el vehículo en el array
+            const index = vehicles.findIndex(v => v.key === key);
+            if (index !== -1) {
+                // Actualizar el vehículo existente
+                const existing = vehicles[index];
+                Object.assign(existing, vehiculo);
+                // Mantener el key
+                existing.key = key;
+                
+                // Reordenar
+                vehicles.sort((a, b) => a.placa.localeCompare(b.placa));
+                
+                // Actualizar vista
+                filtrarVehiculos();
+                actualizarContadoresFiltros();
+                renderVehicleView(selectedIndex);
+            }
+        });
+        
+        vehiclesRef.on('child_added', (snapshot) => {
+            const key = snapshot.key;
+            const vehiculo = snapshot.val();
+            vehiculo.key = key;
+            
+            // Verificar si ya existe (evitar duplicados)
+            const existe = vehicles.some(v => v.key === key || normalizarPlaca(v.placa) === normalizarPlaca(vehiculo.placa));
+            if (!existe) {
+                // Asegurar campos
+                if (!vehiculo.hasOwnProperty('observaciones')) {
+                    vehiculo.observaciones = [];
+                }
+                if (!vehiculo.hasOwnProperty('extintor')) {
+                    vehiculo.extintor = '';
+                }
+                if (!vehiculo.hasOwnProperty('itvAutrisa')) {
+                    vehiculo.itvAutrisa = '';
+                }
+                if (!vehiculo.hasOwnProperty('tipo')) {
+                    vehiculo.tipo = '';
+                }
+                if (!vehiculo.hasOwnProperty('link')) {
+                    vehiculo.link = '';
+                }
+                if (!Array.isArray(vehiculo.observaciones)) {
+                    vehiculo.observaciones = [];
+                }
+                
+                vehicles.push(vehiculo);
+                vehicles.sort((a, b) => a.placa.localeCompare(b.placa));
+                
+                filtrarVehiculos();
+                actualizarContadoresFiltros();
+                renderVehicleView(selectedIndex);
+                document.getElementById('totalVehiculos').textContent = vehicles.length;
+                actualizarStatus(`✅ ${vehicles.length} vehículos`, 'synced');
+            }
+        });
+        
+        vehiclesRef.on('child_removed', (snapshot) => {
+            const key = snapshot.key;
+            vehicles = vehicles.filter(v => v.key !== key);
+            
+            filtrarVehiculos();
+            actualizarContadoresFiltros();
+            if (selectedIndex >= vehicles.length) {
+                selectedIndex = vehicles.length - 1;
+            }
+            renderVehicleView(selectedIndex);
+            document.getElementById('totalVehiculos').textContent = vehicles.length;
+            actualizarStatus(`✅ ${vehicles.length} vehículos`, 'synced');
+        });
+        
+    }).catch((error) => {
         console.error('Error al cargar datos:', error);
         actualizarStatus('❌ Error de conexión', 'error');
         mostrarSpinner(false);
+        loadingData = false;
     });
 }
 
@@ -1819,12 +2124,14 @@ async function guardarVehiculo() {
     const marca = obtenerMarca();
     const modelo = obtenerModelo();
     const tipo = document.getElementById('fTipo').value || '';
+    const link = document.getElementById('fLink').value.trim() || '';
 
     const data = {
         placa: placa,
         marca: marca || 'Desconocida',
         modelo: modelo || 'Desconocido',
         tipo: tipo,
+        link: link,
         anio: document.getElementById('fAnio').value || '----',
         kmActual: parseInt(document.getElementById('fKmActual').value) || 0,
         intAceite: parseInt(document.getElementById('fIntAceite').value) || 5000,
@@ -1876,14 +2183,12 @@ function editarVehiculo(index) {
     document.getElementById('fExtintor').value = v.extintor || '';
     document.getElementById('fFechaMant').value = v.fechaMant || '';
     document.getElementById('fKmMant').value = v.kmMant || 0;
+    document.getElementById('fLink').value = v.link || '';
     
     if (v.tipo) {
         seleccionarTipo(v.tipo);
     } else {
-        document.querySelectorAll('.tipo-option').forEach(el => {
-            el.classList.remove('selected');
-        });
-        document.getElementById('fTipo').value = '';
+        seleccionarTipo('');
     }
     
     document.getElementById('formTitle').textContent = 'Editar Vehículo';
@@ -1917,11 +2222,9 @@ function limpiarFormulario() {
     document.getElementById('fExtintor').value = '';
     document.getElementById('fFechaMant').value = '';
     document.getElementById('fKmMant').value = '';
-    document.getElementById('fTipo').value = '';
+    document.getElementById('fLink').value = '';
     
-    document.querySelectorAll('.tipo-option').forEach(el => {
-        el.classList.remove('selected');
-    });
+    seleccionarTipo('');
     
     document.getElementById('formTitle').textContent = 'Nuevo Vehículo';
     document.getElementById('feedbackMessage').style.display = 'none';
@@ -2034,11 +2337,21 @@ function mostrarBotonKm(index) {
 }
 
 // ============================================================
-// 🎨 RENDERIZADO CON ICONOS Y SIN KILOMETRAJE EN PLACAS
+// 🎨 RENDERIZADO CON ICONOS FONT AWESOME Y SIN KILOMETRAJE EN PLACAS
 // ============================================================
 function renderVehicleList() {
     const container = document.getElementById('vehicleList');
     let html = '';
+    
+    if (filteredVehicles.length === 0) {
+        if (vehicles.length === 0) {
+            html = `<span class="no-results"><i class="fas fa-info-circle"></i> No hay vehículos registrados</span>`;
+        } else {
+            html = `<span class="no-results"><i class="fas fa-search"></i> No se encontraron vehículos con este filtro</span>`;
+        }
+        container.innerHTML = html;
+        return;
+    }
     
     const prioridad = (v) => {
         const estado = calcularEstadoVehiculo(v);
@@ -2054,33 +2367,31 @@ function renderVehicleList() {
         return prioridad(a) - prioridad(b);
     });
     
-    if (sortedVehicles.length > 0) {
-        sortedVehicles.forEach((v, i) => {
-            const realIndex = vehicles.indexOf(v);
-            const active = (realIndex === selectedIndex) ? 'active' : '';
-            const estado = calcularEstadoVehiculo(v);
-            const tieneObservacion = tieneObservacionesPendientes(v);
-            const prioridadAlta = tieneObservacion || estado.general === 'estado-rojo' || estado.general === 'estado-naranja';
-            const observacionesCount = v.observaciones ? v.observaciones.filter(a => a.estado === 'pendiente').length : 0;
-            const tipoIcon = v.tipo ? `<i class="fas ${getTipoIcon(v.tipo)} tipo-icono"></i>` : '<i class="fas fa-car tipo-icono"></i>';
-            
-            html += `
-                <div class="vehicle-tab ${estado.general} ${active} ${prioridadAlta ? 'prioridad-alta' : ''}" onclick="selectVehicle(${realIndex})">
-                    ${tipoIcon} <span class="placa-texto">${v.placa}</span>
-                    ${tieneObservacion ? `<span class="alerta-observacion"><i class="fas fa-exclamation-triangle"></i> ${observacionesCount}</span>` : ''}
-                </div>
-            `;
-        });
-    } else if (vehicles.length > 0 && (document.getElementById('searchInput').value.trim() !== '' || filtroActual !== 'todos')) {
-        html += `<span class="no-results"><i class="fas fa-search"></i> No se encontraron vehículos con este filtro</span>`;
-    } else {
-        html = `<span class="no-results"><i class="fas fa-info-circle"></i> No hay vehículos registrados</span>`;
-    }
+    sortedVehicles.forEach((v) => {
+        const realIndex = vehicles.indexOf(v);
+        if (realIndex === -1) return;
+        
+        const active = (realIndex === selectedIndex) ? 'active' : '';
+        const estado = calcularEstadoVehiculo(v);
+        const tieneObservacion = tieneObservacionesPendientes(v);
+        const prioridadAlta = tieneObservacion || estado.general === 'estado-rojo' || estado.general === 'estado-naranja';
+        const observacionesCount = v.observaciones ? v.observaciones.filter(a => a.estado === 'pendiente').length : 0;
+        const iconClass = getTipoIcon(v.tipo || 'Otro');
+        
+        html += `
+            <div class="vehicle-tab ${estado.general} ${active} ${prioridadAlta ? 'prioridad-alta' : ''}" onclick="selectVehicle(${realIndex})">
+                <i class="fas ${iconClass} tipo-icono"></i>
+                <span class="placa-texto">${v.placa}</span>
+                ${tieneObservacion ? `<span class="alerta-observacion"><i class="fas fa-exclamation-triangle"></i> ${observacionesCount}</span>` : ''}
+            </div>
+        `;
+    });
     
     container.innerHTML = html;
 }
 
 function selectVehicle(index) {
+    if (index < 0 || index >= vehicles.length) return;
     selectedIndex = index;
     renderVehicleList();
     renderVehicleView(index);
@@ -2114,7 +2425,8 @@ function renderVehicleView(index) {
         return;
     }
     
-    if (!vehicles[index]) {
+    // Validar que el índice existe
+    if (index < 0 || index >= vehicles.length) {
         if (vehicles.length > 0) {
             selectedIndex = 0;
             renderVehicleView(0);
@@ -2123,6 +2435,14 @@ function renderVehicleView(index) {
     }
     
     const v = vehicles[index];
+    if (!v) {
+        if (vehicles.length > 0) {
+            selectedIndex = 0;
+            renderVehicleView(0);
+        }
+        return;
+    }
+    
     const hoy = new Date();
     hoy.setHours(0,0,0,0);
 
@@ -2255,6 +2575,15 @@ function renderVehicleView(index) {
         `;
     }
 
+    let linkButtonHtml = '';
+    if (v.link && v.link.trim() !== '') {
+        linkButtonHtml = `
+            <button class="btn-link" onclick="abrirModal('${v.placa}', '${v.link.replace(/'/g, "\\'")}')">
+                <i class="fas fa-link"></i> Ver Documentación
+            </button>
+        `;
+    }
+
     let html = `
         <div class="vehicle-detail ${estadoGeneral.general}">
             <div class="info-row">
@@ -2272,6 +2601,7 @@ function renderVehicleView(index) {
                     </div>
                     <span class="badge-km" style="background:#d4edda;"><i class="fas fa-oil-can"></i> c/${v.intAceite.toLocaleString()} (Hr/Km)</span>
                     ${tieneObservacion ? '<span class="alerta-observacion-tarjeta"><i class="fas fa-exclamation-triangle"></i> Observación pendiente</span>' : ''}
+                    ${linkButtonHtml}
                 </div>
                 <div class="acciones">
                     <button class="btn-edit-azul" onclick="editarVehiculo(${index})"><i class="fas fa-edit"></i> Editar</button>
