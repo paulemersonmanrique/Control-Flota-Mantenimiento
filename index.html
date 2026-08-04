@@ -91,6 +91,102 @@
         .inicio-container .feedback-inicio.error { color: #ff6b6b; background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.2); }
         .inicio-container .feedback-inicio.success { color: #51cf66; background: rgba(81,207,102,0.1); border: 1px solid rgba(81,207,102,0.2); }
         .inicio-container .feedback-inicio.loading { color: #4a9eff; background: rgba(74,158,255,0.1); border: 1px solid rgba(74,158,255,0.2); }
+        .inicio-container .feedback-inicio.warning { color: #ff6b00; background: rgba(255,107,0,0.15); border: 1px solid rgba(255,107,0,0.3); }
+        .inicio-container .feedback-inicio.danger { color: #ff3333; background: rgba(255,51,51,0.15); border: 1px solid rgba(255,51,51,0.3); }
+
+        /* NOTIFICACIONES DE ALERTA EN LA PLACA */
+        .alerta-vehiculo {
+            margin-top: 12px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            text-align: left;
+            display: none;
+            animation: slideDown 0.4s ease;
+        }
+        .alerta-vehiculo.visible {
+            display: block;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .alerta-vehiculo .alerta-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .alerta-vehiculo .alerta-header i { font-size: 20px; }
+        .alerta-vehiculo .alerta-items {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding-left: 8px;
+        }
+        .alerta-vehiculo .alerta-items .item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .alerta-vehiculo .alerta-items .item:last-child {
+            border-bottom: none;
+        }
+        .alerta-vehiculo .alerta-items .item i { width: 18px; font-size: 13px; }
+
+        .alerta-vehiculo.alert-observacion {
+            background: rgba(255, 107, 0, 0.15);
+            border: 1px solid rgba(255, 107, 0, 0.3);
+            color: #ffaa66;
+        }
+        .alerta-vehiculo.alert-observacion .alerta-header { color: #ffaa66; }
+        .alerta-vehiculo.alert-observacion .alerta-items .item { color: #ffcc99; }
+
+        .alerta-vehiculo.alert-vencimiento {
+            background: rgba(255, 51, 51, 0.15);
+            border: 1px solid rgba(255, 51, 51, 0.3);
+            color: #ff7777;
+        }
+        .alerta-vehiculo.alert-vencimiento .alerta-header { color: #ff7777; }
+        .alerta-vehiculo.alert-vencimiento .alerta-items .item { color: #ffaaaa; }
+
+        .alerta-vehiculo.alert-critical {
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff3333;
+            color: #ff6666;
+            animation: pulse-border 1.5s infinite;
+        }
+        @keyframes pulse-border {
+            0% { border-color: #ff3333; }
+            50% { border-color: #ff6666; }
+            100% { border-color: #ff3333; }
+        }
+        .alerta-vehiculo.alert-critical .alerta-header { color: #ff6666; }
+        .alerta-vehiculo.alert-critical .alerta-items .item { color: #ff9999; }
+
+        .alerta-vehiculo .btn-ver-detalles {
+            margin-top: 10px;
+            padding: 6px 16px;
+            border-radius: 40px;
+            border: none;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .alerta-vehiculo .btn-ver-detalles:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
         .inicio-container .version-inicio { 
             color: #4a7aaa; 
             font-size: 14px; 
@@ -98,7 +194,7 @@
             padding-bottom: 10px;
         }
 
-        /* BOTÓN DE AYUDA - SIEMPRE VISIBLE EN ESQUINA INFERIOR DERECHA */
+        /* BOTÓN DE AYUDA */
         .btn-ayuda-inicio {
             position: fixed;
             bottom: 24px;
@@ -139,9 +235,7 @@
             align-items: center;
             animation: fadeIn 0.3s ease;
         }
-        .modal-ayuda-overlay.active {
-            display: flex;
-        }
+        .modal-ayuda-overlay.active { display: flex; }
         .modal-ayuda {
             background: white;
             border-radius: 24px;
@@ -194,7 +288,6 @@
             gap: 6px;
         }
         .btn-cerrar-ayuda:hover { background: rgba(255,255,255,0.25); }
-
         .modal-ayuda-body {
             padding: 24px;
             overflow-y: auto;
@@ -236,7 +329,6 @@
         .modal-ayuda-body .estado-item .dot.amarillo { background: #ffc107; }
         .modal-ayuda-body .estado-item .dot.naranja { background: #e66a00; }
         .modal-ayuda-body .estado-item .dot.rojo { background: #d32f2f; }
-
         .modal-ayuda-body .regla-item {
             display: flex;
             align-items: flex-start;
@@ -249,12 +341,7 @@
             background: #f8fbff;
             border-radius: 4px;
         }
-        .modal-ayuda-body .regla-item .icono-regla {
-            color: #4a9eff;
-            font-size: 16px;
-            margin-top: 1px;
-        }
-
+        .modal-ayuda-body .regla-item .icono-regla { color: #4a9eff; font-size: 16px; margin-top: 1px; }
         .modal-ayuda-footer {
             padding: 12px 24px;
             border-top: 1px solid #eaf0f8;
@@ -290,11 +377,12 @@
             .inicio-container .btn-inicio { font-size: 18px; padding: 14px; }
             .inicio-container .feedback-inicio { font-size: 16px; padding: 8px 12px; }
             .inicio-container .version-inicio { font-size: 12px; }
+            .alerta-vehiculo { padding: 10px 14px; }
+            .alerta-vehiculo .alerta-header { font-size: 14px; }
+            .alerta-vehiculo .alerta-items .item { font-size: 12px; }
         }
 
-        /* ============================================================ */
-        /* EL RESTO DE ESTILOS DE LA APP PRINCIPAL (COMPACTO) */
-        /* ============================================================ */
+        /* ESTILOS APP PRINCIPAL (compacta) */
         #appPrincipal {
             width: 100%;
             max-width: 100%;
@@ -305,18 +393,15 @@
             display: none;
         }
         #appPrincipal.visible { display: block; }
-
         .app-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 12px; gap: 8px; }
         .app-header h1 { font-weight: 700; font-size: 22px; color: #0b1e33; display: flex; align-items: center; gap: 10px; }
         .app-header h1 i { color: #0066cc; background: #e5f0ff; padding: 8px; border-radius: 14px; font-size: 18px; }
         .header-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
         .btn-salir { background: #d32f2f; color: white; border: none; padding: 6px 16px; border-radius: 40px; font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
         .btn-salir:hover { background: #b71c1c; transform: scale(1.02); }
-
         .sync-status { font-size: 13px; color: #546e88; background: #f0f5ff; padding: 4px 14px; border-radius: 40px; display: inline-flex; align-items: center; gap: 6px; }
         .sync-status.synced { color: #0f7b3a; background: #e1f5e8; }
         .sync-status.error { color: #d32f2f; background: #fff0f0; }
-
         .btn { padding: 8px 18px; border: none; border-radius: 40px; font-weight: 600; font-size: 14px; background: white; color: #1e2f44; border: 1px solid #d9e2ef; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
         .btn-outline { background: transparent; border: 1px solid #cbd8ea; }
         .btn-outline:hover { background: #f0f5ff; border-color: #0066cc; }
@@ -337,182 +422,44 @@
         .btn-sm-warning:hover { background: #cc5500; }
         .btn-sm-outline { background: transparent; border: 1px solid #d9e2ef; color: #3d5777; }
         .btn-sm-outline:hover { background: #f0f5ff; }
-
-        .btn-edit-azul {
-            background: #0066cc;
-            border: 1px solid #0066cc;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 40px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .btn-edit-azul { background: #0066cc; border: 1px solid #0066cc; color: white; padding: 6px 14px; border-radius: 40px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
         .btn-edit-azul:hover { background: #004f99; transform: scale(1.02); }
-
-        .btn-link {
-            background: #8a2be2;
-            border: 1px solid #8a2be2;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 40px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .btn-link { background: #8a2be2; border: 1px solid #8a2be2; color: white; padding: 5px 12px; border-radius: 40px; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
         .btn-link:hover { background: #6a1ab2; transform: scale(1.02); }
 
         .vehicle-list-wrapper { margin: 10px 0 16px 0; padding-bottom: 12px; border-bottom: 2px solid #eaf0f8; }
-        
-        .vehicle-list-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
+        .vehicle-list-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
         .vehicle-list-header .info { font-size: 14px; color: #657e9e; }
         .vehicle-list-header .info strong { color: #0b1e33; }
-        
-        .search-placas {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #f4f7fc;
-            padding: 5px 14px;
-            border-radius: 40px;
-            border: 1px solid #d9e2ef;
-            transition: 0.3s;
-            cursor: pointer;
-        }
+        .search-placas { display: inline-flex; align-items: center; gap: 6px; background: #f4f7fc; padding: 5px 14px; border-radius: 40px; border: 1px solid #d9e2ef; transition: 0.3s; cursor: pointer; }
         .search-placas:focus-within { border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); background: white; }
         .search-placas i { color: #657e9e; font-size: 14px; }
-        .search-placas input {
-            border: none;
-            background: transparent;
-            padding: 2px 0;
-            font-size: 13px;
-            width: 140px;
-            outline: none;
-            color: #0b1e33;
-            cursor: pointer;
-        }
+        .search-placas input { border: none; background: transparent; padding: 2px 0; font-size: 13px; width: 140px; outline: none; color: #0b1e33; cursor: pointer; }
         .search-placas input::placeholder { color: #a0b4cc; }
-        .search-placas .clear-btn {
-            background: none;
-            border: none;
-            color: #a0b4cc;
-            cursor: pointer;
-            padding: 0 4px;
-            font-size: 13px;
-            display: none;
-        }
+        .search-placas .clear-btn { background: none; border: none; color: #a0b4cc; cursor: pointer; padding: 0 4px; font-size: 13px; display: none; }
         .search-placas .clear-btn.visible { display: block; }
         .search-placas .clear-btn:hover { color: #d32f2f; }
-        
         .header-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        
-        .filter-buttons {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin: 6px 0 8px 0;
-            padding: 4px 0;
-            border-top: 1px solid #eaf0f8;
-            border-bottom: 1px solid #eaf0f8;
-        }
-        .filter-btn {
-            padding: 6px 14px;
-            border-radius: 40px;
-            border: none;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            color: white;
-            min-width: 100px;
-            justify-content: center;
-            background: #6c7a8a;
-            opacity: 0.7;
-        }
+        .filter-buttons { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0 8px 0; padding: 4px 0; border-top: 1px solid #eaf0f8; border-bottom: 1px solid #eaf0f8; }
+        .filter-btn { padding: 6px 14px; border-radius: 40px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; color: white; min-width: 100px; justify-content: center; background: #6c7a8a; opacity: 0.7; }
         .filter-btn:hover { opacity: 1; transform: scale(1.02); }
         .filter-btn.active { opacity: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-        .filter-btn .badge-filter {
-            background: rgba(255,255,255,0.25);
-            padding: 0 6px;
-            border-radius: 40px;
-            font-size: 10px;
-        }
+        .filter-btn .badge-filter { background: rgba(255,255,255,0.25); padding: 0 6px; border-radius: 40px; font-size: 10px; }
         .filter-btn.todos { background: #0066cc; }
         .filter-btn.critico { background: #d32f2f; }
         .filter-btn.observacion { background: #e66a00; }
         .filter-btn.mantenimiento { background: #0f7b3a; }
 
-        .vehicle-list-container {
-            overflow: hidden;
-            max-height: 0;
-            transition: max-height 0.35s ease, opacity 0.3s ease;
-            opacity: 0;
-        }
-        .vehicle-list-container.abierto {
-            max-height: 2000px;
-            opacity: 1;
-        }
-        
-        .vehicle-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            align-items: center;
-            padding-top: 8px;
-        }
-        
-        .vehicle-tab {
-            padding: 5px 12px;
-            border-radius: 40px;
-            border: 2px solid transparent;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 12px;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            position: relative;
-        }
+        .vehicle-list-container { overflow: hidden; max-height: 0; transition: max-height 0.35s ease, opacity 0.3s ease; opacity: 0; }
+        .vehicle-list-container.abierto { max-height: 2000px; opacity: 1; }
+        .vehicle-list { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding-top: 8px; }
+        .vehicle-tab { padding: 5px 12px; border-radius: 40px; border: 2px solid transparent; cursor: pointer; font-weight: 600; font-size: 12px; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; position: relative; }
         .vehicle-tab:hover { transform: scale(1.02); }
         .vehicle-tab.active { border-color: #0066cc; box-shadow: 0 0 0 2px rgba(0,102,204,0.3); }
         .vehicle-tab .tipo-icono { font-size: 13px; color: inherit; }
         .vehicle-tab .placa-texto { font-weight: 700; }
-        .vehicle-tab .alerta-observacion {
-            font-size: 9px;
-            color: #856404;
-            background: #fff3cd;
-            padding: 0 5px;
-            border-radius: 40px;
-            border: 1px solid #ffc107;
-            animation: pulse 1.5s infinite;
-            display: inline-flex;
-            align-items: center;
-            gap: 2px;
-        }
-        @keyframes pulse {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.05); }
-            100% { opacity: 1; transform: scale(1); }
-        }
+        .vehicle-tab .alerta-observacion { font-size: 9px; color: #856404; background: #fff3cd; padding: 0 5px; border-radius: 40px; border: 1px solid #ffc107; animation: pulse 1.5s infinite; display: inline-flex; align-items: center; gap: 2px; }
+        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
         .vehicle-tab.estado-verde { background: #d4edda; color: #0b5e2e; border-color: #28a745; }
         .vehicle-tab.estado-verde .tipo-icono { color: #0b5e2e; }
         .vehicle-tab.estado-amarillo { background: #fff3cd; color: #856404; border-color: #ffc107; }
@@ -521,11 +468,7 @@
         .vehicle-tab.estado-naranja .tipo-icono { color: #994d00; }
         .vehicle-tab.estado-rojo { background: #f5c6c6; color: #a00020; border-color: #d32f2f; }
         .vehicle-tab.estado-rojo .tipo-icono { color: #a00020; }
-        .vehicle-tab.prioridad-alta {
-            border-width: 3px;
-            font-weight: 700;
-            order: -1;
-        }
+        .vehicle-tab.prioridad-alta { border-width: 3px; font-weight: 700; order: -1; }
         .vehicle-tab.prioridad-alta.estado-naranja { border-color: #e66a00; }
         .vehicle-tab.prioridad-alta.estado-rojo { border-color: #d32f2f; }
         .vehicle-tab.prioridad-alta.estado-verde { border-color: #28a745; }
@@ -538,13 +481,7 @@
         .form-panel.visible { display: block; }
         .form-panel h3 { font-size: 18px; font-weight: 600; color: #14273e; margin-bottom: 12px; border-bottom: 1px solid #eef4fc; padding-bottom: 10px; }
         .form-grid { display: grid; grid-template-columns: 1fr; gap: 10px 14px; }
-
-        .row-principal {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr 1fr 0.7fr 1fr 0.8fr;
-            gap: 10px 12px;
-            grid-column: 1 / -1;
-        }
+        .row-principal { display: grid; grid-template-columns: 1.2fr 1fr 1fr 0.7fr 1fr 0.8fr; gap: 10px 12px; grid-column: 1 / -1; }
         .row-principal .form-group { margin: 0; }
         .row-principal .form-group label { font-size: 11px; white-space: nowrap; }
         .row-principal .form-control { padding: 6px 8px; font-size: 12px; border-radius: 10px; }
@@ -554,13 +491,11 @@
         .row-principal .select-manual-wrapper .btn-small { padding: 3px 6px; font-size: 11px; border-radius: 8px; }
         .row-principal .tipo-icono-preview { font-size: 16px; min-width: 20px; }
         .row-principal .tipo-select-wrapper { gap: 4px; }
-
         .row-secundaria { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px 14px; grid-column: 1 / -1; }
         .row-secundaria .form-group { margin: 0; }
         .row-dual { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; grid-column: 1 / -1; }
         .row-dual .form-group { margin: 0; }
         .row-full { grid-column: 1 / -1; }
-
         .form-group { display: flex; flex-direction: column; gap: 3px; }
         .form-group label { font-size: 12px; font-weight: 500; color: #1a324b; display: flex; align-items: center; gap: 5px; }
         .form-group label i { color: #0066cc; width: 14px; font-size: 13px; }
@@ -569,105 +504,28 @@
         .form-control select { appearance: auto; cursor: pointer; }
         .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #eaf0f8; }
 
-        .select-manual-wrapper {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-            width: 100%;
-        }
-        .select-manual-wrapper select {
-            flex: 1;
-            padding: 8px 12px;
-            border-radius: 10px;
-            border: 1px solid #d3dfee;
-            background: white;
-            font-size: 13px;
-            transition: 0.15s;
-        }
-        .select-manual-wrapper select:focus {
-            outline: none;
-            border-color: #0066cc;
-            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
-        }
-        .select-manual-wrapper input {
-            flex: 1;
-            padding: 8px 12px;
-            border-radius: 10px;
-            border: 1px solid #d3dfee;
-            background: white;
-            font-size: 13px;
-            transition: 0.15s;
-            display: none;
-        }
-        .select-manual-wrapper input:focus {
-            outline: none;
-            border-color: #0066cc;
-            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
-        }
+        .select-manual-wrapper { display: flex; gap: 4px; align-items: center; width: 100%; }
+        .select-manual-wrapper select { flex: 1; padding: 8px 12px; border-radius: 10px; border: 1px solid #d3dfee; background: white; font-size: 13px; transition: 0.15s; }
+        .select-manual-wrapper select:focus { outline: none; border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); }
+        .select-manual-wrapper input { flex: 1; padding: 8px 12px; border-radius: 10px; border: 1px solid #d3dfee; background: white; font-size: 13px; transition: 0.15s; display: none; }
+        .select-manual-wrapper input:focus { outline: none; border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); }
         .select-manual-wrapper input.visible { display: block; }
-        .select-manual-wrapper .btn-small {
-            padding: 4px 8px;
-            border-radius: 8px;
-            border: 1px solid #d3dfee;
-            background: white;
-            cursor: pointer;
-            white-space: nowrap;
-            font-size: 12px;
-            transition: 0.2s;
-            flex-shrink: 0;
-        }
+        .select-manual-wrapper .btn-small { padding: 4px 8px; border-radius: 8px; border: 1px solid #d3dfee; background: white; cursor: pointer; white-space: nowrap; font-size: 12px; transition: 0.2s; flex-shrink: 0; }
         .select-manual-wrapper .btn-small:hover { background: #f0f5ff; border-color: #0066cc; }
 
-        .tipo-select-wrapper {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-            width: 100%;
-        }
-        .tipo-select-wrapper select {
-            flex: 1;
-            padding: 8px 12px;
-            border-radius: 10px;
-            border: 1px solid #d3dfee;
-            background: white;
-            font-size: 13px;
-            transition: 0.15s;
-        }
-        .tipo-select-wrapper select:focus {
-            outline: none;
-            border-color: #0066cc;
-            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
-        }
-        .tipo-select-wrapper .tipo-icono-preview {
-            font-size: 18px;
-            color: #0066cc;
-            min-width: 24px;
-            text-align: center;
-        }
+        .tipo-select-wrapper { display: flex; gap: 4px; align-items: center; width: 100%; }
+        .tipo-select-wrapper select { flex: 1; padding: 8px 12px; border-radius: 10px; border: 1px solid #d3dfee; background: white; font-size: 13px; transition: 0.15s; }
+        .tipo-select-wrapper select:focus { outline: none; border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); }
+        .tipo-select-wrapper .tipo-icono-preview { font-size: 18px; color: #0066cc; min-width: 24px; text-align: center; }
 
-        .alert-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-        .alert-card {
-            background: #f8fbff;
-            border-radius: 12px;
-            padding: 10px 14px;
-            border: 1px solid #e2ebf6;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-left: 4px solid #0f7b3a;
-        }
+        .alert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; margin-bottom: 10px; }
+        .alert-card { background: #f8fbff; border-radius: 12px; padding: 10px 14px; border: 1px solid #e2ebf6; display: flex; align-items: center; gap: 8px; border-left: 4px solid #0f7b3a; }
         .alert-card i { font-size: 16px; width: 26px; text-align: center; }
         .alert-card .info { flex: 1; }
         .alert-card .label { font-size: 10px; font-weight: 600; color: #1a324b; text-transform: uppercase; letter-spacing: 0.3px; }
         .alert-card .value { font-weight: 700; font-size: 12px; color: #0b1e33; }
         .alert-card .value small { font-weight: 400; font-size: 10px; color: #546e88; }
         .alert-card .badge-status { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 40px; white-space: nowrap; }
-
         .alert-green { border-left-color: #0f7b3a; background: #f3fbf6; }
         .alert-green i { color: #0f7b3a; }
         .alert-green .badge-status { background: #d4edda; color: #0b5e2e; }
@@ -681,158 +539,44 @@
         .alert-red i { color: #b71c1c; }
         .alert-red .badge-status { background: #f5c6c6; color: #a00020; }
 
-        .maintenance-warning {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            border-radius: 10px;
-            padding: 10px 14px;
-            margin: 8px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            color: #856404;
-            animation: pulse 1.5s infinite;
-        }
+        .maintenance-warning { background: #fff3cd; border: 2px solid #ffc107; border-radius: 10px; padding: 10px 14px; margin: 8px 0; display: flex; align-items: center; gap: 10px; font-weight: 600; color: #856404; animation: pulse 1.5s infinite; }
         .maintenance-warning i { font-size: 18px; }
         .maintenance-warning .km-restantes { font-size: 20px; color: #d39e00; }
         .maintenance-warning .detalle { font-weight: 400; font-size: 12px; color: #856404; }
-
-        .maintenance-due {
-            background: #f5c6c6;
-            border: 2px solid #d32f2f;
-            color: #a00020;
-        }
+        .maintenance-due { background: #f5c6c6; border: 2px solid #d32f2f; color: #a00020; }
         .maintenance-due i { color: #d32f2f; }
         .maintenance-due .km-restantes { color: #b71c1c; }
         .maintenance-due .detalle { color: #a00020; }
 
-        .vehicle-detail {
-            background: white;
-            border-radius: 16px;
-            padding: 14px 16px;
-            border: 1px solid #eaf0f8;
-            margin-bottom: 12px;
-        }
-        .vehicle-detail .info-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 6px;
-        }
-        .vehicle-detail .info-row .vehiculo-nombre {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px 10px;
-            align-items: center;
-            font-size: 13px;
-            color: #2b405a;
-        }
+        .vehicle-detail { background: white; border-radius: 16px; padding: 14px 16px; border: 1px solid #eaf0f8; margin-bottom: 12px; }
+        .vehicle-detail .info-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px; }
+        .vehicle-detail .info-row .vehiculo-nombre { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: 13px; color: #2b405a; }
         .vehicle-detail .info-row .vehiculo-nombre strong { color: #0b1e33; font-size: 15px; }
         .vehicle-detail .info-row .vehiculo-nombre .badge-km { background: #e5edf8; padding: 2px 10px; border-radius: 40px; font-size: 12px; }
-        .vehicle-detail .info-row .vehiculo-nombre .tipo-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 2px 10px;
-            border-radius: 40px;
-            font-size: 11px;
-            font-weight: 600;
-            background: #e5f0ff;
-            color: #0066cc;
-        }
+        .vehicle-detail .info-row .vehiculo-nombre .tipo-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 40px; font-size: 11px; font-weight: 600; background: #e5f0ff; color: #0066cc; }
         .vehicle-detail .info-row .vehiculo-nombre .tipo-badge i { font-size: 12px; }
-        
-        .km-editable {
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            background: #fff;
-            border: 2px solid #0066cc;
-            border-radius: 40px;
-            padding: 0 3px 0 10px;
-            transition: 0.2s;
-        }
+        .km-editable { display: inline-flex; align-items: center; gap: 3px; background: #fff; border: 2px solid #0066cc; border-radius: 40px; padding: 0 3px 0 10px; transition: 0.2s; }
         .km-editable:hover { border-color: #004f99; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); }
-        .km-editable input {
-            border: none;
-            background: transparent;
-            width: 70px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #0b1e33;
-            padding: 3px 0;
-            outline: none;
-            text-align: right;
-        }
+        .km-editable input { border: none; background: transparent; width: 70px; font-size: 13px; font-weight: 600; color: #0b1e33; padding: 3px 0; outline: none; text-align: right; }
         .km-editable input:focus { outline: none; }
         .km-editable .km-label { font-size: 10px; color: #657e9e; font-weight: 400; }
         .km-editable .icono-km { color: #0066cc; font-size: 12px; }
-        .km-editable .guardar-km {
-            background: #0066cc;
-            color: white;
-            border: none;
-            border-radius: 40px;
-            padding: 2px 8px;
-            font-size: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.2s;
-            display: none;
-        }
+        .km-editable .guardar-km { background: #0066cc; color: white; border: none; border-radius: 40px; padding: 2px 8px; font-size: 10px; cursor: pointer; font-weight: 600; transition: 0.2s; display: none; }
         .km-editable .guardar-km.visible { display: block; }
         .km-editable .guardar-km:hover { background: #004f99; }
-        
-        .vehicle-detail .alerta-observacion-tarjeta {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            color: #856404;
-            font-weight: 600;
-            font-size: 11px;
-            background: #fff3cd;
-            padding: 2px 8px;
-            border-radius: 40px;
-            border: 1px solid #ffc107;
-            animation: pulse 1.5s infinite;
-        }
-        .vehicle-detail .info-row .acciones {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
+        .vehicle-detail .alerta-observacion-tarjeta { display: inline-flex; align-items: center; gap: 4px; color: #856404; font-weight: 600; font-size: 11px; background: #fff3cd; padding: 2px 8px; border-radius: 40px; border: 1px solid #ffc107; animation: pulse 1.5s infinite; }
+        .vehicle-detail .info-row .acciones { display: flex; gap: 6px; flex-wrap: wrap; }
         .vehicle-detail .info-row .acciones .btn-small { padding: 4px 12px; border-radius: 40px; border: 1px solid #d9e2ef; background: white; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; }
         .vehicle-detail .info-row .acciones .btn-small:hover { background: #f0f5ff; border-color: #0066cc; }
         .vehicle-detail .info-row .acciones .btn-small.btn-delete { color: #d32f2f; border-color: #d32f2f; }
         .vehicle-detail .info-row .acciones .btn-small.btn-delete:hover { background: #fff0f0; }
         .vehicle-detail .detalles-container { margin-top: 10px; }
 
-        .observaciones-section {
-            margin-top: 10px;
-            padding: 10px 14px;
-            background: #fafafa;
-            border-radius: 10px;
-            border: 1px solid #eaf0f8;
-        }
-        .observaciones-section .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-        }
+        .observaciones-section { margin-top: 10px; padding: 10px 14px; background: #fafafa; border-radius: 10px; border: 1px solid #eaf0f8; }
+        .observaciones-section .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
         .observaciones-section .header h4 { font-size: 13px; color: #1a324b; display: flex; align-items: center; gap: 6px; }
         .observaciones-section .header h4 i { color: #e66a00; }
-        .observacion-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 10px;
-            background: white;
-            border-radius: 6px;
-            border-left: 4px solid #e66a00;
-            margin-bottom: 4px;
-        }
+        .observacion-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: white; border-radius: 6px; border-left: 4px solid #e66a00; margin-bottom: 4px; }
         .observacion-item.resuelto { border-left-color: #0f7b3a; opacity: 0.7; }
         .observacion-item .texto { flex: 1; font-size: 13px; color: #2b405a; }
         .observacion-item .texto .fecha { font-size: 10px; color: #657e9e; margin-left: 6px; }
@@ -840,20 +584,8 @@
         .observacion-item .texto .estado.pendiente { color: #e66a00; }
         .observacion-item .texto .estado.resuelto { color: #0f7b3a; }
         .observacion-item .acciones-observacion { display: flex; gap: 3px; }
-        .observacion-input-group {
-            display: flex;
-            gap: 6px;
-            margin-top: 6px;
-            flex-wrap: wrap;
-        }
-        .observacion-input-group input {
-            flex: 1;
-            min-width: 120px;
-            padding: 6px 10px;
-            border-radius: 10px;
-            border: 1px solid #d3dfee;
-            font-size: 12px;
-        }
+        .observacion-input-group { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+        .observacion-input-group input { flex: 1; min-width: 120px; padding: 6px 10px; border-radius: 10px; border: 1px solid #d3dfee; font-size: 12px; }
         .observacion-input-group input:focus { outline: none; border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); }
         .no-observaciones { color: #657e9e; font-size: 12px; padding: 4px 0; }
 
@@ -861,125 +593,32 @@
         .empty-state { text-align: center; padding: 30px 20px; color: #657e9e; }
         .empty-state i { font-size: 40px; color: #b8cbe0; margin-bottom: 8px; }
         .empty-state p { font-size: 16px; }
-
         .vehicle-detail.estado-verde { border-left: 4px solid #28a745; }
         .vehicle-detail.estado-amarillo { border-left: 4px solid #ffc107; }
         .vehicle-detail.estado-naranja { border-left: 4px solid #e66a00; }
         .vehicle-detail.estado-rojo { border-left: 4px solid #d32f2f; }
 
-        .loading-spinner {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-            gap: 12px;
-        }
-        .loading-spinner .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #eaf0f8;
-            border-top: 4px solid #0066cc;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .loading-spinner { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; gap: 12px; }
+        .loading-spinner .spinner { width: 40px; height: 40px; border: 4px solid #eaf0f8; border-top: 4px solid #0066cc; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .loading-spinner p { color: #657e9e; font-size: 14px; }
 
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 9999;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s ease;
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 9999; display: none; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
         .modal-overlay.active { display: flex; }
-        .modal-content {
-            background: white;
-            border-radius: 18px;
-            width: 90%;
-            max-width: 1000px;
-            height: 85vh;
-            max-height: 800px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            animation: slideUp 0.3s ease;
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 20px;
-            border-bottom: 1px solid #eaf0f8;
-            background: #f8fbff;
-            flex-shrink: 0;
-        }
-        .modal-header .modal-title {
-            font-weight: 700;
-            font-size: 16px;
-            color: #0b1e33;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .modal-content { background: white; border-radius: 18px; width: 90%; max-width: 1000px; height: 85vh; max-height: 800px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5); animation: slideUp 0.3s ease; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 1px solid #eaf0f8; background: #f8fbff; flex-shrink: 0; }
+        .modal-header .modal-title { font-weight: 700; font-size: 16px; color: #0b1e33; display: flex; align-items: center; gap: 8px; }
         .modal-header .modal-title i { color: #8a2be2; }
         .modal-header .modal-title .placa-link { color: #0066cc; font-weight: 600; }
-        .btn-close-modal {
-            background: #d32f2f;
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .btn-close-modal { background: #d32f2f; color: white; border: none; padding: 6px 14px; border-radius: 40px; font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
         .btn-close-modal:hover { background: #b71c1c; transform: scale(1.02); }
-        .modal-body {
-            flex: 1;
-            padding: 0;
-            background: #f0f4fa;
-            overflow: hidden;
-            position: relative;
-        }
+        .modal-body { flex: 1; padding: 0; background: #f0f4fa; overflow: hidden; position: relative; }
         .modal-body iframe { width: 100%; height: 100%; border: none; }
-        .modal-body .no-link-message {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            color: #657e9e;
-            gap: 12px;
-            padding: 30px;
-        }
+        .modal-body .no-link-message { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #657e9e; gap: 12px; padding: 30px; }
         .modal-body .no-link-message i { font-size: 48px; color: #b8cbe0; }
         .modal-body .no-link-message p { font-size: 16px; }
 
-        .footer-signature {
-            margin-top: 20px;
-            padding-top: 12px;
-            border-top: 2px solid #eaf0f8;
-            text-align: center;
-            font-size: 13px;
-            color: #657e9e;
-            letter-spacing: 0.5px;
-        }
+        .footer-signature { margin-top: 20px; padding-top: 12px; border-top: 2px solid #eaf0f8; text-align: center; font-size: 13px; color: #657e9e; letter-spacing: 0.5px; }
         .footer-signature .nombre { font-weight: 700; color: #0066cc; font-size: 14px; }
         .footer-signature .icono { color: #0066cc; margin: 0 4px; }
         .footer-signature .version { font-size: 11px; color: #a0b4cc; margin-top: 3px; }
@@ -1042,12 +681,24 @@
 
         <div class="campo">
             <label><i class="fas fa-id-card"></i> Placa</label>
-            <input type="text" id="inicioPlaca" placeholder="Ej: ABC-123" oninput="this.value=this.value.toUpperCase()">
+            <input type="text" id="inicioPlaca" placeholder="Ej: ABC-123" oninput="this.value=this.value.toUpperCase(); verificarAlertaPlaca()">
         </div>
 
         <div class="campo">
             <label><i class="fas fa-tachometer-alt"></i> (Hr/Km) actual</label>
             <input type="number" id="inicioKm" placeholder="0" min="0">
+        </div>
+
+        <!-- ÁREA DE ALERTAS DEL VEHÍCULO -->
+        <div id="alertaVehiculo" class="alerta-vehiculo">
+            <div class="alerta-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span id="alertaTitulo">⚠️ Atención</span>
+            </div>
+            <div class="alerta-items" id="alertaItems"></div>
+            <button class="btn-ver-detalles" onclick="irADetalles()">
+                <i class="fas fa-eye"></i> Ver detalles
+            </button>
         </div>
 
         <div id="feedbackInicio" class="feedback-inicio"></div>
@@ -1060,11 +711,11 @@
             <i class="fas fa-sign-in-alt"></i> Ingresar a la interfaz
         </button>
 
-        <div class="version-inicio">v3.9 · Control de Flota con Firebase</div>
+        <div class="version-inicio">v3.10 · Control de Flota con Firebase</div>
     </div>
 </div>
 
-<!-- BOTÓN DE AYUDA - SIEMPRE VISIBLE EN ESQUINA INFERIOR DERECHA -->
+<!-- BOTÓN DE AYUDA -->
 <button class="btn-ayuda-inicio" onclick="abrirAyuda()" title="Ayuda / Manual de usuario">
     <i class="fas fa-question"></i>
 </button>
@@ -1079,82 +730,38 @@
             </button>
         </div>
         <div class="modal-ayuda-body">
+            <h3><i class="fas fa-bell"></i> ¿Qué significan las alertas?</h3>
+            <p>Al escribir una placa, el sistema te mostrará automáticamente si el vehículo tiene:</p>
+            <p style="margin-left:24px; color:#ffaa66;">🟠 <strong>Observaciones pendientes</strong> - Problemas reportados sin resolver</p>
+            <p style="margin-left:24px; color:#ff7777;">🔴 <strong>Vencimientos próximos</strong> - SOAT, ITV, Extintor, etc.</p>
+            <p style="margin-left:24px; color:#ff6666; font-weight:700;">🔴 <strong>Estado crítico</strong> - Mantenimiento vencido o múltiples problemas</p>
+
             <h3><i class="fas fa-rocket"></i> ¿Cómo actualizar el kilometraje?</h3>
             <p>Ingresa la <strong>Placa</strong> y el <strong>kilometraje actual</strong> (Hr/Km), luego presiona <strong>"Guardar (Hr/Km)"</strong>.</p>
 
             <h3><i class="fas fa-sign-in-alt"></i> ¿Cómo ingresar a la interfaz?</h3>
             <p>Presiona <strong>"Ingresar a la interfaz"</strong> para acceder al panel de control completo.</p>
 
-            <h3><i class="fas fa-search"></i> ¿Cómo buscar un vehículo?</h3>
-            <p>Usa el <strong>buscador</strong> en la parte superior de la interfaz principal.</p>
-
-            <h3><i class="fas fa-filter"></i> ¿Qué significan los filtros?</h3>
-            <p>
-                <strong>🔵 Todos</strong> - Muestra todos los vehículos<br>
-                <strong>🔴 Críticos</strong> - Vehículos en estado Rojo o Naranja<br>
-                <strong>🟠 Con Obs.</strong> - Vehículos con observaciones pendientes<br>
-                <strong>🟢 Próximo MTTO</strong> - Vehículos que requieren mantenimiento en los próximos 1000 km
-            </p>
-
             <h3><i class="fas fa-circle"></i> ¿Qué significan los colores?</h3>
-            <div class="estado-item">
-                <span class="dot verde"></span>
-                <span><strong>🟢 Verde</strong> - Todo en orden</span>
-            </div>
-            <div class="estado-item">
-                <span class="dot amarillo"></span>
-                <span><strong>🟡 Amarillo</strong> - Próximo a vencer</span>
-            </div>
-            <div class="estado-item">
-                <span class="dot naranja"></span>
-                <span><strong>🟠 Naranja</strong> - ¡Atención! Urgente</span>
-            </div>
-            <div class="estado-item">
-                <span class="dot rojo"></span>
-                <span><strong>🔴 Rojo</strong> - ¡PELIGRO! No operar</span>
-            </div>
+            <div class="estado-item"><span class="dot verde"></span><span><strong>🟢 Verde</strong> - Todo en orden</span></div>
+            <div class="estado-item"><span class="dot amarillo"></span><span><strong>🟡 Amarillo</strong> - Próximo a vencer</span></div>
+            <div class="estado-item"><span class="dot naranja"></span><span><strong>🟠 Naranja</strong> - ¡Atención! Urgente</span></div>
+            <div class="estado-item"><span class="dot rojo"></span><span><strong>🔴 Rojo</strong> - ¡PELIGRO! No operar</span></div>
 
             <h3><i class="fas fa-exclamation-triangle"></i> ⚠️ ADVERTENCIAS IMPORTANTES</h3>
-            <div class="regla-item">
-                <span class="icono-regla"><i class="fas fa-bolt"></i></span>
-                <span><strong>🔴 ESTADO ROJO</strong> = El vehículo NO DEBE OPERARSE</span>
-            </div>
-            <div class="regla-item">
-                <span class="icono-regla"><i class="fas fa-clock"></i></span>
-                <span><strong>Actualiza el kilometraje DIARIAMENTE</strong> para alertas precisas</span>
-            </div>
-            <div class="regla-item">
-                <span class="icono-regla"><i class="fas fa-trash"></i></span>
-                <span><strong>Eliminar vehículo es PERMANENTE</strong> - Escribe "ELIMINAR" para confirmar</span>
-            </div>
-            <div class="regla-item">
-                <span class="icono-regla"><i class="fas fa-check-circle"></i></span>
-                <span><strong>Verifica los datos</strong> antes de guardar (placa, kilometraje, fechas)</span>
-            </div>
-            <div class="regla-item">
-                <span class="icono-regla"><i class="fas fa-lock"></i></span>
-                <span><strong>No compartas el enlace</strong> con personas no autorizadas</span>
-            </div>
-
-            <h3><i class="fas fa-plus-circle"></i> ¿Cómo agregar un vehículo nuevo?</h3>
-            <p>Presiona <strong>"Agregar"</strong> en la interfaz principal. Puedes seleccionar valores existentes o escribir nuevos usando el botón <strong>✏️</strong>.</p>
-
-            <h3><i class="fas fa-edit"></i> ¿Cómo editar un vehículo?</h3>
-            <p>En la tarjeta del vehículo, presiona <strong>"Editar"</strong> y modifica los datos necesarios.</p>
-
-            <h3><i class="fas fa-sticky-note"></i> ¿Cómo reportar una observación?</h3>
-            <p>En la tarjeta del vehículo, escribe la observación en el campo y presiona <strong>"Reportar"</strong>.</p>
-
-            <h3><i class="fas fa-link"></i> ¿Cómo ver la documentación?</h3>
-            <p>Si el vehículo tiene un enlace asociado, presiona <strong>"Ver Documentación"</strong> para abrirlo.</p>
+            <div class="regla-item"><span class="icono-regla"><i class="fas fa-bolt"></i></span><span><strong>🔴 ESTADO ROJO</strong> = El vehículo NO DEBE OPERARSE</span></div>
+            <div class="regla-item"><span class="icono-regla"><i class="fas fa-clock"></i></span><span><strong>Actualiza el kilometraje DIARIAMENTE</strong> para alertas precisas</span></div>
+            <div class="regla-item"><span class="icono-regla"><i class="fas fa-trash"></i></span><span><strong>Eliminar vehículo es PERMANENTE</strong> - Escribe "ELIMINAR" para confirmar</span></div>
+            <div class="regla-item"><span class="icono-regla"><i class="fas fa-check-circle"></i></span><span><strong>Verifica los datos</strong> antes de guardar (placa, kilometraje, fechas)</span></div>
+            <div class="regla-item"><span class="icono-regla"><i class="fas fa-lock"></i></span><span><strong>No compartas el enlace</strong> con personas no autorizadas</span></div>
         </div>
         <div class="modal-ayuda-footer">
-            <i class="fas fa-code"></i> Desarrollado por PaulEManrique · v3.9
+            <i class="fas fa-code"></i> Desarrollado por PaulEManrique · v3.10
         </div>
     </div>
 </div>
 
-<!-- APP PRINCIPAL (se mantiene igual, solo compactada) -->
+<!-- APP PRINCIPAL -->
 <div id="appPrincipal">
     <div class="app-header">
         <h1><i class="fas fa-truck"></i> Control de Unidades MTTO IMCO</h1>
@@ -1337,7 +944,7 @@
         <span class="icono"><i class="fas fa-code"></i></span>
         Desarrollado por <span class="nombre">PaulEManrique</span>
         <span class="icono"><i class="fas fa-heart" style="color: #d32f2f;"></i></span>
-        <div class="version">v3.9 · Control de Flota con Firebase</div>
+        <div class="version">v3.10 · Control de Flota con Firebase</div>
     </div>
 </div>
 
@@ -1392,6 +999,180 @@ let appIniciada = false;
 let filtroActual = 'todos';
 let datosCargados = false;
 let loadingData = false;
+let placaBuscada = '';
+
+// ============================================================
+// 🔔 FUNCIÓN PARA VERIFICAR ALERTAS EN LA PLACA
+// ============================================================
+function verificarAlertaPlaca() {
+    const placaInput = document.getElementById('inicioPlaca');
+    const placa = placaInput.value.trim().toUpperCase();
+    const alertaDiv = document.getElementById('alertaVehiculo');
+    const alertaTitulo = document.getElementById('alertaTitulo');
+    const alertaItems = document.getElementById('alertaItems');
+    
+    // Limpiar feedback anterior
+    const feedback = document.getElementById('feedbackInicio');
+    feedback.textContent = '';
+    feedback.className = 'feedback-inicio';
+    
+    if (placa.length < 3) {
+        alertaDiv.classList.remove('visible');
+        return;
+    }
+    
+    // Buscar el vehículo
+    const placaNorm = normalizarPlaca(placa);
+    const vehiculo = vehicles.find(v => normalizarPlaca(v.placa) === placaNorm);
+    
+    if (!vehiculo) {
+        alertaDiv.classList.remove('visible');
+        return;
+    }
+    
+    // Guardar placa para el botón "Ver detalles"
+    placaBuscada = vehiculo.placa;
+    
+    // Analizar el vehículo
+    const alertas = [];
+    const estado = calcularEstadoVehiculo(vehiculo);
+    const tieneObservacion = tieneObservacionesPendientes(vehiculo);
+    const mantInfo = getMaintenanceInfo(vehiculo);
+    
+    // 1. Verificar observaciones pendientes
+    if (tieneObservacion) {
+        const obsPendientes = vehiculo.observaciones.filter(a => a.estado === 'pendiente');
+        alertas.push({
+            tipo: 'observacion',
+            icono: 'fas fa-exclamation-triangle',
+            texto: `${obsPendientes.length} observación(es) pendiente(s) de resolver`,
+            color: '#ffaa66'
+        });
+    }
+    
+    // 2. Verificar vencimientos próximos (30 días)
+    const hoy = new Date();
+    hoy.setHours(0,0,0,0);
+    
+    const vencimientos = [
+        { campo: vehiculo.soat, nombre: 'SOAT', icono: 'fas fa-file-contract' },
+        { campo: vehiculo.itv, nombre: 'ITV', icono: 'fas fa-clipboard-check' },
+        { campo: vehiculo.itvAutrisa, nombre: 'ITV Autrisa', icono: 'fas fa-certificate' },
+        { campo: vehiculo.extintor, nombre: 'Extintor', icono: 'fas fa-fire-extinguisher' }
+    ];
+    
+    vencimientos.forEach(v => {
+        if (v.campo) {
+            const fecha = new Date(v.campo + 'T00:00:00');
+            const dias = Math.round((fecha - hoy) / (1000*60*60*24));
+            if (dias <= 0) {
+                alertas.push({
+                    tipo: 'vencimiento',
+                    icono: v.icono,
+                    texto: `${v.nombre} VENCIDO (hace ${Math.abs(dias)} días)`,
+                    color: '#ff3333'
+                });
+            } else if (dias <= 30) {
+                alertas.push({
+                    tipo: 'vencimiento',
+                    icono: v.icono,
+                    texto: `${v.nombre} vence en ${dias} días`,
+                    color: '#ffaa00'
+                });
+            }
+        }
+    });
+    
+    // 3. Verificar mantenimiento próximo o vencido
+    if (mantInfo.kmRestantes <= 0) {
+        alertas.push({
+            tipo: 'mantenimiento',
+            icono: 'fas fa-oil-can',
+            texto: `⚠️ Mantenimiento VENCIDO por ${Math.abs(mantInfo.kmRestantes).toLocaleString()} (Hr/Km)`,
+            color: '#ff3333'
+        });
+    } else if (mantInfo.kmRestantes <= 1000) {
+        alertas.push({
+            tipo: 'mantenimiento',
+            icono: 'fas fa-oil-can',
+            texto: `🔧 Mantenimiento en ${mantInfo.kmRestantes.toLocaleString()} (Hr/Km) - ¡Atención!`,
+            color: '#ffaa00'
+        });
+    }
+    
+    // 4. Verificar estado general
+    if (estado.general === 'estado-rojo' && alertas.length === 0) {
+        alertas.push({
+            tipo: 'critico',
+            icono: 'fas fa-times-circle',
+            texto: '⚠️ Vehículo en estado CRÍTICO - No operar',
+            color: '#ff3333'
+        });
+    }
+    
+    // Mostrar alertas
+    if (alertas.length > 0) {
+        let html = '';
+        alertas.forEach(a => {
+            html += `<div class="item"><i class="${a.icono}" style="color:${a.color};"></i> ${a.texto}</div>`;
+        });
+        alertaItems.innerHTML = html;
+        
+        // Determinar el tipo de alerta
+        const tieneCritico = alertas.some(a => a.tipo === 'critico' || a.tipo === 'mantenimiento' || a.texto.includes('VENCIDO'));
+        const tieneVencimiento = alertas.some(a => a.tipo === 'vencimiento');
+        const tieneObservacionAlerta = alertas.some(a => a.tipo === 'observacion');
+        
+        alertaDiv.className = 'alerta-vehiculo visible';
+        if (tieneCritico) {
+            alertaDiv.classList.add('alert-critical');
+            alertaTitulo.textContent = '🚨 ¡ATENCIÓN CRÍTICA!';
+        } else if (tieneVencimiento || tieneObservacionAlerta) {
+            alertaDiv.classList.add('alert-vencimiento');
+            alertaTitulo.textContent = '⚠️ Alerta - Requiere atención';
+        } else {
+            alertaDiv.classList.add('alert-observacion');
+            alertaTitulo.textContent = 'ℹ️ Información importante';
+        }
+    } else {
+        // No hay alertas - mostrar mensaje de éxito
+        alertaDiv.className = 'alerta-vehiculo visible alert-observacion';
+        alertaTitulo.textContent = '✅ Vehículo en orden';
+        alertaItems.innerHTML = `<div class="item"><i class="fas fa-check-circle" style="color:#51cf66;"></i> No hay observaciones ni vencimientos pendientes</div>`;
+        alertaDiv.classList.remove('alert-critical', 'alert-vencimiento');
+    }
+}
+
+function irADetalles() {
+    if (placaBuscada) {
+        // Buscar el índice del vehículo
+        const index = vehicles.findIndex(v => v.placa === placaBuscada);
+        if (index !== -1) {
+            // Cerrar pantalla de inicio y abrir app
+            ingresarApp();
+            // Seleccionar el vehículo
+            setTimeout(() => {
+                selectVehicle(index);
+            }, 300);
+        }
+    }
+}
+
+// ============================================================
+// 🏷️ TIPO DE VEHÍCULO - ICONOS FONT AWESOME
+// ============================================================
+const tipoIconos = {
+    'Camion': 'fa-truck',
+    'Camioneta': 'fa-truck-pickup',
+    'Bus': 'fa-bus',
+    'Minibus': 'fa-bus-alt',
+    'Minivan': 'fa-shuttle-van',
+    'Manlift': 'fa-arrow-up',
+    'Grua': 'fa-crane',
+    'Camion grua': 'fa-truck',
+    'Montacarga': 'fa-warehouse',
+    'Otro': 'fa-car'
+};
 
 // ============================================================
 // 🆘 FUNCIONES DE AYUDA
@@ -1412,22 +1193,6 @@ document.addEventListener('keydown', function(e) {
         cerrarModal();
     }
 });
-
-// ============================================================
-// 🏷️ TIPO DE VEHÍCULO - ICONOS FONT AWESOME
-// ============================================================
-const tipoIconos = {
-    'Camion': 'fa-truck',
-    'Camioneta': 'fa-truck-pickup',
-    'Bus': 'fa-bus',
-    'Minibus': 'fa-bus-alt',
-    'Minivan': 'fa-shuttle-van',
-    'Manlift': 'fa-arrow-up',
-    'Grua': 'fa-crane',
-    'Camion grua': 'fa-truck',
-    'Montacarga': 'fa-warehouse',
-    'Otro': 'fa-car'
-};
 
 // ============================================================
 // 🔧 FUNCIONES PARA SELECTORES CON OPCIÓN MANUAL
@@ -1944,6 +1709,8 @@ async function actualizarDesdeInicio() {
                         kmInput.classList.add('success');
                         placaInput.value = '';
                         kmInput.value = '';
+                        // Ocultar alertas
+                        document.getElementById('alertaVehiculo').classList.remove('visible');
                         if (appIniciada) cargarDesdeFirebase();
                     });
                     encontrado = true;
@@ -2107,6 +1874,9 @@ function cargarDesdeFirebase() {
         actualizarContadoresFiltros();
         renderVehicleView(selectedIndex);
         
+        // Verificar alerta si hay placa escrita
+        verificarAlertaPlaca();
+        
         vehiclesRef.on('child_changed', (snapshot) => {
             const key = snapshot.key;
             const vehiculo = snapshot.val();
@@ -2126,6 +1896,7 @@ function cargarDesdeFirebase() {
                 filtrarVehiculos();
                 actualizarContadoresFiltros();
                 renderVehicleView(selectedIndex);
+                verificarAlertaPlaca();
             }
         });
         
@@ -2167,6 +1938,7 @@ function cargarDesdeFirebase() {
                 renderVehicleView(selectedIndex);
                 document.getElementById('totalVehiculos').textContent = vehicles.length;
                 actualizarStatus(`✅ ${vehicles.length} vehículos`, 'synced');
+                verificarAlertaPlaca();
             }
         });
         
@@ -2186,6 +1958,7 @@ function cargarDesdeFirebase() {
             renderVehicleView(selectedIndex);
             document.getElementById('totalVehiculos').textContent = vehicles.length;
             actualizarStatus(`✅ ${vehicles.length} vehículos`, 'synced');
+            verificarAlertaPlaca();
         });
         
     }).catch((error) => {
@@ -2677,6 +2450,7 @@ async function agregarObservacion(index) {
         renderVehicleView(index);
         renderVehicleList();
         actualizarContadoresFiltros();
+        verificarAlertaPlaca();
     }
 }
 
@@ -2691,6 +2465,7 @@ async function resolverObservacion(vehicleIndex, observacionId) {
             renderVehicleView(vehicleIndex);
             renderVehicleList();
             actualizarContadoresFiltros();
+            verificarAlertaPlaca();
         }
     }
 }
@@ -2706,6 +2481,7 @@ async function eliminarObservacion(vehicleIndex, observacionId) {
         renderVehicleView(vehicleIndex);
         renderVehicleList();
         actualizarContadoresFiltros();
+        verificarAlertaPlaca();
     }
 }
 
@@ -2730,6 +2506,7 @@ async function actualizarKilometraje(index) {
         renderVehicleView(index);
         renderVehicleList();
         actualizarContadoresFiltros();
+        verificarAlertaPlaca();
     } catch (error) {
         console.error('Error:', error);
         mostrarFeedback('❌ Error al actualizar el valor.', '#fff0f0', '#d32f2f');
