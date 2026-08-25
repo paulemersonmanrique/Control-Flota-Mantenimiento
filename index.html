@@ -8,6 +8,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
+        /* ===== ESTILOS COMPLETOS ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, system-ui, sans-serif; }
         body { background: #f0f4fa; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         
@@ -949,7 +950,7 @@
             <i class="fas fa-sign-in-alt"></i> Ingresar a la interfaz
         </button>
 
-        <div class="version-inicio">v3.16 · Control de Flota con Firebase</div>
+        <div class="version-inicio">v3.17 · Control de Flota con Firebase</div>
     </div>
 </div>
 
@@ -977,7 +978,7 @@
             <p style="margin-left:20px; color:#ffe699;">🟡 <strong>Faltan datos</strong> - Campos importantes sin completar</p>
         </div>
         <div class="modal-ayuda-footer">
-            <i class="fas fa-code"></i> Desarrollado por PaulEManrique · v3.16
+            <i class="fas fa-code"></i> Desarrollado por PaulEManrique · v3.17
         </div>
     </div>
 </div>
@@ -995,7 +996,6 @@
             </button>
         </div>
         <div class="detail-body" id="detailBody">
-            <!-- El contenido se genera dinámicamente -->
             <div id="detailFormContainer"></div>
         </div>
         <div class="detail-actions">
@@ -1193,7 +1193,7 @@
         <span class="icono"><i class="fas fa-code"></i></span>
         Desarrollado por <span class="nombre">PaulEManrique</span>
         <span class="icono"><i class="fas fa-heart" style="color: #d32f2f;"></i></span>
-        <div class="version">v3.16 · Control de Flota con Firebase</div>
+        <div class="version">v3.17 · Control de Flota con Firebase</div>
     </div>
 </div>
 
@@ -1250,6 +1250,7 @@ let datosCargados = false;
 let loadingData = false;
 let placaBuscada = '';
 let busquedaTimeout = null;
+let vehiculoKeyEditando = null; // 🔥 NUEVO: guardar la key del vehículo en edición
 
 // ============================================================
 // 📋 BASE DE DATOS DE MODELOS POR MARCA
@@ -1553,8 +1554,8 @@ function abrirDetalleVehiculo() {
     
     const v = vehicles[index];
     
-    // Guardar el índice para la edición
-    editingIndex = index;
+    // Guardar la key del vehículo en edición
+    vehiculoKeyEditando = v.key;
     
     // Generar el formulario en el modal
     generarFormularioDetalle(v);
@@ -1568,7 +1569,7 @@ function abrirDetalleVehiculo() {
 function cerrarDetalleVehiculo() {
     document.getElementById('vehicleDetailView').classList.remove('active');
     document.body.style.overflow = '';
-    editingIndex = -1;
+    vehiculoKeyEditando = null;
 }
 
 // ============================================================
@@ -1885,13 +1886,22 @@ function getTipoIcon(tipo) {
 }
 
 // ============================================================
-// 🔔 FUNCIÓN: GUARDAR DESDE EL DETALLE
+// 🔔 FUNCIÓN: GUARDAR DESDE EL DETALLE (CORREGIDA)
 // ============================================================
 async function guardarDetalleVehiculo() {
-    if (editingIndex === -1) {
+    if (!vehiculoKeyEditando) {
         mostrarFeedbackInicio('❌ No hay vehículo en edición.', 'error');
         return;
     }
+    
+    // Buscar el vehículo por su key
+    const index = vehicles.findIndex(v => v.key === vehiculoKeyEditando);
+    if (index === -1) {
+        mostrarFeedbackInicio('❌ El vehículo ya no existe en el sistema.', 'error');
+        return;
+    }
+    
+    const vehiculoOriginal = vehicles[index];
     
     // Obtener datos del formulario detalle
     const placa = obtenerPlacaDetalle();
@@ -1903,7 +1913,7 @@ async function guardarDetalleVehiculo() {
     const placaNorm = normalizarPlaca(placa);
     const existe = vehicles.some(v => {
         const vNorm = normalizarPlaca(v.placa);
-        if (v.key === vehicles[editingIndex]?.key) return false;
+        if (v.key === vehiculoKeyEditando) return false;
         return vNorm === placaNorm;
     });
     
@@ -1938,19 +1948,21 @@ async function guardarDetalleVehiculo() {
         extintor: document.getElementById('dExtintor').value || '',
         fechaMant: document.getElementById('dFechaMant').value || '',
         kmMant: parseInt(document.getElementById('dKmMant').value) || 0,
-        observaciones: vehicles[editingIndex]?.observaciones || [],
-        servicios: vehicles[editingIndex]?.servicios || []
+        observaciones: vehiculoOriginal.observaciones || [],
+        servicios: vehiculoOriginal.servicios || []
     };
     
     try {
         actualizarStatus('Guardando...', '');
-        const existente = vehicles[editingIndex];
-        const actualizado = { ...existente, ...data };
-        actualizado.key = existente.key;
+        const actualizado = { ...vehiculoOriginal, ...data };
+        actualizado.key = vehiculoOriginal.key;
         const exito = await guardarEnFirebase(actualizado, false);
         
         if (exito) {
-            vehicles[editingIndex] = actualizado;
+            // Actualizar el array local
+            vehicles[index] = actualizado;
+            
+            // Actualizar el índice seleccionado
             const newIndex = vehicles.findIndex(v => v.key === actualizado.key);
             if (newIndex !== -1) selectedIndex = newIndex;
             
@@ -2250,6 +2262,101 @@ function cargarDesdeFirebase() {
         mostrarSpinner(false);
         loadingData = false;
     });
+}
+
+// ============================================================
+// 🔧 FUNCIÓN: GUARDAR VEHÍCULO (PRINCIPAL)
+// ============================================================
+async function guardarVehiculo() {
+    const placa = obtenerPlaca();
+    if (!placa) {
+        mostrarFeedback('⚠️ La placa es obligatoria.', '#fff3cd', '#ffc107');
+        return;
+    }
+    
+    const placaNorm = normalizarPlaca(placa);
+    const existe = vehicles.some(v => {
+        const vNorm = normalizarPlaca(v.placa);
+        if (editingIndex >= 0 && v.key === vehicles[editingIndex]?.key) return false;
+        return vNorm === placaNorm;
+    });
+    
+    if (existe) {
+        mostrarFeedback('⚠️ Ya existe un vehículo con esta placa.', '#fff3cd', '#ffc107');
+        return;
+    }
+    
+    const marca = obtenerMarca();
+    const modelo = obtenerModelo();
+    const tipo = document.getElementById('fTipo').value || '';
+    const link = document.getElementById('fLink').value.trim() || '';
+    const intAceite = parseInt(document.getElementById('fIntAceite').value) || 0;
+    
+    if (intAceite <= 0) {
+        mostrarFeedback('⚠️ El intervalo de mantenimiento debe ser mayor que 0.', '#fff3cd', '#ffc107');
+        return;
+    }
+    
+    const data = {
+        placa: placa,
+        marca: marca || 'Desconocida',
+        modelo: modelo || 'Desconocido',
+        tipo: tipo,
+        link: link,
+        anio: document.getElementById('fAnio').value || '----',
+        kmActual: parseInt(document.getElementById('fKmActual').value) || 0,
+        intAceite: intAceite,
+        soat: document.getElementById('fSoat').value || '',
+        itv: document.getElementById('fItv').value || '',
+        itvAutrisa: document.getElementById('fItvAutrisa').value || '',
+        extintor: document.getElementById('fExtintor').value || '',
+        fechaMant: document.getElementById('fFechaMant').value || '',
+        kmMant: parseInt(document.getElementById('fKmMant').value) || 0,
+        observaciones: [],
+        servicios: []
+    };
+    
+    if (editingIndex >= 0 && vehicles[editingIndex]) {
+        data.observaciones = vehicles[editingIndex].observaciones || [];
+        data.servicios = vehicles[editingIndex].servicios || [];
+    }
+    
+    let exito = false;
+    
+    if (editingIndex >= 0) {
+        const existente = vehicles[editingIndex];
+        const actualizado = { ...existente, ...data };
+        actualizado.key = existente.key;
+        exito = await guardarEnFirebase(actualizado, false);
+        if (exito) {
+            vehicles[editingIndex] = actualizado;
+            const newIndex = vehicles.findIndex(v => v.key === actualizado.key);
+            if (newIndex !== -1) selectedIndex = newIndex;
+            mostrarFeedback('✅ Vehículo actualizado correctamente.', '#d4edda', '#28a745');
+            placaBuscada = placa;
+            editingIndex = -1;
+        }
+    } else {
+        exito = await guardarEnFirebase(data, true);
+        if (exito) {
+            mostrarFeedback('✅ Vehículo agregado correctamente.', '#d4edda', '#28a745');
+        }
+    }
+    
+    if (exito) {
+        actualizarSelectPlacas();
+        actualizarSelectMarcas();
+        actualizarSelectModelos(obtenerMarca());
+        filtrarVehiculos();
+        actualizarContadoresFiltros();
+        renderVehicleList();
+        renderVehicleView(selectedIndex);
+        ejecutarBusqueda();
+        
+        document.getElementById('formPanel').classList.remove('visible');
+        limpiarFormulario();
+        limpiarBusqueda();
+    }
 }
 
 // ============================================================
