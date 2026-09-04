@@ -207,7 +207,6 @@
         .search-placas .clear-btn:hover { color: #d32f2f; }
         .header-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
         
-        /* NUEVO BOTÓN: VER TODAS LAS UNIDADES */
         .btn-ver-todas {
             background: #0066cc;
             border: 1px solid #0066cc;
@@ -722,7 +721,6 @@
                     <input type="text" id="searchInput" placeholder="Buscar placa..." oninput="filtrarVehiculos()" onfocus="abrirBuscador()">
                     <button class="clear-btn" id="clearBtn" onclick="limpiarBusqueda()"><i class="fas fa-times-circle"></i></button>
                 </div>
-                <!-- NUEVO BOTÓN: VER TODAS LAS UNIDADES -->
                 <button class="btn-ver-todas" onclick="verTodasLasUnidades()">
                     <i class="fas fa-th-list"></i> Ver todas las unidades
                 </button>
@@ -731,7 +729,6 @@
         </div>
         
         <div class="filter-buttons" id="filterButtons">
-            <!-- ELIMINADO: botón "Todos" / "Ver todas las unidades" -->
             <button class="filter-btn critico" data-filter="critico" onclick="setFilter('critico')">
                 <i class="fas fa-exclamation-circle"></i> Críticos <span class="badge-filter" id="countCriticos">0</span>
             </button>
@@ -934,7 +931,7 @@ let selectedIndex = 0;
 let editingIndex = -1;
 let listaPlacasAbierta = false;
 let appIniciada = false;
-let filtroActual = null; // null = sin filtro, 'critico', 'observacion', 'mantenimiento'
+let filtroActual = null;
 let datosCargados = false;
 let loadingData = false;
 let placaBuscada = '';
@@ -956,7 +953,7 @@ const modelosPorMarca = {
     'Honda': ['CR-V', 'HR-V', 'Pilot', 'Ridgeline', 'WR-V', 'Accord', 'Civic', 'Odyssey', 'Passport'],
     'Volkswagen': ['Amarok', 'Saveiro', 'T-Cross', 'Nivus', 'Tiguan', 'Taos', 'Teramont', 'Delivery', 'Constellation', 'Golf', 'Jetta', 'Passat', 'Polo', 'Virtus'],
     'Hyundai': ['Santa Cruz', 'Creta', 'Tucson', 'Santa Fe', 'Palisade', 'Venue', 'Mighty', 'H1', 'Staria', 'Elantra', 'Kona', 'Sonata'],
-    'Renault': ['Duster', 'Kardian', 'Kwid', 'Koleos', 'Arkana', 'Captur', 'Clio', 'Megane', 'Sandero', 'Stepway'],
+    'Renault': ['Duster', 'Kardian', 'Kwid', 'Koleos', 'Arkana', 'Boreal', 'Austral', 'Filante', 'Captur', 'Espace', 'Oroch', 'Alaskan', 'Master', 'Trafic', 'Kangoo', 'Renault Trucks Gama T', 'Renault Trucks Gama C', 'Renault Trucks Gama K', 'Renault Trucks Gama D'],
     'Mercedes-Benz': ['Sprinter', 'Actros', 'Arocs', 'Atego', 'Accelo', 'GLC', 'GLE', 'GLS', 'A-Class', 'C-Class', 'E-Class', 'G-Class', 'S-Class', 'V-Class'],
     'BMW': ['X1', 'X3', 'X5', 'X7', 'Serie 3', 'Serie 5', 'Serie 7', 'i3', 'i8', 'M3', 'M5'],
     'Audi': ['A3', 'A4', 'A6', 'Q3', 'Q5', 'Q7', 'Q8', 'e-tron', 'RS6'],
@@ -1181,10 +1178,8 @@ async function actualizarSelectModelos(marca) {
     
     if (!select) return;
     
-    // Limpiar select
     while (select.options.length > 0) select.remove(0);
     
-    // Opción por defecto
     const defaultOption = document.createElement('option');
     defaultOption.value = ''; 
     defaultOption.textContent = 'Cargando modelos...';
@@ -1194,16 +1189,13 @@ async function actualizarSelectModelos(marca) {
     let modelos = [];
     
     if (marca) {
-        // 1. PRIMERO: Buscar en la base de datos local
         if (modelosPorMarca[marca]) {
             modelos = modelosPorMarca[marca];
         }
         
-        // 2. SEGUNDO: Buscar en la API de NHTSA
         try {
             const apiModelos = await obtenerModelosDesdeAPI(marca);
             if (apiModelos.length > 0) {
-                // Combinar modelos locales y de API, eliminar duplicados
                 const modelosCombinados = [...modelos, ...apiModelos];
                 modelos = [...new Set(modelosCombinados)].sort();
             }
@@ -1212,7 +1204,6 @@ async function actualizarSelectModelos(marca) {
         }
     }
     
-    // Limpiar select y agregar opciones
     while (select.options.length > 0) select.remove(0);
     select.disabled = false;
     
@@ -1235,7 +1226,6 @@ async function actualizarSelectModelos(marca) {
         select.appendChild(noOpt);
     }
     
-    // Manejar modo manual
     if (manual && document.getElementById('fModeloManual').style.display === 'block') {
         select.style.display = 'none';
         manual.style.display = 'block';
@@ -1248,7 +1238,7 @@ async function actualizarSelectModelos(marca) {
 }
 
 // ============================================================
-// 🔔 EJECUTAR BÚSQUEDA EN INICIO
+// 🔔 FUNCIÓN: EJECUTAR BÚSQUEDA (CON KILOMETRAJE E INFORMACIÓN COMPLETA)
 // ============================================================
 function ejecutarBusqueda() {
     const placaInput = document.getElementById('inicioPlaca');
@@ -1257,6 +1247,7 @@ function ejecutarBusqueda() {
     const alertaTitulo = document.getElementById('alertaTitulo');
     const alertaItems = document.getElementById('alertaItems');
     const feedback = document.getElementById('feedbackInicio');
+    const kmInput = document.getElementById('inicioKm');
     
     if (feedback) {
         feedback.textContent = '';
@@ -1314,11 +1305,132 @@ function ejecutarBusqueda() {
         placaInput.classList.add('success');
     }
     
+    // ACTUALIZAR EL CAMPO DE KILOMETRAJE CON EL VALOR ACTUAL DEL VEHÍCULO
+    if (kmInput && vehiculo.kmActual !== undefined) {
+        kmInput.value = vehiculo.kmActual;
+        kmInput.classList.add('success');
+    }
+    
     const alertas = [];
     const estado = calcularEstadoVehiculo(vehiculo);
     const tieneObs = tieneObservacionesPendientes(vehiculo);
     const mantInfo = getMaintenanceInfo(vehiculo);
     
+    // ============================================================
+    // INFORMACIÓN DEL VEHÍCULO (KILOMETRAJE Y DATOS BÁSICOS)
+    // ============================================================
+    let infoVehiculo = `
+        <div class="item" style="border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 6px; margin-bottom: 4px;">
+            <i class="fas fa-tachometer-alt" style="color:#4a9eff;"></i>
+            <strong>${vehiculo.kmActual.toLocaleString()} (Hr/Km)</strong>
+            <span style="color:#4a7aaa; font-size:11px; margin-left:4px;">
+                ${vehiculo.marca ? vehiculo.marca : ''} ${vehiculo.modelo ? vehiculo.modelo : ''}
+                ${vehiculo.anio ? `(${vehiculo.anio})` : ''}
+            </span>
+        </div>
+    `;
+    
+    // Información adicional del vehículo
+    if (vehiculo.marca || vehiculo.modelo) {
+        infoVehiculo += `
+            <div class="item" style="font-size:11px; color:#8ab4f8;">
+                <i class="fas fa-car" style="color:#4a9eff; width:18px;"></i>
+                ${vehiculo.marca || 'Sin marca'} ${vehiculo.modelo || 'Sin modelo'}
+                ${vehiculo.anio ? `· ${vehiculo.anio}` : ''}
+                ${vehiculo.tipo ? `· ${vehiculo.tipo}` : ''}
+            </div>
+        `;
+    }
+    
+    // Información de mantenimiento
+    if (vehiculo.intAceite) {
+        const kmRestantes = mantInfo.kmRestantes;
+        const estadoMant = kmRestantes <= 0 ? '🔴 VENCIDO' : (kmRestantes <= 1000 ? '🟠 Próximo' : '🟢 OK');
+        infoVehiculo += `
+            <div class="item" style="font-size:11px; color:#8ab4f8;">
+                <i class="fas fa-oil-can" style="color:#4a9eff; width:18px;"></i>
+                Intervalo MTTO: ${vehiculo.intAceite.toLocaleString()} (Hr/Km)
+                <span style="margin-left:6px; font-weight:600;">${estadoMant}</span>
+                ${kmRestantes > 0 ? `· ${kmRestantes.toLocaleString()} restantes` : `· ${Math.abs(kmRestantes).toLocaleString()} excedidos`}
+            </div>
+        `;
+    }
+    
+    // Último mantenimiento
+    if (vehiculo.fechaMant) {
+        infoVehiculo += `
+            <div class="item" style="font-size:11px; color:#8ab4f8;">
+                <i class="fas fa-calendar-check" style="color:#4a9eff; width:18px;"></i>
+                Último MTTO: ${formatearFecha(vehiculo.fechaMant)}
+                ${vehiculo.kmMant ? `· ${vehiculo.kmMant.toLocaleString()} (Hr/Km)` : ''}
+            </div>
+        `;
+    }
+    
+    // Vencimientos
+    if (vehiculo.soat) {
+        const fecha = new Date(vehiculo.soat + 'T00:00:00');
+        const hoy = new Date();
+        hoy.setHours(0,0,0,0);
+        const dias = Math.round((fecha - hoy) / (1000*60*60*24));
+        const estadoSoat = dias <= 0 ? '🔴 VENCIDO' : (dias <= 30 ? '🟠 Próximo' : '🟢 Vigente');
+        infoVehiculo += `
+            <div class="item" style="font-size:11px; color:#8ab4f8;">
+                <i class="fas fa-file-contract" style="color:#4a9eff; width:18px;"></i>
+                SOAT: ${formatearFecha(vehiculo.soat)} ${estadoSoat}
+                ${dias > 0 ? `· ${dias} días` : dias <= 0 ? `· ${Math.abs(dias)} días vencidos` : ''}
+            </div>
+        `;
+    }
+    
+    if (vehiculo.itv) {
+        const fecha = new Date(vehiculo.itv + 'T00:00:00');
+        const hoy = new Date();
+        hoy.setHours(0,0,0,0);
+        const dias = Math.round((fecha - hoy) / (1000*60*60*24));
+        const estadoItv = dias <= 0 ? '🔴 VENCIDA' : (dias <= 30 ? '🟠 Próxima' : '🟢 Vigente');
+        infoVehiculo += `
+            <div class="item" style="font-size:11px; color:#8ab4f8;">
+                <i class="fas fa-clipboard-check" style="color:#4a9eff; width:18px;"></i>
+                ITV: ${formatearFecha(vehiculo.itv)} ${estadoItv}
+                ${dias > 0 ? `· ${dias} días` : dias <= 0 ? `· ${Math.abs(dias)} días vencidos` : ''}
+            </div>
+        `;
+    }
+    
+    if (vehiculo.itvAutrisa) {
+        const fecha = new Date(vehiculo.itvAutrisa + 'T00:00:00');
+        const hoy = new Date();
+        hoy.setHours(0,0,0,0);
+        const dias = Math.round((fecha - hoy) / (1000*60*60*24));
+        const estado = dias <= 0 ? '🔴 VENCIDO' : (dias <= 30 ? '🟠 Próximo' : '🟢 Vigente');
+        infoVehiculo += `
+            <div class="item" style="font-size:11px; color:#8ab4f8;">
+                <i class="fas fa-certificate" style="color:#e66a00; width:18px;"></i>
+                ITV Autrisa: ${formatearFecha(vehiculo.itvAutrisa)} ${estado}
+                ${dias > 0 ? `· ${dias} días` : dias <= 0 ? `· ${Math.abs(dias)} días vencidos` : ''}
+            </div>
+        `;
+    }
+    
+    if (vehiculo.extintor) {
+        const fecha = new Date(vehiculo.extintor + 'T00:00:00');
+        const hoy = new Date();
+        hoy.setHours(0,0,0,0);
+        const dias = Math.round((fecha - hoy) / (1000*60*60*24));
+        const estadoExt = dias <= 0 ? '🔴 VENCIDO' : (dias <= 30 ? '🟠 Próximo' : '🟢 Vigente');
+        infoVehiculo += `
+            <div class="item" style="font-size:11px; color:#8ab4f8;">
+                <i class="fas fa-fire-extinguisher" style="color:#4a9eff; width:18px;"></i>
+                Extintor: ${formatearFecha(vehiculo.extintor)} ${estadoExt}
+                ${dias > 0 ? `· ${dias} días` : dias <= 0 ? `· ${Math.abs(dias)} días vencidos` : ''}
+            </div>
+        `;
+    }
+    
+    // ============================================================
+    // ALERTAS DEL VEHÍCULO
+    // ============================================================
     if (tieneObs) {
         const obsPendientes = vehiculo.observaciones.filter(a => a.estado === 'pendiente');
         alertas.push({
@@ -1386,12 +1498,24 @@ function ejecutarBusqueda() {
         });
     }
     
+    // ============================================================
+    // CONSTRUIR HTML FINAL
+    // ============================================================
+    let htmlFinal = infoVehiculo;
+    
     if (alertas.length > 0) {
-        let html = '';
         alertas.forEach(a => {
-            html += `<div class="item"><i class="${a.icono}" style="color:${a.color};"></i> ${a.texto}</div>`;
+            htmlFinal += `<div class="item"><i class="${a.icono}" style="color:${a.color};"></i> ${a.texto}</div>`;
         });
-        if (alertaItems) alertaItems.innerHTML = html;
+    } else {
+        htmlFinal += `<div class="item"><i class="fas fa-check-circle" style="color:#51cf66;"></i> Vehículo al día sin observaciones ni vencimientos pendientes</div>`;
+    }
+    
+    if (alertaItems) alertaItems.innerHTML = htmlFinal;
+    
+    // Determinar clase de alerta
+    if (alertaDiv) {
+        alertaDiv.className = 'alerta-vehiculo visible';
         
         const tieneCritico = alertas.some(a => 
             a.tipo === 'critico' || 
@@ -1400,24 +1524,15 @@ function ejecutarBusqueda() {
         const tieneVencimiento = alertas.some(a => a.tipo === 'vencimiento' || a.tipo === 'mantenimiento');
         const tieneObservacionAlerta = alertas.some(a => a.tipo === 'observacion');
         
-        if (alertaDiv) {
-            alertaDiv.className = 'alerta-vehiculo visible';
-            if (tieneCritico) {
-                alertaDiv.classList.add('alert-critical');
-                if (alertaTitulo) alertaTitulo.textContent = '🚨 ¡ATENCIÓN CRÍTICA!';
-            } else if (tieneVencimiento || tieneObservacionAlerta) {
-                alertaDiv.classList.add('alert-vencimiento');
-                if (alertaTitulo) alertaTitulo.textContent = '⚠️ Alerta - Requiere atención';
-            } else {
-                alertaDiv.classList.add('alert-observacion');
-                if (alertaTitulo) alertaTitulo.textContent = 'ℹ️ Información importante';
-            }
-        }
-    } else {
-        if (alertaDiv) {
-            alertaDiv.className = 'alerta-vehiculo visible alert-ok';
-            if (alertaTitulo) alertaTitulo.textContent = '✅ Todo en orden';
-            if (alertaItems) alertaItems.innerHTML = `<div class="item"><i class="fas fa-check-circle" style="color:#51cf66;"></i> Vehículo al día sin observaciones ni vencimientos pendientes</div>`;
+        if (tieneCritico) {
+            alertaDiv.classList.add('alert-critical');
+            if (alertaTitulo) alertaTitulo.textContent = '🚨 ¡ATENCIÓN CRÍTICA!';
+        } else if (tieneVencimiento || tieneObservacionAlerta) {
+            alertaDiv.classList.add('alert-vencimiento');
+            if (alertaTitulo) alertaTitulo.textContent = '⚠️ Alerta - Requiere atención';
+        } else {
+            alertaDiv.classList.add('alert-ok');
+            if (alertaTitulo) alertaTitulo.textContent = '✅ Vehículo en orden';
         }
     }
 }
@@ -1629,24 +1744,20 @@ function seleccionarVehiculo(index) {
 }
 
 // ============================================================
-// 🔔 FUNCIÓN: VER TODAS LAS UNIDADES (NUEVA)
+// 🔔 FUNCIÓN: VER TODAS LAS UNIDADES
 // ============================================================
 function verTodasLasUnidades() {
-    // Mostrar todos los vehículos sin filtrar
     filteredVehicles = [...vehicles];
     
-    // Actualizar contadores
     document.getElementById('totalVehiculos').textContent = vehicles.length;
     document.getElementById('totalFiltrados').textContent = filteredVehicles.length;
     document.getElementById('filtroInfo').style.display = 'none';
     
-    // Desactivar todos los filtros
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.remove('active');
     });
     filtroActual = null;
     
-    // Renderizar lista y vista
     renderVehicleList();
     
     if (filteredVehicles.length > 0) {
@@ -1657,14 +1768,12 @@ function verTodasLasUnidades() {
         }
     }
     
-    // Abrir las placas automáticamente
     const container = document.getElementById('vehicleListContainer');
     if (container && !container.classList.contains('abierto')) {
         container.classList.add('abierto');
         listaPlacasAbierta = true;
     }
     
-    // Limpiar búsqueda
     const searchInput = document.getElementById('searchInput');
     if (searchInput) searchInput.value = '';
     const clearBtn = document.getElementById('clearBtn');
@@ -1678,7 +1787,6 @@ function filtrarVehiculos() {
     const searchInput = document.getElementById('searchInput');
     const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
     
-    // Solo filtrar si hay un filtro activo (critico, observacion, mantenimiento)
     if (filtroActual === 'critico') {
         filteredVehicles = vehicles.filter(v => calcularEstadoVehiculo(v).general === 'estado-rojo');
     } else if (filtroActual === 'observacion') {
@@ -1689,18 +1797,15 @@ function filtrarVehiculos() {
             return info.kmRestantes > 0 && info.kmRestantes <= 1000;
         });
     } else {
-        // Si no hay filtro activo, mostrar todos
         filteredVehicles = [...vehicles];
     }
     
-    // Filtrar por búsqueda
     if (searchTerm) {
         filteredVehicles = filteredVehicles.filter(v => 
             v.placa.toLowerCase().includes(searchTerm)
         );
     }
     
-    // Actualizar contadores
     const totalVehiculos = document.getElementById('totalVehiculos');
     const totalFiltrados = document.getElementById('totalFiltrados');
     const filtroInfo = document.getElementById('filtroInfo');
@@ -1721,7 +1826,6 @@ function filtrarVehiculos() {
         renderVehicleView(-1);
     }
     
-    // Abrir placas solo si hay búsqueda o filtro activo
     const container = document.getElementById('vehicleListContainer');
     const hasFilter = filtroActual !== null && filtroActual !== undefined;
     const shouldOpen = hasFilter || searchTerm;
@@ -2418,9 +2522,6 @@ function nuevoVehiculo() {
     document.getElementById('formPanel').scrollIntoView({ behavior: 'smooth' });
 }
 
-// ============================================================
-// 🔔 FUNCIÓN EDITAR VEHÍCULO
-// ============================================================
 function editarVehiculo(index) {
     editingIndex = index;
     const v = vehicles[index];
@@ -2941,9 +3042,6 @@ function generarFormularioDetalle(v) {
     }, 50);
 }
 
-// ============================================================
-// 🔔 FUNCIONES DE DETALLE - SELECTORES
-// ============================================================
 function cambiarPlacaSelectDetalle() {
     const select = document.getElementById('dPlacaSelect');
     const manual = document.getElementById('dPlacaManual');
@@ -3072,9 +3170,6 @@ function actualizarPreviewTipoDetalle() {
     }
 }
 
-// ============================================================
-// 🔔 GUARDAR DETALLE
-// ============================================================
 async function guardarDetalleVehiculo() {
     const btn = document.getElementById('btnGuardarDetalle');
     if (btn) {
@@ -3186,9 +3281,6 @@ async function guardarDetalleVehiculo() {
     }
 }
 
-// ============================================================
-// 🔔 OTRAS FUNCIONES
-// ============================================================
 function abrirDetalleVehiculo() {
     if (!placaBuscada) {
         mostrarFeedbackInicio('⚠️ No hay un vehículo seleccionado.', 'warning');
@@ -3222,9 +3314,6 @@ function abrirDetalleDesdeLista(index) {
     abrirDetalleVehiculo();
 }
 
-// ============================================================
-// 🔔 GUARDAR VEHÍCULO - CORREGIDO
-// ============================================================
 async function guardarVehiculo() {
     console.log('🟢 guardarVehiculo() ejecutándose');
     console.log('editingIndex:', editingIndex);
@@ -3350,9 +3439,6 @@ async function guardarVehiculo() {
     }
 }
 
-// ============================================================
-// 🔔 ACTUALIZAR DESDE INICIO
-// ============================================================
 async function actualizarDesdeInicio() {
     const placaInput = document.getElementById('inicioPlaca');
     const kmInput = document.getElementById('inicioKm');
@@ -3436,9 +3522,6 @@ async function actualizarDesdeInicio() {
     }
 }
 
-// ============================================================
-// 🔔 CARGAR DESDE FIREBASE
-// ============================================================
 function cargarDesdeFirebase() {
     if (loadingData) return;
     loadingData = true;
@@ -3582,9 +3665,6 @@ function cargarDesdeFirebase() {
     });
 }
 
-// ============================================================
-// 🔔 ENTRADA A LA APP
-// ============================================================
 function ingresarApp() {
     document.getElementById('pantallaInicio').classList.add('oculta');
     document.getElementById('appPrincipal').classList.add('visible');
@@ -3599,9 +3679,6 @@ function salirApp() {
     setTimeout(ejecutarBusqueda, 100);
 }
 
-// ============================================================
-// 🚀 INICIALIZACIÓN
-// ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     const inicioPlaca = document.getElementById('inicioPlaca');
     const inicioKm = document.getElementById('inicioKm');
