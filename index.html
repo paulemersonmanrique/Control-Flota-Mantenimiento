@@ -30,7 +30,7 @@
         .inicio-container .logo { font-size: 50px; color: #ffffff; margin-bottom: 10px; }
         .inicio-container h1 { font-size: 34px; color: #ffc107; font-weight: 700; margin-bottom: 6px; }
         .inicio-container .subtitulo { font-size: 18px; color: #ffffff; margin-bottom: 24px; }
-        .inicio-container .campo { margin-bottom: 14px; text-align: left; }
+        .inicio-container .campo { margin-bottom: 14px; text-align: left; position: relative; }
         .inicio-container .campo label { display: block; color: #ffffff; font-size: 16px; font-weight: 600; margin-bottom: 5px; }
         .inicio-container .campo input { 
             width: 100%; padding: 14px 18px; border-radius: 14px; border: 2px solid #1a4a7a; 
@@ -53,6 +53,45 @@
         .inicio-container .feedback-inicio.loading { color: #4a9eff; background: rgba(74,158,255,0.1); border: 1px solid rgba(74,158,255,0.2); }
         .inicio-container .feedback-inicio.warning { color: #ff6b00; background: rgba(255,107,0,0.15); border: 1px solid rgba(255,107,0,0.3); }
         .inicio-container .version-inicio { color: #ffffff; font-size: 13px; margin-top: 16px; padding-bottom: 8px; }
+
+        /* AUTOCOMPLETAR */
+        .autocomplete-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #4a9eff;
+            border-top: none;
+            border-radius: 0 0 14px 14px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .autocomplete-list.visible { display: block; }
+        .autocomplete-item {
+            padding: 12px 18px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            color: #0b1e33;
+            border-bottom: 1px solid #f0f4fa;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .autocomplete-item:last-child { border-bottom: none; }
+        .autocomplete-item:hover, .autocomplete-item.active { background: #e5f0ff; color: #0066cc; }
+        .autocomplete-item i { color: #4a9eff; font-size: 16px; }
+        .autocomplete-item .info-vehiculo {
+            margin-left: auto;
+            font-size: 11px;
+            color: #657e9e;
+            font-weight: 400;
+        }
 
         .alerta-vehiculo { margin-top: 10px; padding: 12px 16px; border-radius: 12px; text-align: left; display: none; animation: slideDown 0.4s ease; }
         .alerta-vehiculo.visible { display: block; }
@@ -130,6 +169,7 @@
             .alerta-vehiculo { padding: 10px 12px; }
             .alerta-vehiculo .alerta-header { font-size: 13px; }
             .alerta-vehiculo .alerta-items .item { font-size: 12px; }
+            .autocomplete-item { padding: 10px 14px; font-size: 16px; }
         }
 
         #appPrincipal {
@@ -608,15 +648,19 @@
         <h1>Control de Unidades</h1>
         <div class="subtitulo">MTTO IMCO · Actualización rápida</div>
 
+        <!-- CAMBIO: Placa primero, Km después -->
         <div class="campo">
-            <label><i class="fas fa-tachometer-alt"></i> (Hr/Km) actual</label>
-            <input type="number" id="inicioKm" placeholder="0" min="0">
+            <label><i class="fas fa-id-card"></i> Placa</label>
+            <input type="text" id="inicioPlaca" placeholder="Ej: ABC-123" autocomplete="off"
+                   oninput="this.value=this.value.toUpperCase(); buscarVehiculoEnInicio(); mostrarAutocompletar()"
+                   onfocus="mostrarAutocompletar()"
+                   onblur="setTimeout(function(){ ocultarAutocompletar(); }, 200)">
+            <div id="autocompleteList" class="autocomplete-list"></div>
         </div>
 
         <div class="campo">
-            <label><i class="fas fa-id-card"></i> Placa</label>
-            <input type="text" id="inicioPlaca" placeholder="Ej: ABC-123" 
-                   oninput="this.value=this.value.toUpperCase(); buscarVehiculoEnInicio()">
+            <label><i class="fas fa-tachometer-alt"></i> (Hr/Km) actual</label>
+            <input type="number" id="inicioKm" placeholder="0" min="0" oninput="actualizarInfoConKm()">
         </div>
 
         <div id="alertaVehiculo" class="alerta-vehiculo">
@@ -937,6 +981,7 @@ let loadingData = false;
 let placaBuscada = '';
 let busquedaTimeout = null;
 let vehiculoKeyEditando = null;
+let vehiculoActualInicio = null; // Vehículo actualmente buscado en la pantalla de inicio
 
 // ============================================================
 // 📋 BASE DE DATOS DE MODELOS POR MARCA (FALLBACK LOCAL)
@@ -1028,6 +1073,59 @@ function normalizarPlaca(placa) {
 
 function getTipoIcon(tipo) {
     return tipoIconos[tipo] || 'fa-car';
+}
+
+// ============================================================
+// 🔔 AUTOCOMPLETAR DE PLACA
+// ============================================================
+function mostrarAutocompletar() {
+    const input = document.getElementById('inicioPlaca');
+    const list = document.getElementById('autocompleteList');
+    const valor = input.value.trim().toUpperCase();
+    
+    if (!valor || valor.length < 1 || !datosCargados || vehicles.length === 0) {
+        list.classList.remove('visible');
+        list.innerHTML = '';
+        return;
+    }
+    
+    // Filtrar vehículos que coincidan con lo escrito
+    const coincidencias = vehicles.filter(v => 
+        v.placa && v.placa.toUpperCase().includes(valor)
+    ).slice(0, 10); // máximo 10 resultados
+    
+    if (coincidencias.length === 0) {
+        list.classList.remove('visible');
+        list.innerHTML = '';
+        return;
+    }
+    
+    let html = '';
+    coincidencias.forEach(v => {
+        html += `
+            <div class="autocomplete-item" onclick="seleccionarPlacaAutocomplete('${v.placa}')">
+                <i class="fas fa-truck"></i>
+                <span>${v.placa}</span>
+                <span class="info-vehiculo">${v.marca || ''} ${v.modelo || ''} · ${v.kmActual.toLocaleString()} (Hr/Km)</span>
+            </div>
+        `;
+    });
+    
+    list.innerHTML = html;
+    list.classList.add('visible');
+}
+
+function ocultarAutocompletar() {
+    const list = document.getElementById('autocompleteList');
+    if (list) list.classList.remove('visible');
+}
+
+function seleccionarPlacaAutocomplete(placa) {
+    const input = document.getElementById('inicioPlaca');
+    input.value = placa;
+    input.classList.remove('error');
+    ocultarAutocompletar();
+    buscarVehiculoEnInicio();
 }
 
 // ============================================================
@@ -1238,80 +1336,31 @@ async function actualizarSelectModelos(marca) {
 }
 
 // ============================================================
-// 🔔 FUNCIÓN: EJECUTAR BÚSQUEDA (CON KILOMETRAJE E INFORMACIÓN COMPLETA)
+// 🔔 FUNCIÓN: ACTUALIZAR INFORMACIÓN CON EL KM ESCRITO (SIN GUARDAR)
 // ============================================================
-function ejecutarBusqueda() {
-    const placaInput = document.getElementById('inicioPlaca');
-    const placa = placaInput ? placaInput.value.trim().toUpperCase() : '';
+function actualizarInfoConKm() {
+    if (!vehiculoActualInicio) return;
+    
+    const kmInput = document.getElementById('inicioKm');
+    const nuevoKm = parseInt(kmInput.value);
+    
+    if (isNaN(nuevoKm) || nuevoKm < 0) return;
+    
+    // Crear una copia del vehículo con el nuevo km para calcular la info
+    const vehiculoConNuevoKm = { ...vehiculoActualInicio, kmActual: nuevoKm };
+    
+    // Re-renderizar la información con el nuevo km
+    renderizarInfoInicio(vehiculoConNuevoKm, nuevoKm);
+}
+
+// ============================================================
+// 🔔 FUNCIÓN: RENDERIZAR INFORMACIÓN EN PANTALLA DE INICIO
+// ============================================================
+function renderizarInfoInicio(vehiculo, kmMostrado) {
     const alertaDiv = document.getElementById('alertaVehiculo');
     const alertaTitulo = document.getElementById('alertaTitulo');
     const alertaItems = document.getElementById('alertaItems');
-    const feedback = document.getElementById('feedbackInicio');
-    const kmInput = document.getElementById('inicioKm');
     
-    if (feedback) {
-        feedback.textContent = '';
-        feedback.className = 'feedback-inicio';
-    }
-    
-    if (placa.length < 3) {
-        if (alertaDiv) alertaDiv.classList.remove('visible');
-        if (placaInput) placaInput.classList.remove('error', 'success', 'warning');
-        return;
-    }
-    
-    if (!datosCargados) {
-        if (alertaDiv) {
-            alertaDiv.className = 'alerta-vehiculo visible alert-loading';
-            if (alertaTitulo) alertaTitulo.textContent = '⏳ Cargando datos...';
-            if (alertaItems) alertaItems.innerHTML = `<div class="item"><i class="fas fa-spinner fa-spin" style="color:#4a9eff;"></i> Espera mientras se cargan los vehículos</div>`;
-        }
-        if (placaInput) placaInput.classList.remove('error', 'success', 'warning');
-        return;
-    }
-    
-    if (vehicles.length === 0) {
-        if (alertaDiv) {
-            alertaDiv.className = 'alerta-vehiculo visible alert-datos';
-            if (alertaTitulo) alertaTitulo.textContent = '📋 Sin vehículos';
-            if (alertaItems) alertaItems.innerHTML = `<div class="item"><i class="fas fa-info-circle" style="color:#ffd966;"></i> No hay vehículos registrados en el sistema</div>`;
-        }
-        if (placaInput) {
-            placaInput.classList.remove('success', 'warning');
-            placaInput.classList.add('error');
-        }
-        return;
-    }
-    
-    const placaNorm = normalizarPlaca(placa);
-    const vehiculo = vehicles.find(v => normalizarPlaca(v.placa || '') === placaNorm);
-    
-    if (!vehiculo) {
-        if (alertaDiv) {
-            alertaDiv.className = 'alerta-vehiculo visible alert-datos';
-            if (alertaTitulo) alertaTitulo.textContent = '❌ Vehículo no encontrado';
-            if (alertaItems) alertaItems.innerHTML = `<div class="item"><i class="fas fa-search" style="color:#ffd966;"></i> No se encontró ningún vehículo con la placa "${placa}"</div>`;
-        }
-        if (placaInput) {
-            placaInput.classList.remove('success', 'warning');
-            placaInput.classList.add('error');
-        }
-        return;
-    }
-    
-    placaBuscada = vehiculo.placa;
-    if (placaInput) {
-        placaInput.classList.remove('error', 'warning');
-        placaInput.classList.add('success');
-    }
-    
-    // ACTUALIZAR EL CAMPO DE KILOMETRAJE CON EL VALOR ACTUAL DEL VEHÍCULO
-    if (kmInput && vehiculo.kmActual !== undefined) {
-        kmInput.value = vehiculo.kmActual;
-        kmInput.classList.add('success');
-    }
-    
-    const alertas = [];
     const estado = calcularEstadoVehiculo(vehiculo);
     const tieneObs = tieneObservacionesPendientes(vehiculo);
     const mantInfo = getMaintenanceInfo(vehiculo);
@@ -1322,7 +1371,7 @@ function ejecutarBusqueda() {
     let infoVehiculo = `
         <div class="item" style="border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 6px; margin-bottom: 4px;">
             <i class="fas fa-tachometer-alt" style="color:#4a9eff;"></i>
-            <strong>${vehiculo.kmActual.toLocaleString()} (Hr/Km)</strong>
+            <strong>${kmMostrado.toLocaleString()} (Hr/Km)</strong>
             <span style="color:#4a7aaa; font-size:11px; margin-left:4px;">
                 ${vehiculo.marca ? vehiculo.marca : ''} ${vehiculo.modelo ? vehiculo.modelo : ''}
                 ${vehiculo.anio ? `(${vehiculo.anio})` : ''}
@@ -1330,7 +1379,6 @@ function ejecutarBusqueda() {
         </div>
     `;
     
-    // Información adicional del vehículo
     if (vehiculo.marca || vehiculo.modelo) {
         infoVehiculo += `
             <div class="item" style="font-size:11px; color:#8ab4f8;">
@@ -1342,7 +1390,6 @@ function ejecutarBusqueda() {
         `;
     }
     
-    // Información de mantenimiento
     if (vehiculo.intAceite) {
         const kmRestantes = mantInfo.kmRestantes;
         const estadoMant = kmRestantes <= 0 ? '🔴 VENCIDO' : (kmRestantes <= 1000 ? '🟠 Próximo' : '🟢 OK');
@@ -1356,7 +1403,6 @@ function ejecutarBusqueda() {
         `;
     }
     
-    // Último mantenimiento
     if (vehiculo.fechaMant) {
         infoVehiculo += `
             <div class="item" style="font-size:11px; color:#8ab4f8;">
@@ -1431,6 +1477,8 @@ function ejecutarBusqueda() {
     // ============================================================
     // ALERTAS DEL VEHÍCULO
     // ============================================================
+    const alertas = [];
+    
     if (tieneObs) {
         const obsPendientes = vehiculo.observaciones.filter(a => a.estado === 'pendiente');
         alertas.push({
@@ -1498,9 +1546,6 @@ function ejecutarBusqueda() {
         });
     }
     
-    // ============================================================
-    // CONSTRUIR HTML FINAL
-    // ============================================================
     let htmlFinal = infoVehiculo;
     
     if (alertas.length > 0) {
@@ -1513,7 +1558,6 @@ function ejecutarBusqueda() {
     
     if (alertaItems) alertaItems.innerHTML = htmlFinal;
     
-    // Determinar clase de alerta
     if (alertaDiv) {
         alertaDiv.className = 'alerta-vehiculo visible';
         
@@ -1535,6 +1579,88 @@ function ejecutarBusqueda() {
             if (alertaTitulo) alertaTitulo.textContent = '✅ Vehículo en orden';
         }
     }
+}
+
+// ============================================================
+// 🔔 FUNCIÓN: EJECUTAR BÚSQUEDA
+// ============================================================
+function ejecutarBusqueda() {
+    const placaInput = document.getElementById('inicioPlaca');
+    const placa = placaInput ? placaInput.value.trim().toUpperCase() : '';
+    const alertaDiv = document.getElementById('alertaVehiculo');
+    const alertaTitulo = document.getElementById('alertaTitulo');
+    const alertaItems = document.getElementById('alertaItems');
+    const feedback = document.getElementById('feedbackInicio');
+    const kmInput = document.getElementById('inicioKm');
+    
+    if (feedback) {
+        feedback.textContent = '';
+        feedback.className = 'feedback-inicio';
+    }
+    
+    if (placa.length < 3) {
+        if (alertaDiv) alertaDiv.classList.remove('visible');
+        if (placaInput) placaInput.classList.remove('error', 'success', 'warning');
+        vehiculoActualInicio = null;
+        return;
+    }
+    
+    if (!datosCargados) {
+        if (alertaDiv) {
+            alertaDiv.className = 'alerta-vehiculo visible alert-loading';
+            if (alertaTitulo) alertaTitulo.textContent = '⏳ Cargando datos...';
+            if (alertaItems) alertaItems.innerHTML = `<div class="item"><i class="fas fa-spinner fa-spin" style="color:#4a9eff;"></i> Espera mientras se cargan los vehículos</div>`;
+        }
+        if (placaInput) placaInput.classList.remove('error', 'success', 'warning');
+        return;
+    }
+    
+    if (vehicles.length === 0) {
+        if (alertaDiv) {
+            alertaDiv.className = 'alerta-vehiculo visible alert-datos';
+            if (alertaTitulo) alertaTitulo.textContent = '📋 Sin vehículos';
+            if (alertaItems) alertaItems.innerHTML = `<div class="item"><i class="fas fa-info-circle" style="color:#ffd966;"></i> No hay vehículos registrados en el sistema</div>`;
+        }
+        if (placaInput) {
+            placaInput.classList.remove('success', 'warning');
+            placaInput.classList.add('error');
+        }
+        vehiculoActualInicio = null;
+        return;
+    }
+    
+    const placaNorm = normalizarPlaca(placa);
+    const vehiculo = vehicles.find(v => normalizarPlaca(v.placa || '') === placaNorm);
+    
+    if (!vehiculo) {
+        if (alertaDiv) {
+            alertaDiv.className = 'alerta-vehiculo visible alert-datos';
+            if (alertaTitulo) alertaTitulo.textContent = '❌ Vehículo no encontrado';
+            if (alertaItems) alertaItems.innerHTML = `<div class="item"><i class="fas fa-search" style="color:#ffd966;"></i> No se encontró ningún vehículo con la placa "${placa}"</div>`;
+        }
+        if (placaInput) {
+            placaInput.classList.remove('success', 'warning');
+            placaInput.classList.add('error');
+        }
+        vehiculoActualInicio = null;
+        return;
+    }
+    
+    placaBuscada = vehiculo.placa;
+    vehiculoActualInicio = vehiculo; // Guardar el vehículo buscado
+    if (placaInput) {
+        placaInput.classList.remove('error', 'warning');
+        placaInput.classList.add('success');
+    }
+    
+    // ACTUALIZAR EL CAMPO DE KILOMETRAJE CON EL VALOR ACTUAL DEL VEHÍCULO
+    if (kmInput && vehiculo.kmActual !== undefined) {
+        kmInput.value = vehiculo.kmActual;
+        kmInput.classList.add('success');
+    }
+    
+    // Renderizar la información con el km actual del vehículo
+    renderizarInfoInicio(vehiculo, vehiculo.kmActual);
 }
 
 function buscarVehiculoEnInicio() {
@@ -3495,6 +3621,7 @@ async function actualizarDesdeInicio() {
                         if (kmInput) kmInput.value = '';
                         document.getElementById('alertaVehiculo')?.classList.remove('visible');
                         
+                        vehiculoActualInicio = null;
                         filtrarVehiculos();
                         actualizarContadoresFiltros();
                         renderVehicleView(selectedIndex);
