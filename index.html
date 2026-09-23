@@ -102,6 +102,7 @@
         .modal-tarjeta-body .form-control:focus { outline: none; border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.1); }
         .modal-tarjeta-body textarea.form-control { resize: vertical; min-height: 60px; font-family: inherit; }
         .modal-tarjeta-body .info-actual { background: #f8fbff; border-left: 4px solid #4a9eff; padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 13px; color: #1a324b; }
+        .modal-tarjeta-body .info-exonerado { background: #e5f0ff; border-left: 4px solid #0066cc; padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 13px; color: #003d80; }
         .modal-tarjeta-body .tipo-select-wrapper { display: flex; gap: 8px; align-items: center; }
         .modal-tarjeta-body .tipo-select-wrapper select { flex: 1; }
         .modal-tarjeta-body .tipo-select-wrapper .tipo-icono-preview { font-size: 24px; color: #0066cc; min-width: 32px; text-align: center; }
@@ -132,7 +133,6 @@
         .tabla-botiquin .btn-borrar-item { background: #d32f2f; color: white; border: none; padding: 4px 7px; border-radius: 6px; font-size: 10px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
         .tabla-botiquin .btn-borrar-item:hover { background: #b71c1c; }
 
-        /* 🚨 ALERTA PULSANTE EN TARJETA BOTIQUÍN */
         @keyframes pulseAlertBotiquin {
             0% { box-shadow: 0 0 0 0 rgba(211,47,47,0.7), 0 0 8px rgba(211,47,47,0.5); border-color: #d32f2f; }
             50% { box-shadow: 0 0 0 8px rgba(211,47,47,0), 0 0 16px rgba(211,47,47,0.8); border-color: #ff5555; }
@@ -151,6 +151,11 @@
             animation: pulse 1.5s infinite;
         }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        /* 🔵 NUEVA TARJETA EXONERADO (ITV) */
+        .alert-card.alert-blue { border-left-color: #0066cc; background: rgba(0,102,204,0.10); }
+        .alert-card.alert-blue i { color: #0066cc; }
+        .alert-card.alert-blue .badge-status { background: rgba(0,102,204,0.25); color: #4a9eff; }
 
         @media (max-width: 600px) {
             .inicio-container { padding: 16px 14px; }
@@ -412,7 +417,7 @@
             <i class="fas fa-sign-in-alt"></i> Ingresar a la interfaz
         </button>
 
-        <div class="version-inicio">v3.25 · Control de Flota con Firebase</div>
+        <div class="version-inicio">v3.26 · Control de Flota con Firebase</div>
     </div>
 </div>
 
@@ -434,18 +439,22 @@
             <p style="margin-left:20px; color:#ffaa66;">🟠 <strong>Observaciones pendientes</strong> - Problemas sin resolver</p>
             <p style="margin-left:20px; color:#ff7777;">🔴 <strong>Vencimientos próximos</strong> - SOAT, ITV, Extintor, etc.</p>
             <p style="margin-left:20px; color:#ff6666; font-weight:700;">🔴 <strong>Estado crítico</strong> - Mantenimiento vencido o múltiples problemas</p>
+            <p style="margin-left:20px; color:#4a9eff;">🔵 <strong>Exonerado</strong> - Vehículos ≤4 años sin ITV registrada</p>
             
             <h3><i class="fas fa-hand-pointer"></i> Tarjetas editables</h3>
             <p>Toca cualquier tarjeta para editar su información.</p>
             
+            <h3><i class="fas fa-clipboard-check"></i> ITV (RTV)</h3>
+            <p>Vehículos particulares: <strong>exonerados los primeros 4 años</strong> desde su fabricación. A partir del 4to año, ITV <strong>anual</strong>.</p>
+            <p style="margin-left:20px;">Si se registra una ITV aunque el vehículo sea nuevo (por exigencia del área de trabajo), el sistema <strong>respeta la fecha</strong> y alerta normalmente.</p>
+            
             <h3><i class="fas fa-briefcase-medical"></i> Inspección del Botiquín</h3>
             <p>La inspección es <strong>MENSUAL</strong> (30 días).</p>
             <p style="margin-left:20px;">Si algún ítem del botiquín está vencido, falta o no tiene datos, la tarjeta <strong>parpadeará en rojo</strong>.</p>
-            <p style="margin-left:20px;">Puedes <strong>borrar</strong> ítems que ya no correspondan.</p>
             <p style="margin-left:20px; font-size:12px; color:#657e9e;"><em>Nota: el botiquín NO afecta el color general de la placa.</em></p>
         </div>
         <div class="modal-ayuda-footer">
-            <i class="fas fa-code"></i> Desarrollado por PaulEManrique · v3.25
+            <i class="fas fa-code"></i> Desarrollado por PaulEManrique · v3.26
         </div>
     </div>
 </div>
@@ -693,7 +702,7 @@
 
     <div class="footer-signature">
         Desarrollado por <span class="nombre">PaulEManrique</span>
-        <div class="version">v3.25 · Control de Flota con Firebase</div>
+        <div class="version">v3.26 · Control de Flota con Firebase</div>
     </div>
 </div>
 
@@ -769,7 +778,7 @@ const BOTIQUIN_ITEMS_BASE = [
 ];
 
 // ============================================================
-// TIPOS DE VEHÍCULO (lista compartida)
+// TIPOS DE VEHÍCULO
 // ============================================================
 const TIPOS_VEHICULO = [
     { value: 'Camion', label: 'Camión' },
@@ -788,6 +797,63 @@ function getOpcionesTipoHtml(tipoSeleccionado) {
     return TIPOS_VEHICULO.map(t => 
         `<option value="${t.value}" ${t.value === tipoSeleccionado ? 'selected' : ''}>${t.label}</option>`
     ).join('');
+}
+
+// ============================================================
+// 🚗 LÓGICA DE ITV: EXONERADO SI ≤4 AÑOS Y SIN FECHA ITV
+// ============================================================
+const ANIOS_EXONERACION_ITV = 4;
+
+function getItvInfo(v) {
+    // Si tiene fecha de ITV → respetar la fecha
+    if (v.itv) {
+        const hoy = new Date(); hoy.setHours(0,0,0,0);
+        const fecha = new Date(v.itv + 'T00:00:00');
+        const dias = Math.round((fecha - hoy) / (1000*60*60*24));
+        let clase, etiqueta;
+        if (dias <= 0) { clase = 'alert-red'; etiqueta = 'Vencido'; }
+        else if (dias <= 7) { clase = 'alert-orange'; etiqueta = '¡Urgente!'; }
+        else if (dias <= 30) { clase = 'alert-yellow'; etiqueta = 'Próximo'; }
+        else { clase = 'alert-green'; etiqueta = 'Vigente'; }
+        
+        return {
+            exonerado: false,
+            clase,
+            etiqueta,
+            texto: dias <= 0 ? 'VENCIDA' : (dias <= 30 ? `Vence en ${dias} días` : 'Vigente'),
+            detalle: formatearFecha(v.itv),
+            vencido: dias <= 0
+        };
+    }
+    
+    // No tiene fecha: verificar años del vehículo
+    const anioActual = new Date().getFullYear();
+    const anioVehiculo = parseInt(v.anio);
+    
+    if (!isNaN(anioVehiculo)) {
+        const antiguedad = anioActual - anioVehiculo;
+        if (antiguedad <= ANIOS_EXONERACION_ITV) {
+            // Exonerado
+            return {
+                exonerado: true,
+                clase: 'alert-blue',
+                etiqueta: 'EXONERADO',
+                texto: 'Exonerado',
+                detalle: `${anioVehiculo + ANIOS_EXONERACION_ITV} (4 años)`,
+                vencido: false
+            };
+        }
+    }
+    
+    // Sin fecha y > 4 años (o sin año registrado) → pendiente
+    return {
+        exonerado: false,
+        clase: 'alert-yellow',
+        etiqueta: 'Pendiente',
+        texto: 'No registrado',
+        detalle: 'Sin fecha',
+        vencido: false
+    };
 }
 
 // ============================================================
@@ -878,9 +944,6 @@ function getBotiquinInfo(fechaInspeccion) {
     return { diasTranscurridos: dias, estado: 'ok', clase: 'alert-green', etiqueta: 'Al día', texto: `Al día (${dias} días)`, detalle: `${30 - dias} días para próxima`, vencido: false, proximo: false };
 }
 
-// ============================================================
-// CALCULAR ESTADO DE ÍTEM DE BOTIQUÍN
-// ============================================================
 function calcularEstadoItem(item, cantEnc, fechaVenc) {
     const hoy = new Date(); hoy.setHours(0,0,0,0);
     let tieneProblema = false;
@@ -902,9 +965,6 @@ function calcularEstadoItem(item, cantEnc, fechaVenc) {
     return { letra: 'B', clase: 'estado-B', label: 'Bueno' };
 }
 
-// ============================================================
-// CONTAR PROBLEMAS EN BOTIQUÍN
-// ============================================================
 function contarProblemasBotiquin(botiquinItems) {
     if (!botiquinItems) return { malos: 0, regulares: 0, sinDatos: 0, total: 0 };
     let malos = 0, regulares = 0, sinDatos = 0;
@@ -953,7 +1013,9 @@ function getMaintenanceInfo(v) {
 }
 
 // ============================================================
-// 🎯 CALCULAR ESTADO DEL VEHÍCULO (SIN botiquín)
+// 🎯 CALCULAR ESTADO DEL VEHÍCULO
+// - ITV: si está exonerado → no cuenta como problema
+// - Botiquín: NO influye
 // ============================================================
 function calcularEstadoVehiculo(v) {
     const hoy = new Date(); hoy.setHours(0,0,0,0);
@@ -961,7 +1023,8 @@ function calcularEstadoVehiculo(v) {
     let tieneProximo = false;
     const tieneObs = tieneObservacionesPendientes(v);
     
-    [v.soat, v.itv, v.itvAutrisa, v.extintor].forEach(campo => {
+    // SOAT, ITV Autrisa, Extintor (NO ITV - porque se maneja aparte)
+    [v.soat, v.itvAutrisa, v.extintor].forEach(campo => {
         if (campo) {
             const fecha = new Date(campo + 'T00:00:00');
             const dias = Math.round((fecha - hoy) / (1000*60*60*24));
@@ -969,6 +1032,13 @@ function calcularEstadoVehiculo(v) {
             else if (dias <= 30) tieneProximo = true;
         }
     });
+    
+    // 🆕 ITV con lógica de exoneración
+    const itvInfo = getItvInfo(v);
+    if (!itvInfo.exonerado) {
+        if (itvInfo.vencido) tieneCritico = true;
+        else if (itvInfo.clase === 'alert-orange' || itvInfo.clase === 'alert-yellow') tieneProximo = true;
+    }
     
     const mantInfo = getMaintenanceInfo(v);
     const mantVencido = mantInfo.kmRestantes <= 0;
@@ -1060,7 +1130,7 @@ function ocultarAutocompletar() { document.getElementById('autocompleteList').cl
 function seleccionarPlacaAutocomplete(placa) { document.getElementById('inicioPlaca').value = placa; ocultarAutocompletar(); buscarVehiculoEnInicio(); }
 
 // ============================================================
-// PANTALLA INICIO
+// PANTALLA INICIO (con lógica ITV exonerado)
 // ============================================================
 function actualizarInfoConKm() {
     if (!vehiculoActualInicio) return;
@@ -1074,6 +1144,7 @@ function renderizarInfoInicio(vehiculo, kmMostrado) {
     const alertaTitulo = document.getElementById('alertaTitulo');
     const alertaItems = document.getElementById('alertaItems');
     const mantInfo = getMaintenanceInfo(vehiculo);
+    const itvInfo = getItvInfo(vehiculo);
     
     let info = `<div class="item" style="border-bottom:2px solid rgba(255,255,255,0.1);padding-bottom:6px;margin-bottom:4px;">
         <i class="fas fa-tachometer-alt" style="color:#ffffff;"></i>
@@ -1090,22 +1161,44 @@ function renderizarInfoInicio(vehiculo, kmMostrado) {
     }
     
     const hoy = new Date(); hoy.setHours(0,0,0,0);
-    const vencs = [
-        { c: vehiculo.soat, n: 'SOAT', i: 'fas fa-file-contract' },
-        { c: vehiculo.itv, n: 'ITV', i: 'fas fa-clipboard-check' },
-        { c: vehiculo.itvAutrisa, n: 'ITV Autrisa', i: 'fas fa-certificate' },
-        { c: vehiculo.extintor, n: 'Extintor', i: 'fas fa-fire-extinguisher' }
-    ];
     
-    vencs.forEach(v => {
-        if (v.c) {
-            const f = new Date(v.c + 'T00:00:00');
-            const d = Math.round((f - hoy) / (1000*60*60*24));
-            const e = d <= 0 ? '🔴 VENCIDO' : (d <= 30 ? '🟠 Próximo' : '🟢 Vigente');
-            info += `<div class="item" style="font-size:11px;color:#ffffff;"><i class="${v.i}" style="color:#ffffff;width:18px;"></i> ${v.n}: ${formatearFecha(v.c)} ${e}</div>`;
-        }
-    });
+    // SOAT
+    if (vehiculo.soat) {
+        const f = new Date(vehiculo.soat + 'T00:00:00');
+        const d = Math.round((f - hoy) / (1000*60*60*24));
+        const e = d <= 0 ? '🔴 VENCIDO' : (d <= 30 ? '🟠 Próximo' : '🟢 Vigente');
+        info += `<div class="item" style="font-size:11px;color:#ffffff;"><i class="fas fa-file-contract" style="color:#ffffff;width:18px;"></i> SOAT: ${formatearFecha(vehiculo.soat)} ${e}</div>`;
+    }
     
+    // 🆕 ITV con lógica de exoneración
+    if (itvInfo.exonerado) {
+        info += `<div class="item" style="font-size:11px;color:#4a9eff;"><i class="fas fa-clipboard-check" style="color:#4a9eff;width:18px;"></i> ITV: 🔵 EXONERADO (≤4 años) ${itvInfo.detalle ? `· ${itvInfo.detalle}` : ''}</div>`;
+    } else if (vehiculo.itv) {
+        const f = new Date(vehiculo.itv + 'T00:00:00');
+        const d = Math.round((f - hoy) / (1000*60*60*24));
+        const e = d <= 0 ? '🔴 VENCIDA' : (d <= 30 ? '🟠 Próxima' : '🟢 Vigente');
+        info += `<div class="item" style="font-size:11px;color:#ffffff;"><i class="fas fa-clipboard-check" style="color:#ffffff;width:18px;"></i> ITV: ${formatearFecha(vehiculo.itv)} ${e}</div>`;
+    } else {
+        info += `<div class="item" style="font-size:11px;color:#ffc107;"><i class="fas fa-clipboard-check" style="color:#ffc107;width:18px;"></i> ITV: 🟡 Pendiente (sin fecha)</div>`;
+    }
+    
+    // ITV Autrisa
+    if (vehiculo.itvAutrisa) {
+        const f = new Date(vehiculo.itvAutrisa + 'T00:00:00');
+        const d = Math.round((f - hoy) / (1000*60*60*24));
+        const e = d <= 0 ? '🔴 VENCIDO' : (d <= 30 ? '🟠 Próximo' : '🟢 Vigente');
+        info += `<div class="item" style="font-size:11px;color:#ffffff;"><i class="fas fa-certificate" style="color:#ffffff;width:18px;"></i> ITV Autrisa: ${formatearFecha(vehiculo.itvAutrisa)} ${e}</div>`;
+    }
+    
+    // Extintor
+    if (vehiculo.extintor) {
+        const f = new Date(vehiculo.extintor + 'T00:00:00');
+        const d = Math.round((f - hoy) / (1000*60*60*24));
+        const e = d <= 0 ? '🔴 VENCIDO' : (d <= 30 ? '🟠 Próximo' : '🟢 Vigente');
+        info += `<div class="item" style="font-size:11px;color:#ffffff;"><i class="fas fa-fire-extinguisher" style="color:#ffffff;width:18px;"></i> Extintor: ${formatearFecha(vehiculo.extintor)} ${e}</div>`;
+    }
+    
+    // Botiquín
     if (vehiculo.botiquin || (vehiculo.botiquinItems && Object.keys(vehiculo.botiquinItems).length > 0)) {
         const problemas = contarProblemasBotiquin(vehiculo.botiquinItems);
         if (problemas.malos > 0 || problemas.regulares > 0) {
@@ -1118,14 +1211,40 @@ function renderizarInfoInicio(vehiculo, kmMostrado) {
     const alertas = [];
     if (tieneObservacionesPendientes(vehiculo)) alertas.push({ tipo: 'observacion', icono: 'fas fa-exclamation-triangle', texto: `${vehiculo.observaciones.filter(a => a.estado === 'pendiente').length} observación(es) pendiente(s)` });
     
-    vencs.forEach(v => {
-        if (v.c) {
-            const f = new Date(v.c + 'T00:00:00');
-            const d = Math.round((f - hoy) / (1000*60*60*24));
-            if (d <= 0) alertas.push({ tipo: 'vencimiento', icono: v.i, texto: `${v.n} VENCIDO (hace ${Math.abs(d)} días)` });
-            else if (d <= 30) alertas.push({ tipo: 'vencimiento', icono: v.i, texto: `${v.n} vence en ${d} días` });
-        }
-    });
+    // SOAT
+    if (vehiculo.soat) {
+        const f = new Date(vehiculo.soat + 'T00:00:00');
+        const d = Math.round((f - hoy) / (1000*60*60*24));
+        if (d <= 0) alertas.push({ tipo: 'vencimiento', icono: 'fas fa-file-contract', texto: `SOAT VENCIDO (hace ${Math.abs(d)} días)` });
+        else if (d <= 30) alertas.push({ tipo: 'vencimiento', icono: 'fas fa-file-contract', texto: `SOAT vence en ${d} días` });
+    }
+    
+    // 🆕 ITV (solo alertar si NO exonerado)
+    if (!itvInfo.exonerado && vehiculo.itv) {
+        const f = new Date(vehiculo.itv + 'T00:00:00');
+        const d = Math.round((f - hoy) / (1000*60*60*24));
+        if (d <= 0) alertas.push({ tipo: 'vencimiento', icono: 'fas fa-clipboard-check', texto: `ITV VENCIDA (hace ${Math.abs(d)} días)` });
+        else if (d <= 30) alertas.push({ tipo: 'vencimiento', icono: 'fas fa-clipboard-check', texto: `ITV vence en ${d} días` });
+    } else if (!itvInfo.exonerado && !vehiculo.itv) {
+        // Sin fecha y > 4 años
+        alertas.push({ tipo: 'vencimiento', icono: 'fas fa-clipboard-check', texto: `ITV sin registrar` });
+    }
+    
+    // ITV Autrisa
+    if (vehiculo.itvAutrisa) {
+        const f = new Date(vehiculo.itvAutrisa + 'T00:00:00');
+        const d = Math.round((f - hoy) / (1000*60*60*24));
+        if (d <= 0) alertas.push({ tipo: 'vencimiento', icono: 'fas fa-certificate', texto: `ITV Autrisa VENCIDO (hace ${Math.abs(d)} días)` });
+        else if (d <= 30) alertas.push({ tipo: 'vencimiento', icono: 'fas fa-certificate', texto: `ITV Autrisa vence en ${d} días` });
+    }
+    
+    // Extintor
+    if (vehiculo.extintor) {
+        const f = new Date(vehiculo.extintor + 'T00:00:00');
+        const d = Math.round((f - hoy) / (1000*60*60*24));
+        if (d <= 0) alertas.push({ tipo: 'vencimiento', icono: 'fas fa-fire-extinguisher', texto: `Extintor VENCIDO (hace ${Math.abs(d)} días)` });
+        else if (d <= 30) alertas.push({ tipo: 'vencimiento', icono: 'fas fa-fire-extinguisher', texto: `Extintor vence en ${d} días` });
+    }
     
     const problemasBot = contarProblemasBotiquin(vehiculo.botiquinItems);
     if (problemasBot.malos > 0) alertas.push({ tipo: 'vencimiento', icono: 'fas fa-briefcase-medical', texto: `⚠️ Botiquín: ${problemasBot.malos} ítem(s) en mal estado/faltantes` });
@@ -1141,7 +1260,7 @@ function renderizarInfoInicio(vehiculo, kmMostrado) {
     
     if (alertaDiv) {
         alertaDiv.className = 'alerta-vehiculo visible';
-        const tieneCritico = alertas.some(a => a.tipo === 'critico' || (a.tipo === 'mantenimiento' && a.texto.includes('VENCIDO')));
+        const tieneCritico = alertas.some(a => a.tipo === 'critico' || (a.tipo === 'mantenimiento' && a.texto.includes('VENCIDO')) || a.texto.includes('VENCIDO'));
         const tieneVenc = alertas.some(a => a.tipo === 'vencimiento' || a.tipo === 'mantenimiento');
         if (tieneCritico) { alertaDiv.classList.add('alert-critical'); alertaTitulo.textContent = '🚨 ¡ATENCIÓN CRÍTICA!'; }
         else if (tieneVenc) { alertaDiv.classList.add('alert-vencimiento'); alertaTitulo.textContent = '⚠️ Alerta'; }
@@ -1231,6 +1350,7 @@ function renderVehicleView(index) {
     const tieneObs = tieneObservacionesPendientes(v);
     const link = v.link || '';
     const hayProblemaBotiquin = hayProblemasBotiquin(v);
+    const itvInfo = getItvInfo(v);
     const hoy = new Date(); hoy.setHours(0,0,0,0);
     
     function diasHasta(f) { if (!f) return Infinity; return Math.round((new Date(f + 'T00:00:00') - hoy) / (1000*60*60*24)); }
@@ -1243,7 +1363,6 @@ function renderVehicleView(index) {
     }
     
     const ds = diasHasta(v.soat); const es = estadoDias(ds);
-    const di = diasHasta(v.itv); const ei = estadoDias(di);
     const dca = diasHasta(v.itvAutrisa); const eca = estadoDias(dca);
     const de = diasHasta(v.extintor); const ee = estadoDias(de);
     
@@ -1275,9 +1394,9 @@ function renderVehicleView(index) {
         { id: 'soat', titulo: 'SOAT', icono: 'fas fa-file-contract', clase: es.clase, etiqueta: es.etiqueta,
           texto: ds === Infinity ? 'No registrado' : (ds < 0 ? 'VENCIDO' : (ds <= 30 ? `Vence en ${ds} días` : 'Vigente')),
           detalle: v.soat ? `hasta ${formatearFecha(v.soat)}` : 'Sin fecha' },
-        { id: 'itv', titulo: 'ITV', icono: 'fas fa-clipboard-check', clase: ei.clase, etiqueta: ei.etiqueta,
-          texto: di === Infinity ? 'No registrado' : (di < 0 ? 'VENCIDA' : (di <= 30 ? `Vence en ${di} días` : 'Vigente')),
-          detalle: v.itv ? formatearFecha(v.itv) : 'Sin fecha' },
+        // 🆕 ITV con lógica de exoneración
+        { id: 'itv', titulo: 'ITV', icono: 'fas fa-clipboard-check', clase: itvInfo.clase, etiqueta: itvInfo.etiqueta,
+          texto: itvInfo.texto, detalle: itvInfo.detalle },
         { id: 'itvAutrisa', titulo: 'ITV Autrisa', icono: 'fas fa-certificate', clase: eca.clase, etiqueta: eca.etiqueta,
           texto: dca === Infinity ? 'No registrado' : (dca < 0 ? 'VENCIDO' : (dca <= 30 ? `Vence en ${dca} días` : 'Vigente')),
           detalle: v.itvAutrisa ? formatearFecha(v.itvAutrisa) : 'Sin fecha' },
@@ -1367,7 +1486,7 @@ function seleccionarVehiculo(index) {
 }
 
 // ============================================================
-// ABRIR MODAL DE TARJETA (CON CAMPO TIPO)
+// ABRIR MODAL DE TARJETA (CON CAMPO TIPO + INFO EXONERADO)
 // ============================================================
 function abrirModalTarjeta(tipo, index) {
     if (index < 0 || index >= vehicles.length) return;
@@ -1397,7 +1516,7 @@ function abrirModalTarjeta(tipo, index) {
     titulo.textContent = cfg.titulo;
     icono.className = cfg.icono;
     
-    // 🆕 Helper para campo Tipo (común a todos los modales)
+    // Campo Tipo común
     const tipoFieldHtml = `
         <div class="form-group">
             <label><i class="fas fa-truck"></i> Tipo de Unidad</label>
@@ -1411,9 +1530,24 @@ function abrirModalTarjeta(tipo, index) {
         </div>
     `;
     
+    // 🆕 Info de exoneración para ITV
+    let infoExoneradoHtml = '';
+    if (tipo === 'itv') {
+        const itvInfo = getItvInfo(v);
+        if (itvInfo.exonerado) {
+            infoExoneradoHtml = `<div class="info-exonerado">
+                <i class="fas fa-info-circle"></i> <strong>Vehículo EXONERADO</strong> de ITV por tener ≤4 años.
+                <br><small>Si el área de trabajo exige ITV, registra la fecha aquí.</small>
+            </div>`;
+        } else if (!v.itv) {
+            infoExoneradoHtml = `<div class="info-actual">
+                <i class="fas fa-info-circle"></i> Vehículo de <strong>más de 4 años</strong>. ITV <strong>anual</strong> requerida. Registra la fecha.
+            </div>`;
+        }
+    }
+    
     if (tipo === 'botiquin') {
         renderModalBotiquin(v);
-        // Insertar el campo Tipo al inicio del body
         const bodyEl = document.getElementById('modalTarjetaBody');
         const firstChild = bodyEl.firstChild;
         const tempDiv = document.createElement('div');
@@ -1435,6 +1569,7 @@ function abrirModalTarjeta(tipo, index) {
             <div class="form-group"><label><i class="fas fa-sticky-note"></i> Observaciones</label><textarea class="form-control" id="psObs" rows="3">${v.proximoObs || ''}</textarea></div>`;
     } else {
         body.innerHTML = `${tipoFieldHtml}
+            ${infoExoneradoHtml}
             <div class="info-actual"><i class="fas fa-info-circle"></i> Editando <strong>${cfg.titulo}</strong> de <strong>${v.placa}</strong></div>
             <div class="form-group"><label><i class="fas fa-calendar-times"></i> Fecha de vencimiento</label><input type="date" class="form-control" id="mtFecha" value="${v[cfg.campo] || ''}"></div>
             <div class="form-group"><label><i class="fas fa-sticky-note"></i> Observaciones</label><textarea class="form-control" id="mtObs" rows="3">${v[cfg.obsCampo] || ''}</textarea></div>`;
@@ -1444,18 +1579,16 @@ function abrirModalTarjeta(tipo, index) {
     document.body.style.overflow = 'hidden';
 }
 
-// Actualizar preview del tipo en el modal
 function actualizarPreviewTipoModal() {
     const select = document.getElementById('mtTipoSelect');
     const preview = document.getElementById('mtTipoPreviewIcon');
     if (select && preview) {
-        const val = select.value;
-        preview.innerHTML = `<i class="fas ${getTipoIcon(val)}"></i>`;
+        preview.innerHTML = `<i class="fas ${getTipoIcon(select.value)}"></i>`;
     }
 }
 
 // ============================================================
-// RENDER TABLA BOTIQUÍN (SOLO LISTA BASE - 13 ITEMS)
+// RENDER TABLA BOTIQUÍN
 // ============================================================
 function renderModalBotiquin(v) {
     const body = document.getElementById('modalTarjetaBody');
@@ -1502,7 +1635,6 @@ function renderModalBotiquin(v) {
     });
     
     html += `</tbody></table></div>`;
-    
     body.innerHTML = html;
 }
 
@@ -1550,8 +1682,7 @@ async function confirmarEliminarItem() {
         const idxRefresh = vehicles.findIndex(x => x.key === modalTarjetaActual.key);
         if (idxRefresh !== -1) {
             modalTarjetaActual.index = idxRefresh;
-            const tipoActual = modalTarjetaActual.tipo;
-            abrirModalTarjeta(tipoActual, idxRefresh);
+            abrirModalTarjeta(modalTarjetaActual.tipo, idxRefresh);
         }
         filtrarVehiculos(); actualizarContadoresFiltros();
         renderVehicleList(); renderVehicleView(selectedIndex);
@@ -1562,7 +1693,7 @@ async function confirmarEliminarItem() {
 }
 
 // ============================================================
-// GUARDAR MODAL DE TARJETA (INCLUYE TIPO)
+// GUARDAR MODAL DE TARJETA
 // ============================================================
 async function guardarModalTarjeta() {
     if (!modalTarjetaActual.key) return;
@@ -1573,7 +1704,6 @@ async function guardarModalTarjeta() {
     const tipo = modalTarjetaActual.tipo;
     const data = { ...v };
     
-    // 🆕 Guardar el Tipo (común a todos los modales)
     const tipoSelect = document.getElementById('mtTipoSelect');
     if (tipoSelect) {
         data.tipo = tipoSelect.value || '';
@@ -1932,7 +2062,7 @@ async function resolverObservacion(key, obsId) {
 }
 
 // ============================================================
-// FORMULARIO DETALLE (CON CAMPO TIPO)
+// FORMULARIO DETALLE
 // ============================================================
 function abrirDetalleDesdeLista(index) {
     if (index < 0 || index >= vehicles.length) return;
