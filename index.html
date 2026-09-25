@@ -130,72 +130,95 @@
         .tabla-botiquin .estado-B { background: rgba(15,123,58,0.15); color: #0f7b3a; }
         .tabla-botiquin .estado-G { background: rgba(255,193,7,0.2); color: #a37d00; }
         .tabla-botiquin .estado-M { background: rgba(211,47,47,0.15); color: #d32f2f; }
+        .tabla-botiquin .estado-NA { background: rgba(100,100,100,0.15); color: #666; }
+        .tabla-botiquin .fecha-na { color: #999; font-size: 11px; font-style: italic; text-align: center; display: block; padding: 4px; }
         .tabla-botiquin .btn-borrar-item { background: #d32f2f; color: white; border: none; padding: 4px 7px; border-radius: 6px; font-size: 10px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
         .tabla-botiquin .btn-borrar-item:hover { background: #b71c1c; }
-        .tabla-botiquin .sin-fecha { color: #999; font-size: 11px; font-style: italic; text-align: center; }
 
-        /* 🚨 ADVERTENCIA AMARILLA EN TARJETA BOTIQUÍN (NO roja, NO pulsante) */
-        .advertencia-botiquin-tarjeta {
+        /* 🆕 Aviso amarillo dentro de la tarjeta */
+        .aviso-incompleto {
             margin-top: 8px;
-            padding: 6px 10px;
-            background: rgba(255,193,7,0.15);
-            border: 1px solid #ffc107;
+            padding: 8px 12px;
+            background: rgba(255,193,7,0.12);
+            border: 1px solid rgba(255,193,7,0.4);
             border-left: 4px solid #ffc107;
-            border-radius: 6px;
-            font-size: 11px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
             color: #ffc107;
             font-weight: 600;
+        }
+        .aviso-incompleto i { color: #ffc107; font-size: 14px; }
+
+        /* 🆕 Secciones agrupadas (Documentación + Equipamiento) */
+        .seccion-agrupada {
+            margin-top: 12px;
+            padding: 10px 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .seccion-agrupada .titulo-seccion {
+            font-size: 11px;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 6px;
+            opacity: 0.7;
         }
-        .advertencia-botiquin-tarjeta i { color: #ffc107; font-size: 12px; }
-
-        /* 🔵 TARJETA EXONERADO (ITV) */
-        .alert-card.alert-blue { border-left-color: #0066cc; background: rgba(0,102,204,0.10); }
-        .alert-card.alert-blue i { color: #0066cc; }
-        .alert-card.alert-blue .badge-status { background: rgba(0,102,204,0.25); color: #4a9eff; }
-
-        /* 📐 TARJETAS ANCHAS (BOTIQUÍN Y EXTINTOR) */
-        .alert-card-wide {
-            grid-column: 1 / -1;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            cursor: pointer;
+        .seccion-agrupada .titulo-seccion i { color: #ffc107; }
+        .seccion-agrupada .grid-seccion {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
         }
-        .alert-card-wide::after {
-            content: '\f044';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            top: 8px;
-            right: 12px;
+        .seccion-agrupada .alert-card { margin: 0; }
+
+        /* 🆕 Iconos rojos para Extintor y Botiquín */
+        .icono-extintor-rojo { color: #d32f2f !important; }
+        .icono-botiquin-rojo { color: #d32f2f !important; }
+
+        /* 🆕 Botón Editar en AMARILLO */
+        .btn-edit-amarillo {
+            background: #ffc107 !important;
+            border: 1px solid #e6a700 !important;
+            color: #0b1e33 !important;
+            padding: 5px 12px;
+            border-radius: 40px;
             font-size: 12px;
-            opacity: 0.3;
-            color: #ffffff;
-        }
-        .alert-card-wide i.icono-principal {
-            font-size: 24px;
-            width: 40px;
-            height: 40px;
-            display: flex;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.08);
+            gap: 5px;
+            transition: 0.2s;
         }
-        .alert-card-wide .info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+        .btn-edit-amarillo:hover { background: #e6a700 !important; transform: scale(1.02); }
+        .btn-edit-amarillo i { color: #0b1e33 !important; }
+
+        /* 🆕 Botón Agregar en VERDE */
+        .btn-add-vehicle-verde {
+            background: #0f7b3a !important;
+            border: 2px solid #0f7b3a !important;
+            color: #ffffff !important;
+            padding: 5px 14px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.2s;
         }
-        .alert-card-wide .info .label { font-size: 11px; }
-        .alert-card-wide .info .value { font-size: 13px; }
-        .alert-card-wide .info .value small { font-size: 10px; }
-        .alert-card-wide .badge-status { font-size: 11px; padding: 4px 10px; }
+        .btn-add-vehicle-verde:hover { background: #0b662f !important; transform: scale(1.02); }
+        .btn-add-vehicle-verde i { color: #ffffff !important; }
 
         @media (max-width: 600px) {
             .inicio-container { padding: 16px 14px; }
@@ -209,6 +232,7 @@
             .tabla-botiquin { font-size: 10px; }
             .tabla-botiquin thead th { padding: 6px 3px; font-size: 9px; }
             .tabla-botiquin tbody td { padding: 4px 2px; }
+            .seccion-agrupada .grid-seccion { grid-template-columns: 1fr; }
         }
 
         #appPrincipal { width: 100%; max-width: 100%; background: #0a2a4a; border-radius: 0; padding: 14px 18px 20px; display: none; }
@@ -231,7 +255,6 @@
         .btn-sm { padding: 3px 10px; border-radius: 40px; border: none; cursor: pointer; font-weight: 600; font-size: 11px; display: inline-flex; align-items: center; gap: 3px; }
         .btn-sm-success { background: #0f7b3a; color: white; }
         .btn-sm-warning { background: #e66a00; color: white; }
-        .btn-edit-azul { background: #0066cc; color: white; padding: 5px 12px; border-radius: 40px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 5px; }
 
         .vehicle-list-wrapper { margin: 8px 0 12px 0; padding-bottom: 10px; border-bottom: 2px solid rgba(255,255,255,0.08); }
         .vehicle-list-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
@@ -277,7 +300,6 @@
         .vehicle-tab.placa-seleccionada .tipo-icono, .vehicle-tab.placa-seleccionada .placa-texto { color: #0b1e33 !important; }
         .vehicle-tab.placa-seleccionada .alerta-observacion { background: #d32f2f; color: #ffffff; border-color: #d32f2f; }
 
-        .btn-add-vehicle { background: transparent; border: 2px dashed rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 40px; font-weight: 600; font-size: 11px; color: #ffffff; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
         .no-results { color: #ffffff; font-size: 12px; padding: 4px 12px; background: rgba(255,255,255,0.05); border-radius: 40px; }
 
         .vehicle-detail-view { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9998; display: none; justify-content: center; align-items: center; padding: 20px; overflow-y: auto; }
@@ -316,16 +338,17 @@
         .form-control { padding: 6px 10px; border-radius: 8px; border: 1px solid #d3dfee; background: white; font-size: 12px; color: #0b1e33; }
         .form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08); }
 
+        /* TARJETAS - Iconos más grandes */
         .alert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 6px; margin-bottom: 8px; }
-        .alert-card { background: rgba(255,255,255,0.05); border-radius: 10px; padding: 8px 12px; border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 6px; border-left: 4px solid #0f7b3a; cursor: pointer; transition: 0.2s; position: relative; }
+        .alert-card { background: rgba(255,255,255,0.05); border-radius: 10px; padding: 8px 12px; border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 8px; border-left: 4px solid #0f7b3a; cursor: pointer; transition: 0.2s; position: relative; }
         .alert-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); border-color: #4a9eff; }
         .alert-card::after { content: '\f044'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: 4px; right: 6px; font-size: 10px; opacity: 0.3; color: #ffffff; }
-        .alert-card i { font-size: 14px; width: 22px; text-align: center; color: #ffffff; }
-        .alert-card .info { flex: 1; }
-        .alert-card .label { font-size: 9px; font-weight: 600; color: #ffffff; text-transform: uppercase; }
-        .alert-card .value { font-weight: 700; font-size: 11px; color: #ffffff; }
-        .alert-card .value small { font-weight: 400; font-size: 9px; }
-        .alert-card .badge-status { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 40px; white-space: nowrap; color: #ffffff; }
+        .alert-card i { font-size: 24px !important; width: 32px !important; text-align: center; color: #ffffff; flex-shrink: 0; }
+        .alert-card .info { flex: 1; min-width: 0; }
+        .alert-card .label { font-size: 9px; font-weight: 600; color: #ffffff; text-transform: uppercase; letter-spacing: 0.2px; }
+        .alert-card .value { font-weight: 700; font-size: 11px; color: #ffffff; line-height: 1.3; }
+        .alert-card .value small { font-weight: 400; font-size: 9px; display: block; margin-top: 1px; opacity: 0.85; }
+        .alert-card .badge-status { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 40px; white-space: nowrap; color: #ffffff; align-self: flex-start; }
         .alert-green { border-left-color: #0f7b3a; background: rgba(15,123,58,0.08); }
         .alert-green i { color: #0f7b3a; }
         .alert-green .badge-status { background: rgba(15,123,58,0.2); color: #66d98a; }
@@ -338,6 +361,9 @@
         .alert-red { border-left-color: #d32f2f; background: rgba(211,47,47,0.08); }
         .alert-red i { color: #d32f2f; }
         .alert-red .badge-status { background: rgba(211,47,47,0.2); color: #ff6b6b; }
+        .alert-blue { border-left-color: #0066cc; background: rgba(0,102,204,0.10); }
+        .alert-blue i { color: #0066cc; }
+        .alert-blue .badge-status { background: rgba(0,102,204,0.25); color: #4a9eff; }
 
         .vehicle-detail { background: rgba(255,255,255,0.05); border-radius: 14px; padding: 12px 14px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 10px; }
         .vehicle-detail .info-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 5px; }
@@ -409,8 +435,8 @@
             .observacion-input-group { flex-direction: column; }
             .observacion-input-group input { width: 100%; }
             .filter-buttons { justify-content: center; }
+            .seccion-agrupada .grid-seccion { grid-template-columns: 1fr; }
             #appPrincipal { padding: 10px 12px 16px; }
-            .alert-card-wide { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
@@ -458,7 +484,7 @@
             <i class="fas fa-sign-in-alt"></i> Ingresar a la interfaz
         </button>
 
-        <div class="version-inicio">v3.27 · Control de Flota con Firebase</div>
+        <div class="version-inicio">v3.29 · Control de Flota con Firebase</div>
     </div>
 </div>
 
@@ -481,22 +507,21 @@
             <p style="margin-left:20px; color:#ff7777;">🔴 <strong>Vencimientos próximos</strong> - SOAT, ITV, Extintor, etc.</p>
             <p style="margin-left:20px; color:#ff6666; font-weight:700;">🔴 <strong>Estado crítico</strong> - Mantenimiento vencido o múltiples problemas</p>
             <p style="margin-left:20px; color:#4a9eff;">🔵 <strong>Exonerado</strong> - Vehículos ≤4 años sin ITV registrada</p>
+            <p style="margin-left:20px; color:#ffc107;">🟡 <strong>Botiquín incompleto</strong> - Faltan datos o ítems vencidos</p>
             
             <h3><i class="fas fa-hand-pointer"></i> Tarjetas editables</h3>
             <p>Toca cualquier tarjeta para editar su información.</p>
             
             <h3><i class="fas fa-clipboard-check"></i> ITV (RTV)</h3>
             <p>Vehículos particulares: <strong>exonerados los primeros 4 años</strong> desde su fabricación. A partir del 4to año, ITV <strong>anual</strong>.</p>
-            <p style="margin-left:20px;">Si se registra una ITV aunque el vehículo sea nuevo (por exigencia del área de trabajo), el sistema <strong>respeta la fecha</strong> y alerta normalmente.</p>
             
-            <h3><i class="fas fa-briefcase-medical"></i> Inspección del Botiquín</h3>
+            <h3><i class="fas fa-kit-medical"></i> Inspección del Botiquín</h3>
             <p>La inspección es <strong>MENSUAL</strong> (30 días).</p>
-            <p style="margin-left:20px;">Si falta algún ítem, la tarjeta muestra una <strong>advertencia amarilla</strong> en la parte inferior.</p>
-            <p style="margin-left:20px;">Los ítems: Tijera Punta Roma, Férulas de Madera y Mascarilla KN95 <strong>no tienen fecha de vencimiento</strong>.</p>
+            <p style="margin-left:20px;">Si algún ítem del botiquín está incompleto o vencido, la tarjeta mostrará un <strong>aviso amarillo</strong>.</p>
             <p style="margin-left:20px; font-size:12px; color:#657e9e;"><em>Nota: el botiquín NO afecta el color general de la placa.</em></p>
         </div>
         <div class="modal-ayuda-footer">
-            <i class="fas fa-code"></i> Desarrollado por PaulEManrique · v3.27
+            <i class="fas fa-code"></i> Desarrollado por PaulEManrique · v3.29
         </div>
     </div>
 </div>
@@ -605,7 +630,7 @@
                 <button class="btn-ver-todas" onclick="verTodasLasUnidades()">
                     <i class="fas fa-th-list"></i> Ver todas
                 </button>
-                <button class="btn-add-vehicle" onclick="nuevoVehiculo()"><i class="fas fa-plus"></i> Agregar</button>
+                <button class="btn-add-vehicle-verde" onclick="nuevoVehiculo()"><i class="fas fa-plus"></i> Agregar</button>
             </div>
         </div>
         
@@ -714,11 +739,11 @@
                     <input type="date" class="form-control" id="fItvAutrisa">
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-fire-extinguisher"></i> Extintor</label>
+                    <label><i class="fas fa-fire-extinguisher" style="color:#d32f2f;"></i> Extintor</label>
                     <input type="date" class="form-control" id="fExtintor">
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-briefcase-medical"></i> Inspección Botiquín</label>
+                    <label><i class="fas fa-kit-medical" style="color:#d32f2f;"></i> Inspección Botiquín</label>
                     <input type="date" class="form-control" id="fBotiquin">
                 </div>
             </div>
@@ -744,7 +769,7 @@
 
     <div class="footer-signature">
         Desarrollado por <span class="nombre">PaulEManrique</span>
-        <div class="version">v3.27 · Control de Flota con Firebase</div>
+        <div class="version">v3.29 · Control de Flota con Firebase</div>
     </div>
 </div>
 
@@ -801,8 +826,7 @@ let modalTarjetaActual = { tipo: null, key: null, index: -1 };
 let itemBotiquinAEliminar = { key: null, itemId: null, nombre: null };
 
 // ============================================================
-// 📋 ÍTEMS DEL BOTIQUÍN (LISTA FINAL - 15 ITEMS)
-// sinFecha: true → no tiene fecha de vencimiento
+// 📋 ÍTEMS DEL BOTIQUÍN (LISTA DEFINITIVA - 15 ITEMS)
 // ============================================================
 const BOTIQUIN_ITEMS_BASE = [
     { id: 'alcohol70', nombre: 'Alcohol 70° x 120 ml', cantReq: 1, unidad: 'fco.', sinFecha: false },
@@ -819,7 +843,7 @@ const BOTIQUIN_ITEMS_BASE = [
     { id: 'vendaElastica4', nombre: 'Venda Elástica de 4"', cantReq: 2, unidad: 'unid.', sinFecha: false },
     { id: 'ferulasMadera', nombre: 'Férulas de Madera', cantReq: 4, unidad: 'unid.', sinFecha: true },
     { id: 'mascarillaKN95', nombre: 'Mascarilla KN95', cantReq: 3, unidad: 'unid.', sinFecha: true },
-    { id: 'alcoholGel', nombre: 'Alcohol en Gel 70° x 120 ml', cantReq: 1, unidad: 'fco.', sinFecha: false }
+    { id: 'alcoholGel70', nombre: 'Alcohol en Gel 70° x 120 ml', cantReq: 1, unidad: 'fco.', sinFecha: false }
 ];
 
 // ============================================================
@@ -876,8 +900,7 @@ function getItvInfo(v) {
         if (antiguedad <= ANIOS_EXONERACION_ITV) {
             return {
                 exonerado: true, clase: 'alert-blue', etiqueta: 'EXONERADO',
-                texto: 'Exonerado',
-                detalle: `${anioVehiculo + ANIOS_EXONERACION_ITV} (4 años)`,
+                texto: 'Exonerado', detalle: `${anioVehiculo + ANIOS_EXONERACION_ITV} (4 años)`,
                 vencido: false
             };
         }
@@ -971,24 +994,24 @@ function getBotiquinInfo(fechaInspeccion) {
     const hoy = new Date(); hoy.setHours(0,0,0,0);
     const fecha = new Date(fechaInspeccion + 'T00:00:00');
     const dias = Math.round((hoy - fecha) / (1000*60*60*24));
-    if (dias > 30) return { diasTranscurridos: dias, estado: 'vencido', clase: 'alert-red', etiqueta: 'VENCIDA', texto: `Vencida hace ${dias - 30} días`, detalle: `hace ${dias} días`, vencido: true, proximo: false };
-    if (dias >= 26) return { diasTranscurridos: dias, estado: 'urgente', clase: 'alert-orange', etiqueta: '¡Urgente!', texto: `Vence en ${30 - dias} días`, detalle: `hace ${dias} días`, vencido: false, proximo: true };
+    if (dias > 30) return { diasTranscurridos: dias, estado: 'vencido', clase: 'alert-yellow', etiqueta: 'INCOMPLETO', texto: `Inspección vencida`, detalle: `hace ${dias} días`, vencido: true, proximo: false };
+    if (dias >= 26) return { diasTranscurridos: dias, estado: 'urgente', clase: 'alert-yellow', etiqueta: 'Próxima', texto: `Vence en ${30 - dias} días`, detalle: `hace ${dias} días`, vencido: false, proximo: true };
     if (dias >= 21) return { diasTranscurridos: dias, estado: 'proximo', clase: 'alert-yellow', etiqueta: 'Próxima', texto: `Próxima en ${30 - dias} días`, detalle: `hace ${dias} días`, vencido: false, proximo: true };
     return { diasTranscurridos: dias, estado: 'ok', clase: 'alert-green', etiqueta: 'Al día', texto: `Al día (${dias} días)`, detalle: `${30 - dias} días para próxima`, vencido: false, proximo: false };
 }
 
-// 🆕 calcular estado de item del botiquín (con soporte para sinFecha)
+// ============================================================
+// CALCULAR ESTADO DE ÍTEM DE BOTIQUÍN
+// ============================================================
 function calcularEstadoItem(item, cantEnc, fechaVenc) {
     const hoy = new Date(); hoy.setHours(0,0,0,0);
     let tieneProblema = false;
     let tieneAdvertencia = false;
     
-    // Validar cantidad
     if (cantEnc === null || cantEnc === undefined || cantEnc === '' || parseInt(cantEnc) < item.cantReq) {
         tieneProblema = true;
     }
     
-    // 🆕 Si el item NO tiene fecha, no se evalúa fecha
     if (!item.sinFecha && fechaVenc) {
         const fecha = new Date(fechaVenc + 'T00:00:00');
         const dias = Math.round((fecha - hoy) / (1000*60*60*24));
@@ -1005,14 +1028,11 @@ function contarProblemasBotiquin(botiquinItems) {
     if (!botiquinItems) return { malos: 0, regulares: 0, sinDatos: 0, total: 0 };
     let malos = 0, regulares = 0, sinDatos = 0;
     
-    Object.keys(botiquinItems).forEach(itemId => {
-        const data = botiquinItems[itemId] || {};
-        const item = BOTIQUIN_ITEMS_BASE.find(i => i.id === itemId);
-        if (!item) return;
+    BOTIQUIN_ITEMS_BASE.forEach(item => {
+        const data = botiquinItems[item.id] || {};
         
         if (data.cantEnc === '' || data.cantEnc === null || data.cantEnc === undefined) {
             sinDatos++;
-            malos++;
             return;
         }
         
@@ -1021,13 +1041,7 @@ function contarProblemasBotiquin(botiquinItems) {
         else if (estado.letra === 'G') regulares++;
     });
     
-    return { malos, regulares, sinDatos, total: malos + regulares };
-}
-
-function hayProblemasBotiquin(v) {
-    if (!v.botiquinItems) return true;
-    const problemas = contarProblemasBotiquin(v.botiquinItems);
-    return problemas.malos > 0 || problemas.regulares > 0;
+    return { malos, regulares, sinDatos, total: malos + regulares + sinDatos };
 }
 
 // ============================================================
@@ -1049,7 +1063,7 @@ function getMaintenanceInfo(v) {
 }
 
 // ============================================================
-// CALCULAR ESTADO DEL VEHÍCULO
+// 🎯 CALCULAR ESTADO DEL VEHÍCULO (sin botiquín)
 // ============================================================
 function calcularEstadoVehiculo(v) {
     const hoy = new Date(); hoy.setHours(0,0,0,0);
@@ -1057,7 +1071,6 @@ function calcularEstadoVehiculo(v) {
     let tieneProximo = false;
     const tieneObs = tieneObservacionesPendientes(v);
     
-    // SOAT, ITV Autrisa, Extintor (ITV va aparte)
     [v.soat, v.itvAutrisa, v.extintor].forEach(campo => {
         if (campo) {
             const fecha = new Date(campo + 'T00:00:00');
@@ -1067,7 +1080,6 @@ function calcularEstadoVehiculo(v) {
         }
     });
     
-    // ITV con lógica de exoneración
     const itvInfo = getItvInfo(v);
     if (!itvInfo.exonerado) {
         if (itvInfo.vencido) tieneCritico = true;
@@ -1225,16 +1237,15 @@ function renderizarInfoInicio(vehiculo, kmMostrado) {
         const f = new Date(vehiculo.extintor + 'T00:00:00');
         const d = Math.round((f - hoy) / (1000*60*60*24));
         const e = d <= 0 ? '🔴 VENCIDO' : (d <= 30 ? '🟠 Próximo' : '🟢 Vigente');
-        info += `<div class="item" style="font-size:11px;color:#ffffff;"><i class="fas fa-fire-extinguisher" style="color:#ffffff;width:18px;"></i> Extintor: ${formatearFecha(vehiculo.extintor)} ${e}</div>`;
+        info += `<div class="item" style="font-size:11px;color:#ffffff;"><i class="fas fa-fire-extinguisher icono-extintor-rojo" style="width:18px;"></i> Extintor: ${formatearFecha(vehiculo.extintor)} ${e}</div>`;
     }
     
-    // 🆕 Botiquín - advertencia amarilla si faltan ítems
     if (vehiculo.botiquin || (vehiculo.botiquinItems && Object.keys(vehiculo.botiquinItems).length > 0)) {
         const problemas = contarProblemasBotiquin(vehiculo.botiquinItems);
-        if (problemas.malos > 0 || problemas.regulares > 0) {
-            info += `<div class="item" style="font-size:11px;color:#ffc107;"><i class="fas fa-exclamation-triangle" style="color:#ffc107;width:18px;"></i> ⚠️ Botiquín: ${problemas.malos > 0 ? `${problemas.malos} faltante(s)` : ''} ${problemas.regulares > 0 ? `${problemas.regulares} reg.` : ''}</div>`;
+        if (problemas.total > 0) {
+            info += `<div class="item" style="font-size:11px;color:#ffc107;"><i class="fas fa-kit-medical icono-botiquin-rojo" style="width:18px;"></i> ⚠️ Botiquín incompleto (${problemas.total} ítems)</div>`;
         } else {
-            info += `<div class="item" style="font-size:11px;color:#ffffff;"><i class="fas fa-briefcase-medical" style="color:#66d98a;width:18px;"></i> Botiquín OK</div>`;
+            info += `<div class="item" style="font-size:11px;color:#ffffff;"><i class="fas fa-kit-medical icono-botiquin-rojo" style="width:18px;"></i> Botiquín OK</div>`;
         }
     }
     
@@ -1271,9 +1282,8 @@ function renderizarInfoInicio(vehiculo, kmMostrado) {
         else if (d <= 30) alertas.push({ tipo: 'vencimiento', icono: 'fas fa-fire-extinguisher', texto: `Extintor vence en ${d} días` });
     }
     
-    // 🆕 Botiquín: alerta amarilla (no crítica)
     const problemasBot = contarProblemasBotiquin(vehiculo.botiquinItems);
-    if (problemasBot.malos > 0) alertas.push({ tipo: 'vencimiento', icono: 'fas fa-briefcase-medical', texto: `⚠️ Botiquín: ${problemasBot.malos} ítem(s) faltante(s) o incompleto` });
+    if (problemasBot.total > 0) alertas.push({ tipo: 'vencimiento', icono: 'fas fa-kit-medical', texto: `Botiquín incompleto (${problemasBot.total} ítems)` });
     
     if (mantInfo.kmRestantes <= 0) alertas.push({ tipo: 'mantenimiento', icono: 'fas fa-oil-can', texto: `⚠️ Mantenimiento VENCIDO por ${Math.abs(mantInfo.kmRestantes).toLocaleString()} (Hr/Km)` });
     else if (mantInfo.kmRestantes <= 1000) alertas.push({ tipo: 'mantenimiento', icono: 'fas fa-oil-can', texto: `🔧 Mantenimiento en ${mantInfo.kmRestantes.toLocaleString()} (Hr/Km)` });
@@ -1362,7 +1372,7 @@ function renderVehicleList() {
 }
 
 // ============================================================
-// VISTA CON TARJETAS (5 en grid + Botiquín y Extintor anchos al final)
+// 🆕 VISTA CON 2 SECCIONES AGRUPADAS
 // ============================================================
 function renderVehicleView(index) {
     const c = document.getElementById('vehicleView');
@@ -1375,8 +1385,9 @@ function renderVehicleView(index) {
     const mantInfo = getMaintenanceInfo(v);
     const tieneObs = tieneObservacionesPendientes(v);
     const link = v.link || '';
-    const hayProblemaBotiquin = hayProblemasBotiquin(v);
     const itvInfo = getItvInfo(v);
+    const problemasBot = contarProblemasBotiquin(v.botiquinItems);
+    const botiquinIncompleto = problemasBot.total > 0;
     const hoy = new Date(); hoy.setHours(0,0,0,0);
     
     function diasHasta(f) { if (!f) return Infinity; return Math.round((new Date(f + 'T00:00:00') - hoy) / (1000*60*60*24)); }
@@ -1392,50 +1403,10 @@ function renderVehicleView(index) {
     const dca = diasHasta(v.itvAutrisa); const eca = estadoDias(dca);
     const de = diasHasta(v.extintor); const ee = estadoDias(de);
     
-    const problemasBot = contarProblemasBotiquin(v.botiquinItems);
-    const totalBotiquin = v.botiquinItems ? Object.keys(v.botiquinItems).length : 0;
-    
-    // 🆕 Botiquín: NUNCA rojo pulsante, solo advertencia amarilla
-    let claseBotiquin = 'alert-yellow';
-    let textoBotiquin = 'Sin datos';
-    let etiquetaBotiquin = 'Pendiente';
-    
-    if (totalBotiquin === 0) {
-        claseBotiquin = 'alert-yellow';
-        etiquetaBotiquin = 'Sin datos';
-        textoBotiquin = 'Sin ítems registrados';
-    } else if (problemasBot.malos > 0 || problemasBot.regulares > 0) {
-        claseBotiquin = 'alert-yellow';
-        etiquetaBotiquin = '⚠️ Incompleto';
-        const partes = [];
-        if (problemasBot.malos > 0) partes.push(`${problemasBot.malos} faltante(s)`);
-        if (problemasBot.regulares > 0) partes.push(`${problemasBot.regulares} reg.`);
-        textoBotiquin = partes.join(' · ');
-    } else {
-        claseBotiquin = 'alert-green';
-        etiquetaBotiquin = 'OK';
-        textoBotiquin = `${totalBotiquin} ítems OK`;
-    }
-    
-    // 🆕 Advertencia amarilla dentro de la tarjeta (parte baja)
-    let advertenciaBotiquinHtml = '';
-    if (problemasBot.malos > 0 || problemasBot.regulares > 0 || totalBotiquin === 0) {
-        let msg = '';
-        if (totalBotiquin === 0) msg = 'Falta registrar los ítems del botiquín';
-        else {
-            const partes = [];
-            if (problemasBot.malos > 0) partes.push(`${problemasBot.malos} ítem(s) faltante(s) o incompleto(s)`);
-            if (problemasBot.regulares > 0) partes.push(`${problemasBot.regulares} ítem(s) por vencer`);
-            msg = partes.join(' · ');
-        }
-        advertenciaBotiquinHtml = `<div class="advertencia-botiquin-tarjeta">
-            <i class="fas fa-exclamation-triangle"></i>
-            <span>Botiquín incompleto: ${msg}</span>
-        </div>`;
-    }
-    
-    // 5 tarjetas en grid (SOAT, ITV, ITV Autrisa, Último MTTO, Próximo Servicio)
-    const alertasGrid = [
+    // ============================================================
+    // SECCIÓN 1: DOCUMENTACIÓN Y MANTENIMIENTO (5 tarjetas)
+    // ============================================================
+    const tarjetasDocumentacion = [
         { id: 'soat', titulo: 'SOAT', icono: 'fas fa-file-contract', clase: es.clase, etiqueta: es.etiqueta,
           texto: ds === Infinity ? 'No registrado' : (ds < 0 ? 'VENCIDO' : (ds <= 30 ? `Vence en ${ds} días` : 'Vigente')),
           detalle: v.soat ? `hasta ${formatearFecha(v.soat)}` : 'Sin fecha' },
@@ -1457,6 +1428,34 @@ function renderVehicleView(index) {
           texto: `${mantInfo.proxKm.toLocaleString()} (Hr/Km)`,
           detalle: `intervalo ${mantInfo.intAceite.toLocaleString()} (Hr/Km)` }
     ];
+    
+    // ============================================================
+    // SECCIÓN 2: EQUIPAMIENTO DE SEGURIDAD (2 tarjetas)
+    // ============================================================
+    let claseBotiquin, etiquetaBotiquin, textoBotiquin, detalleBotiquin;
+    if (botiquinIncompleto) {
+        claseBotiquin = 'alert-yellow';
+        etiquetaBotiquin = 'INCOMPLETO';
+        textoBotiquin = `Faltan ${problemasBot.total} ítems`;
+        detalleBotiquin = v.botiquin ? `Última: ${formatearFecha(v.botiquin)}` : 'Sin inspección';
+    } else if (v.botiquinItems && Object.keys(v.botiquinItems).length > 0) {
+        claseBotiquin = 'alert-green';
+        etiquetaBotiquin = 'OK';
+        textoBotiquin = '15 ítems OK';
+        detalleBotiquin = v.botiquin ? `Última: ${formatearFecha(v.botiquin)}` : 'Sin inspección';
+    } else {
+        claseBotiquin = 'alert-yellow';
+        etiquetaBotiquin = 'PENDIENTE';
+        textoBotiquin = 'Sin datos';
+        detalleBotiquin = 'Sin inspección';
+    }
+    
+    const avisoIncompletoHtml = botiquinIncompleto 
+        ? `<div class="aviso-incompleto">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Botiquín incompleto: ${problemasBot.malos > 0 ? `${problemasBot.malos} con problemas` : ''}${problemasBot.malos > 0 && problemasBot.sinDatos > 0 ? ' · ' : ''}${problemasBot.sinDatos > 0 ? `${problemasBot.sinDatos} sin datos` : ''}</span>
+           </div>`
+        : '';
     
     let maintenanceAlertHtml = '';
     if (mantInfo.kmRestantes <= 1000) {
@@ -1493,44 +1492,53 @@ function renderVehicleView(index) {
                 ${tieneObs ? `<span class="alerta-observacion-tarjeta"><i class="fas fa-exclamation-triangle"></i> Obs.</span>` : ''}
             </div>
             <div class="acciones">
-                <button class="btn-small btn-edit-azul" onclick="abrirDetalleDesdeLista(${index})"><i class="fas fa-edit"></i> Editar</button>
+                <button class="btn-edit-amarillo" onclick="abrirDetalleDesdeLista(${index})"><i class="fas fa-edit"></i> Editar</button>
                 ${link ? `<button class="btn-small" style="background:#8a2be2;color:white;border:none;" onclick="abrirModal('${v.placa}','${link}')"><i class="fas fa-link"></i> Doc.</button>` : ''}
                 <button class="btn-small btn-delete" onclick="solicitarEliminarVehiculo(${index})"><i class="fas fa-trash"></i></button>
             </div>
         </div>
         <div class="detalles-container">
             ${maintenanceAlertHtml}
-            <div class="alert-grid">
-                ${alertasGrid.map(a => `<div class="alert-card ${a.clase}" onclick="abrirModalTarjeta('${a.id}', ${index})" title="Click para editar">
-                    <i class="${a.icono}"></i>
-                    <div class="info">
-                        <div class="label">${a.titulo}</div>
-                        <div class="value"><strong>${a.texto}</strong> <small>${a.detalle}</small></div>
-                    </div>
-                    <span class="badge-status">${a.etiqueta}</span>
-                </div>`).join('')}
-                
-                <!-- 🆕 BOTIQUÍN - Ancho completo -->
-                <div class="alert-card alert-card-wide ${claseBotiquin}" onclick="abrirModalTarjeta('botiquin', ${index})" title="Click para editar">
-                    <i class="fas fa-briefcase-medical icono-principal"></i>
-                    <div class="info">
-                        <div class="label">Inspección Botiquín</div>
-                        <div class="value"><strong>${textoBotiquin}</strong> <small>${v.botiquin ? formatearFecha(v.botiquin) : 'Sin inspección'}</small></div>
-                        ${advertenciaBotiquinHtml}
-                    </div>
-                    <span class="badge-status">${etiquetaBotiquin}</span>
-                </div>
-                
-                <!-- 🆕 EXTINTOR - Ancho completo -->
-                <div class="alert-card alert-card-wide ${ee.clase}" onclick="abrirModalTarjeta('extintor', ${index})" title="Click para editar">
-                    <i class="fas fa-fire-extinguisher icono-principal"></i>
-                    <div class="info">
-                        <div class="label">Extintor</div>
-                        <div class="value"><strong>${de === Infinity ? 'No registrado' : (de < 0 ? 'VENCIDO' : (de <= 30 ? `Vence en ${de} días` : 'Vigente'))}</strong> <small>${v.extintor ? formatearFecha(v.extintor) : 'Sin fecha'}</small></div>
-                    </div>
-                    <span class="badge-status">${ee.etiqueta}</span>
+            
+            <!-- SECCIÓN 1: DOCUMENTACIÓN Y MANTENIMIENTO -->
+            <div class="seccion-agrupada">
+                <div class="titulo-seccion"><i class="fas fa-clipboard-list"></i> Documentación y Mantenimiento</div>
+                <div class="grid-seccion">
+                    ${tarjetasDocumentacion.map(a => `<div class="alert-card ${a.clase}" onclick="abrirModalTarjeta('${a.id}', ${index})" title="Click para editar">
+                        <i class="${a.icono}"></i>
+                        <div class="info">
+                            <div class="label">${a.titulo}</div>
+                            <div class="value"><strong>${a.texto}</strong> <small>${a.detalle}</small></div>
+                        </div>
+                        <span class="badge-status">${a.etiqueta}</span>
+                    </div>`).join('')}
                 </div>
             </div>
+            
+            <!-- SECCIÓN 2: EQUIPAMIENTO DE SEGURIDAD -->
+            <div class="seccion-agrupada">
+                <div class="titulo-seccion"><i class="fas fa-shield-alt"></i> Equipamiento de Seguridad</div>
+                <div class="grid-seccion">
+                    <div class="alert-card ${claseBotiquin}" onclick="abrirModalTarjeta('botiquin', ${index})" title="Click para editar">
+                        <i class="fas fa-kit-medical icono-botiquin-rojo"></i>
+                        <div class="info">
+                            <div class="label">Inspección Botiquín</div>
+                            <div class="value"><strong>${textoBotiquin}</strong> <small>${detalleBotiquin}</small></div>
+                        </div>
+                        <span class="badge-status">${etiquetaBotiquin}</span>
+                    </div>
+                    <div class="alert-card ${ee.clase}" onclick="abrirModalTarjeta('extintor', ${index})" title="Click para editar">
+                        <i class="fas fa-fire-extinguisher icono-extintor-rojo"></i>
+                        <div class="info">
+                            <div class="label">Extintor</div>
+                            <div class="value"><strong>${de === Infinity ? 'No registrado' : (de < 0 ? 'VENCIDO' : (de <= 30 ? `Vence en ${de} días` : 'Vigente'))}</strong> <small>${v.extintor ? formatearFecha(v.extintor) : 'Sin fecha'}</small></div>
+                        </div>
+                        <span class="badge-status">${ee.etiqueta}</span>
+                    </div>
+                </div>
+                ${avisoIncompletoHtml}
+            </div>
+            
             ${observacionesHtml}
         </div>
     </div>`;
@@ -1543,7 +1551,7 @@ function seleccionarVehiculo(index) {
 }
 
 // ============================================================
-// ABRIR MODAL DE TARJETA
+// ABRIR MODAL DE TARJETA (CON CAMPO TIPO)
 // ============================================================
 function abrirModalTarjeta(tipo, index) {
     if (index < 0 || index >= vehicles.length) return;
@@ -1562,7 +1570,7 @@ function abrirModalTarjeta(tipo, index) {
         'itv': { titulo: 'ITV', icono: 'fas fa-clipboard-check', campo: 'itv', obsCampo: 'itvObs' },
         'itvAutrisa': { titulo: 'ITV Autrisa', icono: 'fas fa-certificate', campo: 'itvAutrisa', obsCampo: 'itvAutrisaObs' },
         'extintor': { titulo: 'Extintor', icono: 'fas fa-fire-extinguisher', campo: 'extintor', obsCampo: 'extintorObs' },
-        'botiquin': { titulo: 'Inspección Botiquín', icono: 'fas fa-briefcase-medical' },
+        'botiquin': { titulo: 'Inspección Botiquín', icono: 'fas fa-kit-medical' },
         'mantenimiento': { titulo: 'Último Mantenimiento', icono: 'fas fa-oil-can' },
         'proximo': { titulo: 'Próximo Servicio', icono: 'fas fa-tachometer-alt' }
     };
@@ -1643,7 +1651,7 @@ function actualizarPreviewTipoModal() {
 }
 
 // ============================================================
-// RENDER TABLA BOTIQUÍN (con soporte sinFecha)
+// RENDER TABLA BOTIQUÍN
 // ============================================================
 function renderModalBotiquin(v) {
     const body = document.getElementById('modalTarjetaBody');
@@ -1675,16 +1683,15 @@ function renderModalBotiquin(v) {
         const data = itemsGuardados[item.id] || { cantEnc: '', fechaVenc: '', obs: '' };
         const estado = calcularEstadoItem(item, data.cantEnc, data.fechaVenc);
         
-        // 🆕 Si el item NO tiene fecha, mostrar texto en lugar del input date
-        const fechaCellHtml = item.sinFecha 
-            ? `<div class="sin-fecha">Sin vencimiento</div>`
+        const fechaInput = item.sinFecha
+            ? `<span class="fecha-na">N/A</span>`
             : `<input type="date" id="bot_${item.id}_fecha" value="${data.fechaVenc || ''}" oninput="actualizarEstadoBotiquin('${item.id}')">`;
         
         html += `<tr>
             <td class="item-nombre">${item.nombre}</td>
             <td class="cant-req">${item.cantReq} ${item.unidad}</td>
             <td><input type="number" min="0" id="bot_${item.id}_cant" value="${data.cantEnc !== undefined && data.cantEnc !== '' ? data.cantEnc : ''}" placeholder="0" oninput="actualizarEstadoBotiquin('${item.id}')"></td>
-            <td>${fechaCellHtml}</td>
+            <td>${fechaInput}</td>
             <td style="text-align:center;"><span class="estado-celda ${estado.clase}" id="bot_${item.id}_estado">${estado.letra}</span></td>
             <td><input type="text" id="bot_${item.id}_obs" value="${data.obs || ''}" placeholder="..."></td>
             <td style="text-align:center;">
@@ -1779,8 +1786,9 @@ async function guardarModalTarjeta() {
         
         BOTIQUIN_ITEMS_BASE.forEach(item => {
             const cantEl = document.getElementById(`bot_${item.id}_cant`);
-            const fechaEl = document.getElementById(`bot_${item.id}_fecha`);
             const obsEl = document.getElementById(`bot_${item.id}_obs`);
+            const fechaEl = document.getElementById(`bot_${item.id}_fecha`);
+            
             if (cantEl) {
                 data.botiquinItems[item.id] = {
                     cantEnc: cantEl.value !== '' ? parseInt(cantEl.value) : '',
@@ -2170,8 +2178,8 @@ function generarFormularioDetalle(v) {
         <div class="form-group"><label><i class="fas fa-file-contract"></i> SOAT</label><input type="date" class="form-control" id="dSoat" value="${v.soat || ''}"></div>
         <div class="form-group"><label><i class="fas fa-clipboard-check"></i> ITV</label><input type="date" class="form-control" id="dItv" value="${v.itv || ''}"></div>
         <div class="form-group"><label><i class="fas fa-certificate"></i> ITV Autrisa</label><input type="date" class="form-control" id="dItvAutrisa" value="${v.itvAutrisa || ''}"></div>
-        <div class="form-group"><label><i class="fas fa-fire-extinguisher"></i> Extintor</label><input type="date" class="form-control" id="dExtintor" value="${v.extintor || ''}"></div>
-        <div class="form-group"><label><i class="fas fa-briefcase-medical"></i> Inspección Botiquín</label><input type="date" class="form-control" id="dBotiquin" value="${v.botiquin || ''}"></div>
+        <div class="form-group"><label><i class="fas fa-fire-extinguisher" style="color:#d32f2f;"></i> Extintor</label><input type="date" class="form-control" id="dExtintor" value="${v.extintor || ''}"></div>
+        <div class="form-group"><label><i class="fas fa-kit-medical" style="color:#d32f2f;"></i> Inspección Botiquín</label><input type="date" class="form-control" id="dBotiquin" value="${v.botiquin || ''}"></div>
         <div class="form-group row-full-detail"><label><i class="fas fa-link"></i> Link</label><input type="url" class="form-control" id="dLink" value="${v.link || ''}"></div>
     </div>`;
 }
