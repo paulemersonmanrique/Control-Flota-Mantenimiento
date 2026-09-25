@@ -132,49 +132,70 @@
         .tabla-botiquin .estado-M { background: rgba(211,47,47,0.15); color: #d32f2f; }
         .tabla-botiquin .btn-borrar-item { background: #d32f2f; color: white; border: none; padding: 4px 7px; border-radius: 6px; font-size: 10px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
         .tabla-botiquin .btn-borrar-item:hover { background: #b71c1c; }
-        .tabla-botiquin .sin-fecha { color: #a0b4cc; font-size: 10px; text-align: center; font-style: italic; }
+        .tabla-botiquin .sin-fecha { color: #999; font-size: 11px; font-style: italic; text-align: center; }
 
-        @keyframes pulseAlertBotiquin {
-            0% { box-shadow: 0 0 0 0 rgba(211,47,47,0.7), 0 0 8px rgba(211,47,47,0.5); border-color: #d32f2f; }
-            50% { box-shadow: 0 0 0 8px rgba(211,47,47,0), 0 0 16px rgba(211,47,47,0.8); border-color: #ff5555; }
-            100% { box-shadow: 0 0 0 0 rgba(211,47,47,0.7), 0 0 8px rgba(211,47,47,0.5); border-color: #d32f2f; }
+        /* 🚨 ADVERTENCIA AMARILLA EN TARJETA BOTIQUÍN (NO roja, NO pulsante) */
+        .advertencia-botiquin-tarjeta {
+            margin-top: 8px;
+            padding: 6px 10px;
+            background: rgba(255,193,7,0.15);
+            border: 1px solid #ffc107;
+            border-left: 4px solid #ffc107;
+            border-radius: 6px;
+            font-size: 11px;
+            color: #ffc107;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        .alert-card.pulse-botiquin {
-            animation: pulseAlertBotiquin 1.5s infinite;
-            border: 2px solid #d32f2f !important;
-        }
-        .alert-card.pulse-botiquin i.fa-briefcase-medical {
-            color: #ff5555 !important;
-        }
-        .badge-botiquin-alerta {
-            background: #d32f2f !important;
-            color: #ffffff !important;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .advertencia-botiquin-tarjeta i { color: #ffc107; font-size: 12px; }
 
-        /* 🟡 NUEVA ALERTA AMARILLA (advertencia, no crítico) */
-        @keyframes pulseAlertBotiquinAmarillo {
-            0% { box-shadow: 0 0 0 0 rgba(255,193,7,0.7), 0 0 8px rgba(255,193,7,0.5); border-color: #ffc107; }
-            50% { box-shadow: 0 0 0 8px rgba(255,193,7,0), 0 0 16px rgba(255,193,7,0.8); border-color: #ffd966; }
-            100% { box-shadow: 0 0 0 0 rgba(255,193,7,0.7), 0 0 8px rgba(255,193,7,0.5); border-color: #ffc107; }
-        }
-        .alert-card.pulse-botiquin-amarillo {
-            animation: pulseAlertBotiquinAmarillo 1.5s infinite;
-            border: 2px solid #ffc107 !important;
-        }
-        .alert-card.pulse-botiquin-amarillo i.fa-briefcase-medical {
-            color: #ffc107 !important;
-        }
-        .badge-botiquin-advertencia {
-            background: #e6a700 !important;
-            color: #ffffff !important;
-            animation: pulse 1.5s infinite;
-        }
-
+        /* 🔵 TARJETA EXONERADO (ITV) */
         .alert-card.alert-blue { border-left-color: #0066cc; background: rgba(0,102,204,0.10); }
         .alert-card.alert-blue i { color: #0066cc; }
         .alert-card.alert-blue .badge-status { background: rgba(0,102,204,0.25); color: #4a9eff; }
+
+        /* 📐 TARJETAS ANCHAS (BOTIQUÍN Y EXTINTOR) */
+        .alert-card-wide {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            cursor: pointer;
+        }
+        .alert-card-wide::after {
+            content: '\f044';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 12px;
+            opacity: 0.3;
+            color: #ffffff;
+        }
+        .alert-card-wide i.icono-principal {
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.08);
+        }
+        .alert-card-wide .info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .alert-card-wide .info .label { font-size: 11px; }
+        .alert-card-wide .info .value { font-size: 13px; }
+        .alert-card-wide .info .value small { font-size: 10px; }
+        .alert-card-wide .badge-status { font-size: 11px; padding: 4px 10px; }
 
         @media (max-width: 600px) {
             .inicio-container { padding: 16px 14px; }
@@ -389,6 +410,7 @@
             .observacion-input-group input { width: 100%; }
             .filter-buttons { justify-content: center; }
             #appPrincipal { padding: 10px 12px 16px; }
+            .alert-card-wide { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
@@ -460,13 +482,17 @@
             <p style="margin-left:20px; color:#ff6666; font-weight:700;">🔴 <strong>Estado crítico</strong> - Mantenimiento vencido o múltiples problemas</p>
             <p style="margin-left:20px; color:#4a9eff;">🔵 <strong>Exonerado</strong> - Vehículos ≤4 años sin ITV registrada</p>
             
+            <h3><i class="fas fa-hand-pointer"></i> Tarjetas editables</h3>
+            <p>Toca cualquier tarjeta para editar su información.</p>
+            
             <h3><i class="fas fa-clipboard-check"></i> ITV (RTV)</h3>
             <p>Vehículos particulares: <strong>exonerados los primeros 4 años</strong> desde su fabricación. A partir del 4to año, ITV <strong>anual</strong>.</p>
+            <p style="margin-left:20px;">Si se registra una ITV aunque el vehículo sea nuevo (por exigencia del área de trabajo), el sistema <strong>respeta la fecha</strong> y alerta normalmente.</p>
             
             <h3><i class="fas fa-briefcase-medical"></i> Inspección del Botiquín</h3>
             <p>La inspección es <strong>MENSUAL</strong> (30 días).</p>
-            <p style="margin-left:20px; color:#ffc107;">🟡 <strong>Amarillo pulsante</strong> - Faltan datos (advertencia, no crítico)</p>
-            <p style="margin-left:20px; color:#ff5555;">🔴 <strong>Rojo pulsante</strong> - Ítems vencidos o faltantes críticos</p>
+            <p style="margin-left:20px;">Si falta algún ítem, la tarjeta muestra una <strong>advertencia amarilla</strong> en la parte inferior.</p>
+            <p style="margin-left:20px;">Los ítems: Tijera Punta Roma, Férulas de Madera y Mascarilla KN95 <strong>no tienen fecha de vencimiento</strong>.</p>
             <p style="margin-left:20px; font-size:12px; color:#657e9e;"><em>Nota: el botiquín NO afecta el color general de la placa.</em></p>
         </div>
         <div class="modal-ayuda-footer">
@@ -775,25 +801,25 @@ let modalTarjetaActual = { tipo: null, key: null, index: -1 };
 let itemBotiquinAEliminar = { key: null, itemId: null, nombre: null };
 
 // ============================================================
-// 📋 ÍTEMS DEL BOTIQUÍN (LISTA ACTUALIZADA - 15 ITEMS)
-// Los items con requiereFecha: false no muestran campo de vencimiento
+// 📋 ÍTEMS DEL BOTIQUÍN (LISTA FINAL - 15 ITEMS)
+// sinFecha: true → no tiene fecha de vencimiento
 // ============================================================
 const BOTIQUIN_ITEMS_BASE = [
-    { id: 'alcohol70', nombre: 'Alcohol 70° x 120 ml', cantReq: 1, unidad: 'fco.', requiereFecha: true },
-    { id: 'aguaOxigenada', nombre: 'Agua oxigenada x 60 ml', cantReq: 1, unidad: 'fco.', requiereFecha: true },
-    { id: 'algodon50', nombre: 'Algodón 50 gr', cantReq: 1, unidad: 'unid.', requiereFecha: true },
-    { id: 'apositoEsteril', nombre: 'Apósito Estéril', cantReq: 1, unidad: 'unid.', requiereFecha: true },
-    { id: 'bandasAdhesivas', nombre: 'Bandas Adhesivas', cantReq: 10, unidad: 'unid.', requiereFecha: true },
-    { id: 'esparadrapo25', nombre: 'Esparadrapo 2.5" x 1 yarda', cantReq: 1, unidad: 'unid.', requiereFecha: true },
-    { id: 'gasaEsteril10', nombre: 'Gasa Estéril 10 x 10 cm', cantReq: 5, unidad: 'unid.', requiereFecha: true },
-    { id: 'gelAntiseptico', nombre: 'Gel Antiséptico', cantReq: 1, unidad: 'fco.', requiereFecha: true },
-    { id: 'guantesLatex', nombre: 'Guantes de Látex 7 1/2"', cantReq: 3, unidad: 'pares', requiereFecha: true },
-    { id: 'tijeraPuntaRoma', nombre: 'Tijera Punta Roma', cantReq: 1, unidad: 'unid.', requiereFecha: false },
-    { id: 'vendaElastica2', nombre: 'Venda Elástica de 2"', cantReq: 2, unidad: 'unid.', requiereFecha: true },
-    { id: 'vendaElastica4', nombre: 'Venda Elástica de 4"', cantReq: 2, unidad: 'unid.', requiereFecha: true },
-    { id: 'ferulasMadera', nombre: 'Férulas de Madera', cantReq: 4, unidad: 'unid.', requiereFecha: false },
-    { id: 'mascarillaKN95', nombre: 'Mascarilla KN95', cantReq: 3, unidad: 'unid.', requiereFecha: false },
-    { id: 'alcoholGel', nombre: 'Alcohol en Gel 70° x 120 ml', cantReq: 1, unidad: 'fco.', requiereFecha: true }
+    { id: 'alcohol70', nombre: 'Alcohol 70° x 120 ml', cantReq: 1, unidad: 'fco.', sinFecha: false },
+    { id: 'aguaOxigenada', nombre: 'Agua oxigenada x 60 ml', cantReq: 1, unidad: 'fco.', sinFecha: false },
+    { id: 'algodon50', nombre: 'Algodón 50 gr', cantReq: 1, unidad: 'unid.', sinFecha: false },
+    { id: 'apositoEsteril', nombre: 'Apósito Estéril', cantReq: 1, unidad: 'unid.', sinFecha: false },
+    { id: 'bandasAdhesivas', nombre: 'Bandas Adhesivas', cantReq: 10, unidad: 'unid.', sinFecha: false },
+    { id: 'esparadrapo25', nombre: 'Esparadrapo 2.5" x 1 yarda', cantReq: 1, unidad: 'unid.', sinFecha: false },
+    { id: 'gasaEsteril10', nombre: 'Gasa Estéril 10 x 10 cm', cantReq: 5, unidad: 'unid.', sinFecha: false },
+    { id: 'gelAntiseptico', nombre: 'Gel Antiséptico', cantReq: 1, unidad: 'fco.', sinFecha: false },
+    { id: 'guantesLatex', nombre: 'Guantes de Látex 7 1/2"', cantReq: 3, unidad: 'pares', sinFecha: false },
+    { id: 'tijeraPuntaRoma', nombre: 'Tijera Punta Roma', cantReq: 1, unidad: 'unid.', sinFecha: true },
+    { id: 'vendaElastica2', nombre: 'Venda Elástica de 2"', cantReq: 2, unidad: 'unid.', sinFecha: false },
+    { id: 'vendaElastica4', nombre: 'Venda Elástica de 4"', cantReq: 2, unidad: 'unid.', sinFecha: false },
+    { id: 'ferulasMadera', nombre: 'Férulas de Madera', cantReq: 4, unidad: 'unid.', sinFecha: true },
+    { id: 'mascarillaKN95', nombre: 'Mascarilla KN95', cantReq: 3, unidad: 'unid.', sinFecha: true },
+    { id: 'alcoholGel', nombre: 'Alcohol en Gel 70° x 120 ml', cantReq: 1, unidad: 'fco.', sinFecha: false }
 ];
 
 // ============================================================
@@ -850,7 +876,8 @@ function getItvInfo(v) {
         if (antiguedad <= ANIOS_EXONERACION_ITV) {
             return {
                 exonerado: true, clase: 'alert-blue', etiqueta: 'EXONERADO',
-                texto: 'Exonerado', detalle: `${anioVehiculo + ANIOS_EXONERACION_ITV} (4 años)`,
+                texto: 'Exonerado',
+                detalle: `${anioVehiculo + ANIOS_EXONERACION_ITV} (4 años)`,
                 vencido: false
             };
         }
@@ -950,21 +977,19 @@ function getBotiquinInfo(fechaInspeccion) {
     return { diasTranscurridos: dias, estado: 'ok', clase: 'alert-green', etiqueta: 'Al día', texto: `Al día (${dias} días)`, detalle: `${30 - dias} días para próxima`, vencido: false, proximo: false };
 }
 
-// ============================================================
-// CALCULAR ESTADO DE ÍTEM DE BOTIQUÍN
-// ============================================================
+// 🆕 calcular estado de item del botiquín (con soporte para sinFecha)
 function calcularEstadoItem(item, cantEnc, fechaVenc) {
     const hoy = new Date(); hoy.setHours(0,0,0,0);
     let tieneProblema = false;
     let tieneAdvertencia = false;
     
-    // Cantidad insuficiente o sin datos → problema
+    // Validar cantidad
     if (cantEnc === null || cantEnc === undefined || cantEnc === '' || parseInt(cantEnc) < item.cantReq) {
         tieneProblema = true;
     }
     
-    // Solo verificar fecha si el ítem la requiere
-    if (item.requiereFecha !== false && fechaVenc) {
+    // 🆕 Si el item NO tiene fecha, no se evalúa fecha
+    if (!item.sinFecha && fechaVenc) {
         const fecha = new Date(fechaVenc + 'T00:00:00');
         const dias = Math.round((fecha - hoy) / (1000*60*60*24));
         if (dias <= 0) tieneProblema = true;
@@ -976,63 +1001,27 @@ function calcularEstadoItem(item, cantEnc, fechaVenc) {
     return { letra: 'B', clase: 'estado-B', label: 'Bueno' };
 }
 
-// ============================================================
-// CONTAR PROBLEMAS EN BOTIQUÍN
-// Devuelve: 
-//   - faltantes (cantidad insuficiente o sin datos) → AMARILLO
-//   - vencidos (fecha vencida) → ROJO
-//   - proximos (fecha por vencer) → solo advertencia
-// ============================================================
 function contarProblemasBotiquin(botiquinItems) {
-    if (!botiquinItems) return { faltantes: 0, vencidos: 0, proximos: 0, malos: 0, regulares: 0, sinDatos: 0, total: 0 };
-    
-    let faltantes = 0;    // Cantidad insuficiente o sin datos (amarillo)
-    let vencidos = 0;     // Fecha vencida (rojo)
-    let proximos = 0;     // Fecha próxima (amarillo)
-    let sinDatos = 0;     // Sin cantidad ingresada
-    let malos = 0;
-    let regulares = 0;
+    if (!botiquinItems) return { malos: 0, regulares: 0, sinDatos: 0, total: 0 };
+    let malos = 0, regulares = 0, sinDatos = 0;
     
     Object.keys(botiquinItems).forEach(itemId => {
         const data = botiquinItems[itemId] || {};
         const item = BOTIQUIN_ITEMS_BASE.find(i => i.id === itemId);
         if (!item) return;
         
-        const cantVal = data.cantEnc;
-        const sinCantidad = (cantVal === '' || cantVal === null || cantVal === undefined);
-        const cantInsuficiente = !sinCantidad && parseInt(cantVal) < item.cantReq;
-        
-        if (sinCantidad) {
+        if (data.cantEnc === '' || data.cantEnc === null || data.cantEnc === undefined) {
             sinDatos++;
-            faltantes++;
             malos++;
             return;
         }
         
-        if (cantInsuficiente) {
-            faltantes++;
-            malos++;
-        }
-        
-        // Verificar fecha solo si el item la requiere
-        if (item.requiereFecha !== false && data.fechaVenc) {
-            const hoy = new Date(); hoy.setHours(0,0,0,0);
-            const fecha = new Date(data.fechaVenc + 'T00:00:00');
-            const dias = Math.round((fecha - hoy) / (1000*60*60*24));
-            if (dias <= 0) { vencidos++; malos++; }
-            else if (dias <= 30) { proximos++; regulares++; }
-        }
+        const estado = calcularEstadoItem(item, data.cantEnc, data.fechaVenc);
+        if (estado.letra === 'M') malos++;
+        else if (estado.letra === 'G') regulares++;
     });
     
-    return {
-        faltantes,      // Cantidad insuficiente o sin datos → AMARILLO
-        vencidos,       // Vencidos → ROJO
-        proximos,       // Próximos a vencer → AMARILLO
-        sinDatos,       // Sin datos → AMARILLO
-        malos,          // Total malos (faltantes + vencidos)
-        regulares,      // Total regulares
-        total: faltantes + vencidos + proximos
-    };
+    return { malos, regulares, sinDatos, total: malos + regulares };
 }
 
 function hayProblemasBotiquin(v) {
@@ -1068,6 +1057,7 @@ function calcularEstadoVehiculo(v) {
     let tieneProximo = false;
     const tieneObs = tieneObservacionesPendientes(v);
     
+    // SOAT, ITV Autrisa, Extintor (ITV va aparte)
     [v.soat, v.itvAutrisa, v.extintor].forEach(campo => {
         if (campo) {
             const fecha = new Date(campo + 'T00:00:00');
@@ -1077,6 +1067,7 @@ function calcularEstadoVehiculo(v) {
         }
     });
     
+    // ITV con lógica de exoneración
     const itvInfo = getItvInfo(v);
     if (!itvInfo.exonerado) {
         if (itvInfo.vencido) tieneCritico = true;
@@ -1237,18 +1228,13 @@ function renderizarInfoInicio(vehiculo, kmMostrado) {
         info += `<div class="item" style="font-size:11px;color:#ffffff;"><i class="fas fa-fire-extinguisher" style="color:#ffffff;width:18px;"></i> Extintor: ${formatearFecha(vehiculo.extintor)} ${e}</div>`;
     }
     
-    // Botiquín
+    // 🆕 Botiquín - advertencia amarilla si faltan ítems
     if (vehiculo.botiquin || (vehiculo.botiquinItems && Object.keys(vehiculo.botiquinItems).length > 0)) {
         const problemas = contarProblemasBotiquin(vehiculo.botiquinItems);
-        if (problemas.vencidos > 0) {
-            info += `<div class="item" style="font-size:11px;color:#ff5555;"><i class="fas fa-briefcase-medical" style="color:#ff5555;width:18px;"></i> 🔴 Botiquín: ${problemas.vencidos} vencido(s)</div>`;
-        } else if (problemas.faltantes > 0 || problemas.proximos > 0) {
-            const partes = [];
-            if (problemas.faltantes > 0) partes.push(`${problemas.faltantes} incompleto(s)`);
-            if (problemas.proximos > 0) partes.push(`${problemas.proximos} próximo(s)`);
-            info += `<div class="item" style="font-size:11px;color:#ffc107;"><i class="fas fa-briefcase-medical" style="color:#ffc107;width:18px;"></i> 🟡 Botiquín: ${partes.join(' · ')}</div>`;
+        if (problemas.malos > 0 || problemas.regulares > 0) {
+            info += `<div class="item" style="font-size:11px;color:#ffc107;"><i class="fas fa-exclamation-triangle" style="color:#ffc107;width:18px;"></i> ⚠️ Botiquín: ${problemas.malos > 0 ? `${problemas.malos} faltante(s)` : ''} ${problemas.regulares > 0 ? `${problemas.regulares} reg.` : ''}</div>`;
         } else {
-            info += `<div class="item" style="font-size:11px;color:#66d98a;"><i class="fas fa-briefcase-medical" style="color:#66d98a;width:18px;"></i> Botiquín OK</div>`;
+            info += `<div class="item" style="font-size:11px;color:#ffffff;"><i class="fas fa-briefcase-medical" style="color:#66d98a;width:18px;"></i> Botiquín OK</div>`;
         }
     }
     
@@ -1285,9 +1271,9 @@ function renderizarInfoInicio(vehiculo, kmMostrado) {
         else if (d <= 30) alertas.push({ tipo: 'vencimiento', icono: 'fas fa-fire-extinguisher', texto: `Extintor vence en ${d} días` });
     }
     
+    // 🆕 Botiquín: alerta amarilla (no crítica)
     const problemasBot = contarProblemasBotiquin(vehiculo.botiquinItems);
-    if (problemasBot.vencidos > 0) alertas.push({ tipo: 'vencimiento', icono: 'fas fa-briefcase-medical', texto: `🔴 Botiquín: ${problemasBot.vencidos} ítem(s) vencido(s)` });
-    else if (problemasBot.faltantes > 0) alertas.push({ tipo: 'observacion', icono: 'fas fa-briefcase-medical', texto: `🟡 Botiquín: ${problemasBot.faltantes} ítem(s) incompleto(s)` });
+    if (problemasBot.malos > 0) alertas.push({ tipo: 'vencimiento', icono: 'fas fa-briefcase-medical', texto: `⚠️ Botiquín: ${problemasBot.malos} ítem(s) faltante(s) o incompleto` });
     
     if (mantInfo.kmRestantes <= 0) alertas.push({ tipo: 'mantenimiento', icono: 'fas fa-oil-can', texto: `⚠️ Mantenimiento VENCIDO por ${Math.abs(mantInfo.kmRestantes).toLocaleString()} (Hr/Km)` });
     else if (mantInfo.kmRestantes <= 1000) alertas.push({ tipo: 'mantenimiento', icono: 'fas fa-oil-can', texto: `🔧 Mantenimiento en ${mantInfo.kmRestantes.toLocaleString()} (Hr/Km)` });
@@ -1300,7 +1286,7 @@ function renderizarInfoInicio(vehiculo, kmMostrado) {
     
     if (alertaDiv) {
         alertaDiv.className = 'alerta-vehiculo visible';
-        const tieneCritico = alertas.some(a => a.tipo === 'critico' || (a.tipo === 'mantenimiento' && a.texto.includes('VENCIDO')) || a.texto.includes('VENCIDO') || a.texto.includes('🔴'));
+        const tieneCritico = alertas.some(a => a.tipo === 'critico' || (a.tipo === 'mantenimiento' && a.texto.includes('VENCIDO')) || a.texto.includes('VENCIDO'));
         const tieneVenc = alertas.some(a => a.tipo === 'vencimiento' || a.tipo === 'mantenimiento');
         if (tieneCritico) { alertaDiv.classList.add('alert-critical'); alertaTitulo.textContent = '🚨 ¡ATENCIÓN CRÍTICA!'; }
         else if (tieneVenc) { alertaDiv.classList.add('alert-vencimiento'); alertaTitulo.textContent = '⚠️ Alerta'; }
@@ -1376,7 +1362,7 @@ function renderVehicleList() {
 }
 
 // ============================================================
-// VISTA CON TARJETAS
+// VISTA CON TARJETAS (5 en grid + Botiquín y Extintor anchos al final)
 // ============================================================
 function renderVehicleView(index) {
     const c = document.getElementById('vehicleView');
@@ -1389,6 +1375,7 @@ function renderVehicleView(index) {
     const mantInfo = getMaintenanceInfo(v);
     const tieneObs = tieneObservacionesPendientes(v);
     const link = v.link || '';
+    const hayProblemaBotiquin = hayProblemasBotiquin(v);
     const itvInfo = getItvInfo(v);
     const hoy = new Date(); hoy.setHours(0,0,0,0);
     
@@ -1408,41 +1395,47 @@ function renderVehicleView(index) {
     const problemasBot = contarProblemasBotiquin(v.botiquinItems);
     const totalBotiquin = v.botiquinItems ? Object.keys(v.botiquinItems).length : 0;
     
-    // 🎨 LÓGICA DE COLORES DE LA TARJETA BOTIQUÍN
-    // Vencidos → ROJO pulsante
-    // Faltantes o próximos → AMARILLO pulsante
-    // Todo OK → VERDE
-    let claseBotiquin, textoBotiquin, etiquetaBotiquin;
+    // 🆕 Botiquín: NUNCA rojo pulsante, solo advertencia amarilla
+    let claseBotiquin = 'alert-yellow';
+    let textoBotiquin = 'Sin datos';
+    let etiquetaBotiquin = 'Pendiente';
     
-    if (problemasBot.vencidos > 0) {
-        // ROJO - hay vencidos
-        claseBotiquin = 'alert-red pulse-botiquin';
-        etiquetaBotiquin = '⚠️ VENCIDO';
-        textoBotiquin = `${problemasBot.vencidos} vencido(s)`;
-    } else if (problemasBot.faltantes > 0 || problemasBot.proximos > 0 || problemasBot.sinDatos > 0) {
-        // AMARILLO - incompleto o por vencer (NO CRÍTICO)
-        claseBotiquin = 'alert-yellow pulse-botiquin-amarillo';
-        etiquetaBotiquin = '⚠️ INCOMPLETO';
+    if (totalBotiquin === 0) {
+        claseBotiquin = 'alert-yellow';
+        etiquetaBotiquin = 'Sin datos';
+        textoBotiquin = 'Sin ítems registrados';
+    } else if (problemasBot.malos > 0 || problemasBot.regulares > 0) {
+        claseBotiquin = 'alert-yellow';
+        etiquetaBotiquin = '⚠️ Incompleto';
         const partes = [];
-        if (problemasBot.faltantes > 0) partes.push(`${problemasBot.faltantes} incompleto(s)`);
-        if (problemasBot.proximos > 0) partes.push(`${problemasBot.proximos} próximo(s)`);
+        if (problemasBot.malos > 0) partes.push(`${problemasBot.malos} faltante(s)`);
+        if (problemasBot.regulares > 0) partes.push(`${problemasBot.regulares} reg.`);
         textoBotiquin = partes.join(' · ');
-    } else if (totalBotiquin > 0) {
-        // VERDE - todo OK
+    } else {
         claseBotiquin = 'alert-green';
         etiquetaBotiquin = 'OK';
         textoBotiquin = `${totalBotiquin} ítems OK`;
-    } else {
-        // Sin datos → AMARILLO
-        claseBotiquin = 'alert-yellow pulse-botiquin-amarillo';
-        etiquetaBotiquin = '⚠️ Sin datos';
-        textoBotiquin = 'Sin ítems registrados';
     }
     
-    const hayProblemaBotiquinRojo = problemasBot.vencidos > 0;
-    const hayProblemaBotiquinAmarillo = problemasBot.faltantes > 0 || problemasBot.proximos > 0 || problemasBot.sinDatos > 0;
+    // 🆕 Advertencia amarilla dentro de la tarjeta (parte baja)
+    let advertenciaBotiquinHtml = '';
+    if (problemasBot.malos > 0 || problemasBot.regulares > 0 || totalBotiquin === 0) {
+        let msg = '';
+        if (totalBotiquin === 0) msg = 'Falta registrar los ítems del botiquín';
+        else {
+            const partes = [];
+            if (problemasBot.malos > 0) partes.push(`${problemasBot.malos} ítem(s) faltante(s) o incompleto(s)`);
+            if (problemasBot.regulares > 0) partes.push(`${problemasBot.regulares} ítem(s) por vencer`);
+            msg = partes.join(' · ');
+        }
+        advertenciaBotiquinHtml = `<div class="advertencia-botiquin-tarjeta">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>Botiquín incompleto: ${msg}</span>
+        </div>`;
+    }
     
-    const alertas = [
+    // 5 tarjetas en grid (SOAT, ITV, ITV Autrisa, Último MTTO, Próximo Servicio)
+    const alertasGrid = [
         { id: 'soat', titulo: 'SOAT', icono: 'fas fa-file-contract', clase: es.clase, etiqueta: es.etiqueta,
           texto: ds === Infinity ? 'No registrado' : (ds < 0 ? 'VENCIDO' : (ds <= 30 ? `Vence en ${ds} días` : 'Vigente')),
           detalle: v.soat ? `hasta ${formatearFecha(v.soat)}` : 'Sin fecha' },
@@ -1451,14 +1444,6 @@ function renderVehicleView(index) {
         { id: 'itvAutrisa', titulo: 'ITV Autrisa', icono: 'fas fa-certificate', clase: eca.clase, etiqueta: eca.etiqueta,
           texto: dca === Infinity ? 'No registrado' : (dca < 0 ? 'VENCIDO' : (dca <= 30 ? `Vence en ${dca} días` : 'Vigente')),
           detalle: v.itvAutrisa ? formatearFecha(v.itvAutrisa) : 'Sin fecha' },
-        { id: 'extintor', titulo: 'Extintor', icono: 'fas fa-fire-extinguisher', clase: ee.clase, etiqueta: ee.etiqueta,
-          texto: de === Infinity ? 'No registrado' : (de < 0 ? 'VENCIDO' : (de <= 30 ? `Vence en ${de} días` : 'Vigente')),
-          detalle: v.extintor ? formatearFecha(v.extintor) : 'Sin fecha' },
-        { id: 'botiquin', titulo: 'Inspección Botiquín', icono: 'fas fa-briefcase-medical', 
-          clase: claseBotiquin, 
-          etiqueta: etiquetaBotiquin,
-          texto: textoBotiquin,
-          detalle: v.botiquin ? formatearFecha(v.botiquin) : 'Sin inspección' },
         { id: 'mantenimiento', titulo: 'Último Mantenimiento', icono: 'fas fa-oil-can',
           clase: mantInfo.kmRestantes <= 0 ? 'alert-red' : (mantInfo.kmRestantes <= 1000 ? 'alert-orange' : 'alert-green'),
           etiqueta: mantInfo.kmRestantes <= 0 ? 'VENCIDO' : (mantInfo.kmRestantes <= 1000 ? '¡URGENTE!' : 'OK'),
@@ -1516,14 +1501,35 @@ function renderVehicleView(index) {
         <div class="detalles-container">
             ${maintenanceAlertHtml}
             <div class="alert-grid">
-                ${alertas.map(a => `<div class="alert-card ${a.clase}" onclick="abrirModalTarjeta('${a.id}', ${index})" title="Click para editar">
+                ${alertasGrid.map(a => `<div class="alert-card ${a.clase}" onclick="abrirModalTarjeta('${a.id}', ${index})" title="Click para editar">
                     <i class="${a.icono}"></i>
                     <div class="info">
                         <div class="label">${a.titulo}</div>
                         <div class="value"><strong>${a.texto}</strong> <small>${a.detalle}</small></div>
                     </div>
-                    <span class="badge-status ${a.id === 'botiquin' && hayProblemaBotiquinRojo ? 'badge-botiquin-alerta' : (a.id === 'botiquin' && hayProblemaBotiquinAmarillo ? 'badge-botiquin-advertencia' : '')}">${a.etiqueta}</span>
+                    <span class="badge-status">${a.etiqueta}</span>
                 </div>`).join('')}
+                
+                <!-- 🆕 BOTIQUÍN - Ancho completo -->
+                <div class="alert-card alert-card-wide ${claseBotiquin}" onclick="abrirModalTarjeta('botiquin', ${index})" title="Click para editar">
+                    <i class="fas fa-briefcase-medical icono-principal"></i>
+                    <div class="info">
+                        <div class="label">Inspección Botiquín</div>
+                        <div class="value"><strong>${textoBotiquin}</strong> <small>${v.botiquin ? formatearFecha(v.botiquin) : 'Sin inspección'}</small></div>
+                        ${advertenciaBotiquinHtml}
+                    </div>
+                    <span class="badge-status">${etiquetaBotiquin}</span>
+                </div>
+                
+                <!-- 🆕 EXTINTOR - Ancho completo -->
+                <div class="alert-card alert-card-wide ${ee.clase}" onclick="abrirModalTarjeta('extintor', ${index})" title="Click para editar">
+                    <i class="fas fa-fire-extinguisher icono-principal"></i>
+                    <div class="info">
+                        <div class="label">Extintor</div>
+                        <div class="value"><strong>${de === Infinity ? 'No registrado' : (de < 0 ? 'VENCIDO' : (de <= 30 ? `Vence en ${de} días` : 'Vigente'))}</strong> <small>${v.extintor ? formatearFecha(v.extintor) : 'Sin fecha'}</small></div>
+                    </div>
+                    <span class="badge-status">${ee.etiqueta}</span>
+                </div>
             </div>
             ${observacionesHtml}
         </div>
@@ -1590,7 +1596,7 @@ function abrirModalTarjeta(tipo, index) {
             </div>`;
         } else if (!v.itv) {
             infoExoneradoHtml = `<div class="info-actual">
-                <i class="fas fa-info-circle"></i> Vehículo de <strong>más de 4 años</strong>. ITV <strong>anual</strong> requerida.
+                <i class="fas fa-info-circle"></i> Vehículo de <strong>más de 4 años</strong>. ITV <strong>anual</strong> requerida. Registra la fecha.
             </div>`;
         }
     }
@@ -1637,7 +1643,7 @@ function actualizarPreviewTipoModal() {
 }
 
 // ============================================================
-// RENDER TABLA BOTIQUÍN (con fecha desactivada para ítems sin vencimiento)
+// RENDER TABLA BOTIQUÍN (con soporte sinFecha)
 // ============================================================
 function renderModalBotiquin(v) {
     const body = document.getElementById('modalTarjetaBody');
@@ -1668,12 +1674,11 @@ function renderModalBotiquin(v) {
     BOTIQUIN_ITEMS_BASE.forEach(item => {
         const data = itemsGuardados[item.id] || { cantEnc: '', fechaVenc: '', obs: '' };
         const estado = calcularEstadoItem(item, data.cantEnc, data.fechaVenc);
-        const requiereFecha = item.requiereFecha !== false;
         
-        // Si no requiere fecha → mostrar texto "No aplica"
-        const fechaCellHtml = requiereFecha 
-            ? `<input type="date" id="bot_${item.id}_fecha" value="${data.fechaVenc || ''}" oninput="actualizarEstadoBotiquin('${item.id}')">`
-            : `<div class="sin-fecha">No aplica</div>`;
+        // 🆕 Si el item NO tiene fecha, mostrar texto en lugar del input date
+        const fechaCellHtml = item.sinFecha 
+            ? `<div class="sin-fecha">Sin vencimiento</div>`
+            : `<input type="date" id="bot_${item.id}_fecha" value="${data.fechaVenc || ''}" oninput="actualizarEstadoBotiquin('${item.id}')">`;
         
         html += `<tr>
             <td class="item-nombre">${item.nombre}</td>
@@ -1779,7 +1784,7 @@ async function guardarModalTarjeta() {
             if (cantEl) {
                 data.botiquinItems[item.id] = {
                     cantEnc: cantEl.value !== '' ? parseInt(cantEl.value) : '',
-                    fechaVenc: fechaEl ? fechaEl.value : '', // items sin fecha tendrán ''
+                    fechaVenc: item.sinFecha ? '' : (fechaEl ? fechaEl.value : ''),
                     obs: obsEl ? obsEl.value : ''
                 };
             }
@@ -2325,10 +2330,15 @@ async function limpiarItemsAntiguosBotiquin() {
                     botiquinItemsPersonalizados: null
                 });
                 actualizados++;
+                console.log(`🧹 Limpiado botiquín de ${v.placa}`);
             } catch (e) {
                 console.error(`Error limpiando ${v.placa}:`, e);
             }
         }
+    }
+    
+    if (actualizados > 0) {
+        console.log(`✅ ${actualizados} vehículos actualizados con la nueva lista de botiquín`);
     }
 }
 
